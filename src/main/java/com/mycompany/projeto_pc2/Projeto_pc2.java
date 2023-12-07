@@ -10,8 +10,14 @@ import util.Consola;
 
 /*
  * Bugs: 
- * - Errar a pesquisa de um cliente ou veiculo dá crash ao programa
+ * - Se errarmos a pesquisa de um cliente ou veiculo, o programa dá crash
  * - Apenas dá para inicializar as dates com "null" no setup
+ */
+
+/*
+ * To do list:
+ * Um checker se o tipo de estaçao existe (user_string.equals("PCN") || user_string.equals("PCR") || user_string.equals("PCUR"))
+ * O resto do codigo...
  */
 
 /**
@@ -25,17 +31,11 @@ public class Projeto_pc2 {
     public static Scanner sc = new Scanner(System.in);
 
     public static void main(String[] args) throws ParseException {
-        int option;
         Base base = new Base();
+        int option;
         clearConsole();
 
-        // Vehicle v1 = new Vehicle("BMW", "i8", "69-04-AF", "Hibrido", "Gasolina",
-        // null, 369, 500, 1, 1500, 11.6);
-        // Client c1 = new Client("Paulo Sousa", "Torres Novas",
-        // "2222031@my.ipleiria.pt", 257287914, 969096163, null);
-
-        // base.addVehicle(v1);
-        // base.addClient(c1);
+        // populateList();
 
         do {
             option = menu();
@@ -76,17 +76,20 @@ public class Projeto_pc2 {
                         addClient(base);
                     break;
                 case 3:
-                    System.out.println("[1] Registar posto de carregamento");
-                    System.out.println("[2] Consultar posto de carregamento");
+                    System.out.println("[1] Consultar posto de carregamento");
+                    System.out.println("[2] Registar posto de carregamento");
                     System.out.println("[0] Voltar");
 
                     option = Consola.lerInt("\nOpcao: ", 0, 2);
 
-                    if (option == 1) {
-                        // Registar posto de carregamento
-                    } else if (option == 2) {
-                        // Consultar posto de carregamento
-                    }
+                    clearConsole();
+                    if (option == 1)
+                        if (base.getTotalChargingStations() > 0)
+                            searchChargingStation(base);
+                        else
+                            System.err.println("Nao existem estacoes de carregamento registadas!");
+                    else if (option == 2)
+                        addChargingStation(base);
                     break;
                 case 4:
                     System.out.println("[1] Registar sessao de carregamento");
@@ -252,6 +255,29 @@ public class Projeto_pc2 {
         base.addClient(newClient);
     }
 
+    public static void addChargingStation(Base base) {
+        String address, station_type;
+        int station_code, simultaneous_ev_charging, pos;
+        float charging_time, charging_cost;
+
+        do {
+            station_code = Consola.lerInt("Codigo da estacao: ", 0, 999999999);
+            pos = base.searchChargingStation(station_code);
+            if (pos != -1) {
+                System.err.println("Esta estacao de carregamento ja se encontra registada!");
+            }
+        } while (pos != -1);
+
+        address    = Consola.lerString("Morada: ");
+        station_type = Consola.lerString("Tipo de estacao: ");
+        charging_cost = Consola.lerFloat("Custo de carregamento: ", 0, 999999999);
+        charging_time = Consola.lerFloat("Tempo de carregamento: ", 0, 168);
+        simultaneous_ev_charging = Consola.lerInt   ("Carregamento em simultaneo: ", 0, 50);
+
+        ChargingStation newChargingStation = new ChargingStation(station_code, simultaneous_ev_charging, address, station_type, charging_time, charging_cost);
+        base.addChargingStation(newChargingStation);
+    }
+
     public static void searchVehicle(Base base) {
         Vehicle vehicle;
         String license_plate;
@@ -281,5 +307,54 @@ public class Projeto_pc2 {
             client = base.getClient(pos);
             System.out.println(client.toString());
         }
+    }
+
+    public static void searchChargingStation(Base base) {
+        ChargingStation chargingStation;
+        int station_code, pos;
+
+        station_code = Consola.lerInt("Codigo da estacao: ", 0, 999999999);
+        pos = base.searchChargingStation(station_code);
+
+        if (pos == 1) {
+            System.err.println("Estacao de carregamento nao existe!");
+        } else {
+            chargingStation = base.getChargingStation(pos);
+            System.out.println(chargingStation.toString());
+        }
+    }
+
+    public static void populateList() {
+        Base base = new Base();
+
+        Vehicle v1 = new Vehicle("BMW", 
+                                 "i8", 
+                                 "69-04-AF", 
+                                 "Hibrido", 
+                                 "Gasolina", 
+                                 null, 
+                                 369, 
+                                 500, 
+                                 1, 
+                                 1500, 
+                                 11.6);
+
+        Client c1 = new Client("Paulo Sousa", 
+                               "Torres Novas", 
+                               "2222031@my.ipleiria.pt", 
+                               257287914, 
+                               969096163, 
+                               null);
+
+        ChargingStation cs1 = new ChargingStation(1, 
+                                                  5, 
+                                                  "Avenida Paulo Seixo", 
+                                                  "PCN", 
+                                                  7, 
+                                                  2);
+
+        base.addVehicle(v1);
+        base.addClient(c1);
+        base.addChargingStation(cs1);
     }
 }

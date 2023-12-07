@@ -38,12 +38,20 @@ public class Base implements Serializable {
         clients.add(newClient);
     }
 
+    public void addChargingStation(ChargingStation newChargingStation) {
+        chargingStations.add(newChargingStation);
+    }
+
     public Vehicle getVehicle(int pos) {
         return vehicles.get(pos);
     }
 
     public Client getClient(int pos) {
         return clients.get(pos);
+    }
+
+    public ChargingStation getChargingStation(int pos) {
+        return chargingStations.get(pos);
     }
 
     public int searchVehicle(String license_plate) {
@@ -58,6 +66,15 @@ public class Base implements Serializable {
     public int searchClient(int nif) {
         for (int i = 0; i < clients.size(); i++) {
             if (clients.get(i).getNIF() == nif) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    public int searchChargingStation(int station_code) {
+        for (int i = 0; i < chargingStations.size(); i++) {
+            if (chargingStations.get(i).getStationCode() == station_code) {
                 return i;
             }
         }
