@@ -15,16 +15,24 @@ public class ChargingSession extends ChargingStation {
     protected Date time_of_transaction;
 
     /*
-     * settlement_status ( pending = 0 | paid = 1 )
+     * settlement_status ( pending = false | paid = true )
      */
 
-    public ChargingSession(int totalChargingStations, int totalCars, int totalClients, String name, String address,
-            int NIF, int contact, Date birth_date, int station_code, int charging_ev_cost, String address2,
-            String station_type, float charging_time, float charging_cost, int session_code, Date start_time,
-            Date finish_time, float energy_consumed, float session_cost, boolean settlement_status,
-            String type_of_payment, Date time_of_transaction) {
-        super(totalChargingStations, totalCars, totalClients, name, address, NIF, contact, birth_date, station_code,
-                charging_ev_cost, address2, station_type, charging_time, charging_cost);
+    public ChargingSession(int station_code, 
+                           int simultaneous_ev_charging, 
+                           int session_code,
+                           String address, 
+                           String station_type,
+                           String type_of_payment,
+                           float charging_time, 
+                           float charging_cost,  
+                           float energy_consumed, 
+                           float session_cost, 
+                           boolean settlement_status, 
+                           Date start_time, 
+                           Date finish_time,
+                           Date time_of_transaction) {
+        super(station_code, simultaneous_ev_charging, address, station_type, charging_time, charging_cost);
         this.session_code = session_code;
         this.start_time = start_time;
         this.finish_time = finish_time;

@@ -12,7 +12,12 @@ public class Client {
     protected Date birth_date;
     private int totalClients = 0;
 
-    public Client(String name, String address, String email, int nIF, int contact, Date birth_date) {
+    public Client(String name, 
+                  String address, 
+                  String email, 
+                  int nIF, 
+                  int contact, 
+                  Date birth_date) {
         this.name = name;
         this.address = address;
         this.email = email;

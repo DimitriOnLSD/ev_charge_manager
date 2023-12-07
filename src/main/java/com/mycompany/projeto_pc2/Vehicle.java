@@ -6,16 +6,23 @@ import java.util.Date;
  *
  * @author Paulo Sousa | João Domingos
  */
-
 public class Vehicle {
     protected String brand, model, license_plate, eletric_hybrid, fuel_type;
     protected Date date_of_register;
     protected int horsepower, range, chargingSpeed, engine_displacement;
     protected double battery_capacity;
 
-    public Vehicle(String brand, String model, String license_plate, String eletric_hybrid, String fuel_type,
-            Date date_of_register, int horsepower, int range, int chargingSpeed, int engine_displacement,
-            double battery_capacity) {
+    public Vehicle(String brand, 
+                   String model, 
+                   String license_plate, 
+                   String eletric_hybrid, 
+                   String fuel_type,
+                   Date date_of_register, 
+                   int horsepower, 
+                   int range, 
+                   int chargingSpeed, 
+                   int engine_displacement,
+                   double battery_capacity) {
         this.brand = brand;
         this.model = model;
         this.license_plate = license_plate;
