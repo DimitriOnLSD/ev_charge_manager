@@ -11,7 +11,7 @@ import util.Consola;
 /*
  * Bugs: 
  * - Se errarmos a pesquisa de um cliente ou veiculo, o programa dá crash
- * - Apenas dá para inicializar as dates com "null" no setup
+ * - Apenas dá para inicializar as dates com "null" no populateList()
  */
 
 /*
