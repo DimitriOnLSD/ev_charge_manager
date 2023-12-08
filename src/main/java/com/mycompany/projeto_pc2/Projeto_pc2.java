@@ -10,12 +10,15 @@ import util.Consola;
 
 /*
  * Bugs: 
- * - Se errarmos a pesquisa de um cliente ou veiculo, o programa dá crash
  * - Apenas dá para inicializar as dates com "null" no populateList()
+ * - Nao da pra pesquisar a matricula do Fiat 500, por alguma razao...
+ * - A função populateList() não tá a fazer nada aparentemente, o programa diz que nao existem veiculos/clientes/postos. Mas se metermos o conteudo dessa função na main, magicamente funciona.
+ * - Ao registar algo, errar a data uma vez, fica preso nessa parte
  */
 
 /*
  * To do list:
+ * Os carros devem estar associados aos clientes. Cada cliente pode ter multiplos carros. Talvez usar vetor ou lista nos clientes de veiculos
  * O resto do codigo...
  */
 
@@ -31,31 +34,30 @@ public class Projeto_pc2 {
 
     public static void main(String[] args) throws ParseException {
         Base base = new Base();
-        int option;
+        int primary_option, secondary_option = 0;
         clearConsole();
 
-        // populateList();
+        populateList();
 
         do {
-            option = menu();
-            switch (option) {
+            primary_option = menu();
+            switch (primary_option) {
                 case 1:
                     System.out.println("[1] Procurar veiculo");
                     System.out.println("[2] Registar veiculo");
                     System.out.println("[0] Voltar");
 
-                    option = Consola.lerInt("\nOpcao: ", 0, 2);
+                    secondary_option = Consola.lerInt("\nOpcao: ", 0, 2);
 
-                    clearConsole();
-                    if (option == 1)
-                        if (base.getTotalCars() > 0)
+                    if (secondary_option == 1) {
+                        if (base.getTotalCars() > 0) {
                             searchVehicle(base);
-                        else
-                            System.err.println("Nao existem veiculos registados!");
-                            // um return aqui não faria com que não dê crash? para puder voltar ao menu.
-                            // Quando nao existem dados na lista, o programa passa por aqui sem problema algum. O problema deve estar noutro sitio
-                    else if (option == 2)
+                        } else {
+                            System.err.println("\nNao existem veiculos registados!");
+                        }
+                    } else if (secondary_option == 2) {
                         addVehicle(base);
+                    }   
                     break;
                 case 2:
                     System.out.println("[1] Procurar cliente");
@@ -63,46 +65,47 @@ public class Projeto_pc2 {
                     System.out.println("[3] Alterar dados do cliente");
                     System.out.println("[0] Voltar");
 
-                    option = Consola.lerInt("\nOpcao: ", 0, 3);
+                    secondary_option = Consola.lerInt("\nOpcao: ", 0, 3);
 
-                    clearConsole();
-                    if (option == 1 || option == 3)
+                    if (secondary_option == 1 || secondary_option == 3) {
                         if (base.getTotalClients() > 0)
-                            if (option == 1)
+                            if (secondary_option == 1)
                                 searchClient(base);
-                                // um return aqui não faria com que não dê crash? para puder voltar ao menu
-                            else { /* Alterar dados do cliente */ }
+                            else
+                                changeClientData(base);
                         else
-                            System.err.println("Nao existem clientes registados!");
-                    else if (option == 2)
+                            System.err.println("\nNao existem clientes registados!");
+                    }
+                    else if (secondary_option == 2) {
                         addClient(base);
+                    }
                     break;
                 case 3:
                     System.out.println("[1] Consultar posto de carregamento");
                     System.out.println("[2] Registar posto de carregamento");
                     System.out.println("[0] Voltar");
 
-                    option = Consola.lerInt("\nOpcao: ", 0, 2);
+                    secondary_option = Consola.lerInt("\nOpcao: ", 0, 2);
 
-                    clearConsole();
-                    if (option == 1)
+                    if (secondary_option == 1) {
                         if (base.getTotalChargingStations() > 0)
                             searchChargingStation(base);
                         else
-                            System.err.println("Nao existem estacoes de carregamento registadas!");
-                    else if (option == 2)
+                            System.err.println("\nNao existem estacoes de carregamento registadas!");
+                    } else if (secondary_option == 2) {
                         addChargingStation(base);
+                    }
                     break;
                 case 4:
                     System.out.println("[1] Registar sessao de carregamento");
                     System.out.println("[2] Consultar sessao de carregamento");
                     System.out.println("[0] Voltar");
 
-                    option = Consola.lerInt("\nOpcao: ", 0, 2);
+                    secondary_option = Consola.lerInt("\nOpcao: ", 0, 2);
 
-                    if (option == 1) {
+                    if (secondary_option == 1) {
                         // Registar sessao de carregamento
-                    } else if (option == 2) {
+                    } else if (secondary_option == 2) {
                         // Consultar sessao de carregamento
                     } else {
                         // Voltar
@@ -113,11 +116,11 @@ public class Projeto_pc2 {
                     System.out.println("[2] Consultar pagamento");
                     System.out.println("[0] Voltar");
 
-                    option = Consola.lerInt("\nOpcao: ", 0, 2);
+                    secondary_option = Consola.lerInt("\nOpcao: ", 0, 2);
 
-                    if (option == 1) {
+                    if (secondary_option == 1) {
                         // Registar pagamento
-                    } else if (option == 2) {
+                    } else if (secondary_option == 2) {
                         // Consultar pagamento
                     } else {
                         // Voltar
@@ -132,10 +135,10 @@ public class Projeto_pc2 {
                     System.out.println("[6] Historico de sessoes de carregamento");
                     System.out.println("[0] Voltar");
 
-                    option = Consola.lerInt("\nOpcao: ", 0, 6);
+                    secondary_option = Consola.lerInt("\nOpcao: ", 0, 6);
                     clearConsole();
 
-                    switch (option) {
+                    switch (secondary_option) {
                         case 1:
 
                             break;
@@ -157,9 +160,10 @@ public class Projeto_pc2 {
                     }
                     break;
             }
-            holdConsole();
+            if (primary_option != 0 && secondary_option != 0)
+                holdConsole();
             clearConsole();
-        } while (option != 0);
+        } while (primary_option != 0);
     }
 
     public static int menu() {
@@ -182,15 +186,16 @@ public class Projeto_pc2 {
     }
 
     public static void holdConsole() {
-        System.out.println("Pressione qualquer tecla para continuar...");
+        System.out.println("\nPressione qualquer tecla para continuar...");
         sc.nextLine();
     }
 
     public static void addVehicle(Base base) {
-        String brand, model, license_plate, eletric_hybrid, fuel_type;
+        String brand, model, license_plate, eletric_hybrid, fuel_type = null;
         Date date_of_register = null;
-        int horsepower, range, chargingSpeed, engine_displacement, pos;
+        int horsepower, range, chargingSpeed, engine_displacement = 0, pos;
         double battery_capacity;
+        boolean isHybrid = false;
 
         do {
             license_plate = Consola.lerString("Insira a matricula: ");
@@ -200,15 +205,29 @@ public class Projeto_pc2 {
             }
         } while (pos != -1);
 
-        brand               = Consola.lerString("Marca: ");
-        model               = Consola.lerString("Modelo: ");
-        horsepower          = Consola.lerInt   ("Potencia: ", 0, 99999);
-        engine_displacement = Consola.lerInt   ("Cilindrada: ", 0, 99999);
-        battery_capacity    = Consola.lerDouble("Capacidade da bateria: ", 0, 99999);
-        range               = Consola.lerInt   ("Autonomia: ", 0, 99999);
-        chargingSpeed       = Consola.lerInt   ("Velocidade de carregamento: ", 0, 99999);
-        eletric_hybrid      = Consola.lerString("Eletrico ou hibrido: ");
-        fuel_type           = Consola.lerString("Tipo de combustivel: ");
+        brand      = Consola.lerString("Marca: ");
+        model      = Consola.lerString("Modelo: ");
+        horsepower = Consola.lerInt   ("Potencia: ", 0, 99999);
+
+        boolean check_ev_type = true;
+        do {
+            eletric_hybrid = Consola.lerString("Eletrico ou Hibrido: ");
+            if (eletric_hybrid.equals("Hibrido")) {
+                isHybrid = true;
+                check_ev_type = false;
+            } else if (eletric_hybrid.equals("Eletrico"))
+                check_ev_type = false;
+            else
+                System.err.println(eletric_hybrid + " nao existe. Tente novamente...");
+        } while (check_ev_type);
+
+        if (isHybrid) {
+            engine_displacement = Consola.lerInt   ("Cilindrada: ", 0, 99999);
+            fuel_type           = Consola.lerString("Tipo de combustivel: ");
+        }
+        battery_capacity = Consola.lerDouble("Capacidade da bateria: ", 0, 99999);
+        range            = Consola.lerInt   ("Autonomia: ", 0, 99999);
+        chargingSpeed    = Consola.lerInt   ("Velocidade de carregamento: ", 0, 99999);
 
         boolean error = false;
         do {
@@ -270,7 +289,7 @@ public class Projeto_pc2 {
             }
         } while (pos != -1);
 
-        address    = Consola.lerString("Morada: ");
+        address = Consola.lerString("Morada: ");
 
         boolean check_station_type = true;
         do {
@@ -281,11 +300,12 @@ public class Projeto_pc2 {
                 System.err.println("Este tipo de estacao nao existe! Tente novamente...");
         } while (check_station_type);
 
-        charging_cost = Consola.lerFloat("Custo de carregamento: ", 0, 999999999);
-        charging_time = Consola.lerFloat("Tempo de carregamento: ", 0, 168);
-        simultaneous_ev_charging = Consola.lerInt   ("Carregamento em simultaneo: ", 0, 50);
+        charging_cost            = Consola.lerFloat("Custo de carregamento: ", 0, 999999999);
+        charging_time            = Consola.lerFloat("Tempo de carregamento: ", 0, 168);
+        simultaneous_ev_charging = Consola.lerInt  ("Carregamento em simultaneo: ", 0, 50);
 
-        ChargingStation newChargingStation = new ChargingStation(station_code, simultaneous_ev_charging, address, station_type, charging_time, charging_cost);
+        ChargingStation newChargingStation = new ChargingStation(station_code, simultaneous_ev_charging, address,
+                station_type, charging_time, charging_cost);
         base.addChargingStation(newChargingStation);
     }
 
@@ -297,7 +317,7 @@ public class Projeto_pc2 {
         license_plate = Consola.lerString("Matricula: ");
         pos = base.searchVehicle(license_plate);
 
-        if (pos == 1) {
+        if (pos == -1) {
             System.err.println("Matricula nao existe!");
         } else {
             vehicle = base.getVehicle(pos);
@@ -312,7 +332,7 @@ public class Projeto_pc2 {
         nif = Consola.lerInt("NIF: ", 0, 999999999);
         pos = base.searchClient(nif);
 
-        if (pos == 1) {
+        if (pos == -1) {
             System.err.println("Cliente nao existe!");
         } else {
             client = base.getClient(pos);
@@ -327,7 +347,7 @@ public class Projeto_pc2 {
         station_code = Consola.lerInt("Codigo da estacao: ", 0, 999999999);
         pos = base.searchChargingStation(station_code);
 
-        if (pos == 1) {
+        if (pos == -1) {
             System.err.println("Estacao de carregamento nao existe!");
         } else {
             chargingStation = base.getChargingStation(pos);
@@ -335,36 +355,108 @@ public class Projeto_pc2 {
         }
     }
 
+    public static void changeClientData(Base base) {
+        Client client;
+        String name, address, email;
+        Date birth_date = null;
+        int nif, contact, pos;
+
+        nif = Consola.lerInt("NIF: ", 1, 999999999);
+        pos = base.searchClient(nif);
+
+        if (pos == -1)
+            System.err.println("Cliente nao existe!");
+        else {
+            client = base.getClient(pos);
+
+            System.out.println("-Dados atuais-\n");
+            System.out.println(client.toString());
+
+            System.out.println("\n-Novos dados-\n");
+            name    = Consola.lerString("Nome: ");
+            address = Consola.lerString("Morada: ");
+            contact = Consola.lerInt   ("Contacto: ", 0, 999999999);
+            email   = Consola.lerString("E-mail: ");
+
+            boolean error = false;
+            do {
+                try {
+                    birth_date = dateFormat.parse(Consola.lerString("Data de nascimento: "));
+                } catch (Exception e) {
+                    System.out.println("Data invalida");
+                    error = true;
+                }
+            } while (error);
+
+            client.setName(name);
+            client.setAddress(address);
+            client.setContact(contact);
+            client.setEmail(email);
+            client.setBirthDate(birth_date);
+        }
+    }
+
     public static void populateList() {
         Base base = new Base();
 
-        Vehicle v1 = new Vehicle("BMW", 
-                                 "i8", 
-                                 "69-04-AF", 
-                                 "Hibrido", 
-                                 "Gasolina", 
-                                 null, 
-                                 369, 
-                                 500, 
-                                 1, 
-                                 1500, 
-                                 11.6);
+        Vehicle volvoxc40 = new Vehicle(
+                "Volvo",
+                "XC40 Recharge T5",
+                "69-04-AF",
+                "Hibrido",
+                "Gasolina",
+                null,
+                178,
+                50,
+                1,
+                1477,
+                10.7);
 
-        Client c1 = new Client("Paulo Sousa", 
-                               "Torres Novas", 
-                               "2222031@my.ipleiria.pt", 
-                               257287914, 
-                               969096163, 
-                               null);
+        Vehicle fiat500 = new Vehicle(
+                "Fiat",
+                "500 2021 500e",
+                "24-NF-01",
+                "Eletrico",
+                null,
+                null,
+                94,
+                190,
+                1,
+                0,
+                23.8);
 
-        ChargingStation cs1 = new ChargingStation(1, 
-                                                  5, 
-                                                  "Avenida Paulo Seixo", 
-                                                  "PCN", 
-                                                  7, 
-                                                  2);
+        Vehicle mercedesbenzeqs = new Vehicle(
+                "Mercedes-Benz",
+                "EQS 350",
+                "37-61-MX",
+                "Eletrico",
+                null,
+                null,
+                284,
+                617,
+                170,
+                0,
+                100);
 
-        base.addVehicle(v1);
+        Client c1 = new Client(
+                "Paulo Sousa",
+                "Torres Novas",
+                "2222031@my.ipleiria.pt",
+                257287914,
+                969096163,
+                null);
+
+        ChargingStation cs1 = new ChargingStation(
+                1,
+                5,
+                "Avenida Paulo Seixo",
+                "PCN",
+                7,
+                2);
+
+        base.addVehicle(volvoxc40);
+        base.addVehicle(fiat500);
+        base.addVehicle(mercedesbenzeqs);
         base.addClient(c1);
         base.addChargingStation(cs1);
     }
