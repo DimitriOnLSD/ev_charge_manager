@@ -53,6 +53,7 @@ public class Projeto_pc2 {
                             searchVehicle(base);
                         else
                             System.err.println("Nao existem veiculos registados!");
+                            // um return aqui não faria com que não dê crash? para puder voltar ao menu
                     else if (option == 2)
                         addVehicle(base);
                     break;
@@ -69,6 +70,7 @@ public class Projeto_pc2 {
                         if (base.getTotalClients() > 0)
                             if (option == 1)
                                 searchClient(base);
+                                // um return aqui não faria com que não dê crash? para puder voltar ao menu
                             else { /* Alterar dados do cliente */ }
                         else
                             System.err.println("Nao existem clientes registados!");
@@ -267,6 +269,15 @@ public class Projeto_pc2 {
                 System.err.println("Esta estacao de carregamento ja se encontra registada!");
             }
         } while (pos != -1);
+
+        // Acredito que seja algo perto disto mas eu sou burro e não sei como fazer
+       /*  do {
+            station_type = Consola.lerString("Tipo de estação");
+            pos = ChargingStation.searchChargingStation(station_type);
+            if (pos == (user_string.equals("PCN") || user_string.equals("PCR") || user_string.equals("PCUR"))) {
+                System.err.println("Esta estacao de carregamento ja se encontra registada!");
+            }
+        } while (pos != -1); */
 
         address    = Consola.lerString("Morada: ");
         station_type = Consola.lerString("Tipo de estacao: ");

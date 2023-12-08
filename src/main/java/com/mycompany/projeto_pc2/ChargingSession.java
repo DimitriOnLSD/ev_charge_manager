@@ -83,7 +83,7 @@ public class ChargingSession extends ChargingStation {
         this.session_cost = session_cost;
     }
 
-    public boolean isSettlementStatus() {
+    public boolean isSettlementStatus() { // aqui é is porque?
         return settlement_status;
     }
 
