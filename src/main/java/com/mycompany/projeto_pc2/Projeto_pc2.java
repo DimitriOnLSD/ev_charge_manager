@@ -16,7 +16,6 @@ import util.Consola;
 
 /*
  * To do list:
- * Um checker se o tipo de estaçao existe (user_string.equals("PCN") || user_string.equals("PCR") || user_string.equals("PCUR"))
  * O resto do codigo...
  */
 
@@ -53,7 +52,8 @@ public class Projeto_pc2 {
                             searchVehicle(base);
                         else
                             System.err.println("Nao existem veiculos registados!");
-                            // um return aqui não faria com que não dê crash? para puder voltar ao menu
+                            // um return aqui não faria com que não dê crash? para puder voltar ao menu.
+                            // Quando nao existem dados na lista, o programa passa por aqui sem problema algum. O problema deve estar noutro sitio
                     else if (option == 2)
                         addVehicle(base);
                     break;
@@ -270,17 +270,17 @@ public class Projeto_pc2 {
             }
         } while (pos != -1);
 
-        // Acredito que seja algo perto disto mas eu sou burro e não sei como fazer
-       /*  do {
-            station_type = Consola.lerString("Tipo de estação");
-            pos = ChargingStation.searchChargingStation(station_type);
-            if (pos == (user_string.equals("PCN") || user_string.equals("PCR") || user_string.equals("PCUR"))) {
-                System.err.println("Esta estacao de carregamento ja se encontra registada!");
-            }
-        } while (pos != -1); */
-
         address    = Consola.lerString("Morada: ");
-        station_type = Consola.lerString("Tipo de estacao: ");
+
+        boolean check_station_type = true;
+        do {
+            station_type = Consola.lerString("Tipo de estacao [PCN PCR PCUR]: ");
+            if (station_type.equals("PCN") || station_type.equals("PCR") || station_type.equals("PCUR"))
+                check_station_type = false;
+            else
+                System.err.println("Este tipo de estacao nao existe! Tente novamente...");
+        } while (check_station_type);
+
         charging_cost = Consola.lerFloat("Custo de carregamento: ", 0, 999999999);
         charging_time = Consola.lerFloat("Tempo de carregamento: ", 0, 168);
         simultaneous_ev_charging = Consola.lerInt   ("Carregamento em simultaneo: ", 0, 50);
