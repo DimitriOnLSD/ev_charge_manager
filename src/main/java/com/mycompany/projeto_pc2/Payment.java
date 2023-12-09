@@ -37,4 +37,6 @@ public class Payment extends ChargingSession{
         this.time_of_transaction = time_of_transaction;
     }
 
+    
+
 }

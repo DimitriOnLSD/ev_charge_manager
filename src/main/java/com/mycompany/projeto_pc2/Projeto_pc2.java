@@ -275,9 +275,9 @@ public class Projeto_pc2 {
             station_type = Consola.lerString("Tipo de estação");
             pos = ChargingStation.searchChargingStation(station_type);
             if (pos == (user_string.equals("PCN") || user_string.equals("PCR") || user_string.equals("PCUR"))) {
-                System.err.println("Esta estacao de carregamento ja se encontra registada!");
+                System.err.println("Esta tipo estacao de carregamento não existe!");
             }
-        } while (pos != -1); */
+        } while (pos != -1);  */
 
         address    = Consola.lerString("Morada: ");
         station_type = Consola.lerString("Tipo de estacao: ");
