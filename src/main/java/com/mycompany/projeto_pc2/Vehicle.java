@@ -129,18 +129,8 @@ public class Vehicle {
         StringBuilder str = new StringBuilder();
         str.append("Carro: " + brand + " " + model + "\n");
         str.append("Data de registo: " + date_of_register + "\n");
-        str.append("Informacoes: " + engine_displacement + " cm^3, " + horsepower + " cv, " + battery_capacity
-                + " kWh, " + range + " km" + "\n");
+        str.append("Informacoes: " + engine_displacement + " cm^3, " + horsepower + " cv, " + battery_capacity + " kWh, " + range + " km, " + chargingSpeed + "\n");
         str.append("Tipo: " + eletric_hybrid + " ," + fuel_type + "\n");
         return str.toString();
     }
-
-    /*
-     * Carro: BMW i8
-     * Matricula e data de registo: 25-12-AE (01-jan-2020)
-     * Informações: 1500 cm^3, 369 cv, 11.6 kWh, 500 km, 1
-     * Tipo: Hibrido, Gasolina
-     */
-
-    // chargingSpeed;
 }

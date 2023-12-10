@@ -83,7 +83,7 @@ public class ChargingSession extends ChargingStation {
         this.session_cost = session_cost;
     }
 
-    public boolean isSettlementStatus() { // aqui é is porque?
+    public boolean isSettlementStatus() { // aqui é is porque? idk, foi o visual studio que fez os getters e setters
         return settlement_status;
     }
 
