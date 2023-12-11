@@ -8,6 +8,7 @@ import java.util.Scanner;
 
 import util.Consola;
 
+
 /*
  * Bugs: 
  * - Apenas dá para inicializar as dates com "null" no populateList()
