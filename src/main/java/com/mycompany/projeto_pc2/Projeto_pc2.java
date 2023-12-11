@@ -289,20 +289,20 @@ public class Projeto_pc2 {
             }
         } while (pos != -1);
 
-        // Acredito que seja algo perto disto mas eu sou burro e não sei como fazer
-       /*  do {
-            station_type = Consola.lerString("Tipo de estação");
-            pos = ChargingStation.searchChargingStation(station_type);
-            if (pos == (user_string.equals("PCN") || user_string.equals("PCR") || user_string.equals("PCUR"))) {
-                System.err.println("Esta estacao de carregamento ja se encontra registada!");
-            }
-        } while (pos != -1); */
+        address = Consola.lerString("Morada: ");
 
-        address    = Consola.lerString("Morada: ");
-        station_type = Consola.lerString("Tipo de estacao: ");
-        charging_cost = Consola.lerFloat("Custo de carregamento: ", 0, 999999999);
-        charging_time = Consola.lerFloat("Tempo de carregamento: ", 0, 168);
-        simultaneous_ev_charging = Consola.lerInt   ("Carregamento em simultaneo: ", 0, 50);
+        boolean check_station_type = true;
+        do {
+            station_type = Consola.lerString("Tipo de estacao [PCN PCR PCUR]: ");
+            if (station_type.equals("PCN") || station_type.equals("PCR") || station_type.equals("PCUR"))
+                check_station_type = false;
+            else
+                System.err.println("Este tipo de estacao nao existe! Tente novamente...");
+        } while (check_station_type);
+
+        charging_cost            = Consola.lerFloat("Custo de carregamento: ", 0, 999999999);
+        charging_time            = Consola.lerFloat("Tempo de carregamento: ", 0, 168);
+        simultaneous_ev_charging = Consola.lerInt  ("Carregamento em simultaneo: ", 0, 50);
 
         ChargingStation newChargingStation = new ChargingStation(station_code, simultaneous_ev_charging, address,
                 station_type, charging_time, charging_cost);
