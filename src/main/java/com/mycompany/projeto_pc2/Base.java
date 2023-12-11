@@ -81,3 +81,20 @@ public class Base implements Serializable {
         return -1;
     }
 }
+
+
+    /* public void show3most() {
+        if (numContas == 0) {
+            System.out.println("Nao existem contas");
+
+        } else {
+            System.out.println("____________________Todas as contas: ____________________");
+            System.out.println("Numero - \tSaldo - \tNumero Cliente");
+            for (int i = 0; i < numContas; i++) {
+                System.out.println(
+                        contas[i].getNumContas() +
+                                "\t" + contas[i].getSaldo() +
+                                "\t" + contas[i].getNumCliente());
+            }
+        }
+    } */
