@@ -4,16 +4,14 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Random;
 import java.util.Scanner;
 
 import util.Consola;
 
 /*
  * Bugs: 
- * - Apenas dá para inicializar as dates com "null" no populateList()
- * - Nao da pra pesquisar a matricula do Fiat 500, por alguma razao...
- * - A função populateList() não tá a fazer nada aparentemente, o programa diz que nao existem veiculos/clientes/postos. Mas se metermos o conteudo dessa função na main, magicamente funciona.
- * - Ao registar algo, errar a data uma vez, fica preso nessa parte
+ * 
  */
 
 /*
@@ -29,6 +27,7 @@ import util.Consola;
 public class Projeto_pc2 {
 
     static DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+    static SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
 
     public static Scanner sc = new Scanner(System.in);
 
@@ -37,7 +36,7 @@ public class Projeto_pc2 {
         int primary_option, secondary_option = 0;
         clearConsole();
 
-        populateList();
+        populateList(base);
 
         do {
             primary_option = menu();
@@ -57,7 +56,7 @@ public class Projeto_pc2 {
                         }
                     } else if (secondary_option == 2) {
                         addVehicle(base);
-                    }   
+                    }
                     break;
                 case 2:
                     System.out.println("[1] Procurar cliente");
@@ -75,8 +74,7 @@ public class Projeto_pc2 {
                                 changeClientData(base);
                         else
                             System.err.println("\nNao existem clientes registados!");
-                    }
-                    else if (secondary_option == 2) {
+                    } else if (secondary_option == 2) {
                         addClient(base);
                     }
                     break;
@@ -97,18 +95,16 @@ public class Projeto_pc2 {
                     }
                     break;
                 case 4:
-                    System.out.println("[1] Registar sessao de carregamento");
-                    System.out.println("[2] Consultar sessao de carregamento");
+                    System.out.println("[1] Consultar sessao de carregamento");
+                    System.out.println("[2] Registar sessao de carregamento");
                     System.out.println("[0] Voltar");
 
                     secondary_option = Consola.lerInt("\nOpcao: ", 0, 2);
 
                     if (secondary_option == 1) {
-                        // Registar sessao de carregamento
-                    } else if (secondary_option == 2) {
-                        // Consultar sessao de carregamento
+                        searchChargingSession(base);
                     } else {
-                        // Voltar
+                        addChargingSession(base);
                     }
                     break;
                 case 5:
@@ -130,7 +126,8 @@ public class Projeto_pc2 {
                     System.out.println("[1] Lista dos 3 postos de carregamento com maior valor faturado");
                     System.out.println("[2] Lista de sessoes de carregamento com valor superior a x");
                     System.out.println("[3] Total de sessoes de carregamento realizadas");
-                    System.out.println("[4] Media de energia consumida por posto de carregamento e por tipo de veiculo");
+                    System.out
+                            .println("[4] Media de energia consumida por posto de carregamento e por tipo de veiculo");
                     System.out.println("[5] Lista de pagamentos por efetuar");
                     System.out.println("[6] Historico de sessoes de carregamento");
                     System.out.println("[0] Voltar");
@@ -205,9 +202,9 @@ public class Projeto_pc2 {
             }
         } while (pos != -1);
 
-        brand      = Consola.lerString("Marca: ");
-        model      = Consola.lerString("Modelo: ");
-        horsepower = Consola.lerInt   ("Potencia: ", 0, 99999);
+        brand = Consola.lerString("Marca: ");
+        model = Consola.lerString("Modelo: ");
+        horsepower = Consola.lerInt("Potencia: ", 0, 99999);
 
         boolean check_ev_type = true;
         do {
@@ -222,17 +219,18 @@ public class Projeto_pc2 {
         } while (check_ev_type);
 
         if (isHybrid) {
-            engine_displacement = Consola.lerInt   ("Cilindrada: ", 0, 99999);
-            fuel_type           = Consola.lerString("Tipo de combustivel: ");
+            engine_displacement = Consola.lerInt("Cilindrada: ", 0, 99999);
+            fuel_type = Consola.lerString("Tipo de combustivel: ");
         }
         battery_capacity = Consola.lerDouble("Capacidade da bateria: ", 0, 99999);
-        range            = Consola.lerInt   ("Autonomia: ", 0, 99999);
-        chargingSpeed    = Consola.lerInt   ("Velocidade de carregamento: ", 0, 99999);
+        range = Consola.lerInt("Autonomia: ", 0, 99999);
+        chargingSpeed = Consola.lerInt("Velocidade de carregamento: ", 0, 99999);
 
         boolean error = false;
         do {
             try {
                 date_of_register = dateFormat.parse(Consola.lerString("Data de registo: "));
+                error = false;
             } catch (Exception e) {
                 System.out.println("Data invalida");
                 error = true;
@@ -240,7 +238,7 @@ public class Projeto_pc2 {
         } while (error);
 
         Vehicle newVehicle = new Vehicle(brand, model, license_plate, eletric_hybrid, fuel_type, date_of_register,
-                horsepower, range, chargingSpeed, engine_displacement, battery_capacity);
+                horsepower, range, chargingSpeed, engine_displacement, battery_capacity, false);
         base.addVehicle(newVehicle);
     }
 
@@ -257,15 +255,16 @@ public class Projeto_pc2 {
             }
         } while (pos != -1);
 
-        name    = Consola.lerString("Nome: ");
+        name = Consola.lerString("Nome: ");
         address = Consola.lerString("Morada: ");
-        contact = Consola.lerInt   ("Contacto: ", 0, 999999999);
-        email   = Consola.lerString("E-mail: ");
+        contact = Consola.lerInt("Contacto: ", 0, 999999999);
+        email = Consola.lerString("E-mail: ");
 
         boolean error = false;
         do {
             try {
                 birth_date = dateFormat.parse(Consola.lerString("Data de nascimento: "));
+                error = false;
             } catch (Exception e) {
                 System.out.println("Data invalida");
                 error = true;
@@ -300,13 +299,64 @@ public class Projeto_pc2 {
                 System.err.println("Este tipo de estacao nao existe! Tente novamente...");
         } while (check_station_type);
 
-        charging_cost            = Consola.lerFloat("Custo de carregamento: ", 0, 999999999);
-        charging_time            = Consola.lerFloat("Tempo de carregamento: ", 0, 168);
-        simultaneous_ev_charging = Consola.lerInt  ("Carregamento em simultaneo: ", 0, 50);
+        charging_cost = Consola.lerFloat("Custo de carregamento: ", 0, 999999999);
+        charging_time = Consola.lerFloat("Tempo de carregamento: ", 0, 168);
+        simultaneous_ev_charging = Consola.lerInt("Carregamento em simultaneo: ", 0, 50);
 
         ChargingStation newChargingStation = new ChargingStation(station_code, simultaneous_ev_charging, address,
                 station_type, charging_time, charging_cost);
         base.addChargingStation(newChargingStation);
+    }
+
+    public static void addChargingSession(Base base) {
+        Vehicle vehicle = null;
+        String settlement_status;
+        int session_code = 0;
+        Date start_time = null, finish_time = null;
+
+        Consola.lerInt("NIF do cliente a usar estacao: ", 0, 999999999);
+        Consola.lerString("Matricula do carro a carregar: ");
+
+        // do {
+        //     NIF = Consola.lerInt("NIF do cliente a usar estacao: ", 0, 999999999);
+        //     pos = base.searchClient(NIF);
+        //     if (pos != -1) {
+        //         System.err.println("Este cliente nao existe!");
+        //     }
+        // } while (pos != -1);
+
+        // do {
+        //     license_plate = Consola.lerString("Matricula do carro a carregar: ");
+        //     pos = base.searchVehicle(license_plate);
+        //     if (pos != -1) {
+        //         System.err.println("Esta matricula nao existe!");
+        //     } else {
+        //         vehicle = base.getVehicle(pos);
+        //         if (vehicle.isCharging())
+        //             System.err.println("Carro esta a carregar de momento!");
+        //     }
+        // } while (pos != -1 && (vehicle == null || !vehicle.isCharging()));
+
+        boolean error = false;
+        do {
+            try {
+                start_time = timeFormat.parse(Consola.lerString("Hora de inicio: "));
+                finish_time = timeFormat.parse(Consola.lerString("Hora de termino: "));
+                error = false;
+            } catch (Exception e) {
+                System.out.println("Hora invalida");
+                error = true;
+            }
+        } while (error);
+
+        vehicle.setCharging(true);
+        settlement_status = "Por pagar";
+        session_code = generateRandomSessionCode();
+
+        System.out.println("Codigo da sessao gerado: " + session_code);
+
+        ChargingSession newChargingSession = new ChargingSession(session_code, settlement_status, start_time, finish_time);
+        base.addChargingSession(newChargingSession);
     }
 
     public static void searchVehicle(Base base) {
@@ -355,6 +405,21 @@ public class Projeto_pc2 {
         }
     }
 
+    public static void searchChargingSession(Base base) {
+        ChargingSession chargingSession;
+        int session_code, pos;
+
+        session_code = Consola.lerInt("Codigo da sessao: ", 0, 999999999);
+        pos = base.searchChargingSession(session_code);
+
+        if (pos == -1) {
+            System.err.println("Sessao de carregamento nao existe!");
+        } else {
+            chargingSession = base.getChargingSession(pos);
+            System.out.println(chargingSession.toString());
+        }
+    }
+
     public static void changeClientData(Base base) {
         Client client;
         String name, address, email;
@@ -373,15 +438,16 @@ public class Projeto_pc2 {
             System.out.println(client.toString());
 
             System.out.println("\n-Novos dados-\n");
-            name    = Consola.lerString("Nome: ");
+            name = Consola.lerString("Nome: ");
             address = Consola.lerString("Morada: ");
-            contact = Consola.lerInt   ("Contacto: ", 0, 999999999);
-            email   = Consola.lerString("E-mail: ");
+            contact = Consola.lerInt("Contacto: ", 0, 999999999);
+            email = Consola.lerString("E-mail: ");
 
             boolean error = false;
             do {
                 try {
                     birth_date = dateFormat.parse(Consola.lerString("Data de nascimento: "));
+                    error = false;
                 } catch (Exception e) {
                     System.out.println("Data invalida");
                     error = true;
@@ -396,9 +462,7 @@ public class Projeto_pc2 {
         }
     }
 
-    public static void populateList() {
-        Base base = new Base();
-
+    public static void populateList(Base base) {
         Vehicle volvoxc40 = new Vehicle(
                 "Volvo",
                 "XC40 Recharge T5",
@@ -410,7 +474,8 @@ public class Projeto_pc2 {
                 50,
                 1,
                 1477,
-                10.7);
+                10.7,
+                false);
 
         Vehicle fiat500 = new Vehicle(
                 "Fiat",
@@ -423,7 +488,8 @@ public class Projeto_pc2 {
                 190,
                 1,
                 0,
-                23.8);
+                23.8,
+                false);
 
         Vehicle mercedesbenzeqs = new Vehicle(
                 "Mercedes-Benz",
@@ -436,7 +502,8 @@ public class Projeto_pc2 {
                 617,
                 170,
                 0,
-                100);
+                100,
+                false);
 
         Client c1 = new Client(
                 "Paulo Sousa",
@@ -459,5 +526,10 @@ public class Projeto_pc2 {
         base.addVehicle(mercedesbenzeqs);
         base.addClient(c1);
         base.addChargingStation(cs1);
+    }
+
+    public static int generateRandomSessionCode() {
+        Random random = new Random();
+        return random.nextInt(90000) + 10000;
     }
 }

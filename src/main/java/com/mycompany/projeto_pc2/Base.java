@@ -11,11 +11,13 @@ public class Base implements Serializable {
     private ArrayList<Vehicle> vehicles;
     private ArrayList<Client> clients;
     private ArrayList<ChargingStation> chargingStations;
+    private ArrayList<ChargingSession> chargingSessions;
 
     public Base() {
         vehicles = new ArrayList<>();
         clients = new ArrayList<>();
         chargingStations = new ArrayList<>();
+        chargingSessions = new ArrayList<>();
     }
 
     public int getTotalCars() {
@@ -42,6 +44,10 @@ public class Base implements Serializable {
         chargingStations.add(newChargingStation);
     }
 
+    public void addChargingSession(ChargingSession newChargingSession) {
+        chargingSessions.add(newChargingSession);
+    }
+
     public Vehicle getVehicle(int pos) {
         return vehicles.get(pos);
     }
@@ -52,6 +58,10 @@ public class Base implements Serializable {
 
     public ChargingStation getChargingStation(int pos) {
         return chargingStations.get(pos);
+    }
+
+    public ChargingSession getChargingSession(int pos) {
+        return chargingSessions.get(pos);
     }
 
     public int searchVehicle(String license_plate) {
@@ -75,6 +85,16 @@ public class Base implements Serializable {
     public int searchChargingStation(int station_code) {
         for (int i = 0; i < chargingStations.size(); i++) {
             if (chargingStations.get(i).getStationCode() == station_code) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+
+public int searchChargingSession(int session_code) {
+        for (int i = 0; i < chargingStations.size(); i++) {
+            if (chargingSessions.get(i).getSessionCode() == session_code) {
                 return i;
             }
         }

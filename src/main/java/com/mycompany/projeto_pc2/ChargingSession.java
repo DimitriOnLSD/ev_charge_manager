@@ -6,41 +6,22 @@ import java.util.Date;
  *
  * @author Paulo Sousa | João Domingos
  */
-public class ChargingSession extends ChargingStation {
+public class ChargingSession {
+    Vehicle vehicle;
+    Client client;
     protected int session_code;
     protected Date start_time, finish_time;
     protected float energy_consumed, session_cost;
-    protected boolean settlement_status;
-    protected String type_of_payment;
-    protected Date time_of_transaction;
+    protected String settlement_status;
 
-    /*
-     * settlement_status ( pending = false | paid = true )
-     */
-
-    public ChargingSession(int station_code, 
-                           int simultaneous_ev_charging, 
-                           int session_code,
-                           String address, 
-                           String station_type,
-                           String type_of_payment,
-                           float charging_time, 
-                           float charging_cost,  
-                           float energy_consumed, 
-                           float session_cost, 
-                           boolean settlement_status, 
+    public ChargingSession(int session_code,
+                           String settlement_status, 
                            Date start_time, 
-                           Date finish_time,
-                           Date time_of_transaction) {
-        super(station_code, simultaneous_ev_charging, address, station_type, charging_time, charging_cost);
+                           Date finish_time) {
         this.session_code = session_code;
+        this.settlement_status = settlement_status;
         this.start_time = start_time;
         this.finish_time = finish_time;
-        this.energy_consumed = energy_consumed;
-        this.session_cost = session_cost;
-        this.settlement_status = settlement_status;
-        this.type_of_payment = type_of_payment;
-        this.time_of_transaction = time_of_transaction;
     }
 
     public int getSessionCode() {
@@ -83,11 +64,24 @@ public class ChargingSession extends ChargingStation {
         this.session_cost = session_cost;
     }
 
-    public boolean isSettlementStatus() { // aqui é is porque? idk, foi o visual studio que fez os getters e setters
+    public String getSettlementStatus() {
         return settlement_status;
     }
 
-    public void setSettlementStatus(boolean settlement_status) {
+    public void setSettlementStatus(String settlement_status) {
         this.settlement_status = settlement_status;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder str = new StringBuilder();
+        str.append("Cliente a usar: " + client.getName() + "(" + client.getNIF() + ")" +  "\n");
+        str.append("Veiculo a carregar: " + vehicle.getLicensePlate() + "\n");
+        str.append("Hora de inicio: " + start_time + "\n");
+        str.append("Hora de termino: " + finish_time + "\n");
+        str.append("Energia consumida: " + energy_consumed + "\n");
+        str.append("Custo da sessao: " + session_cost + " euros" + "\n");
+        str.append("Estado de liquidacao: " + settlement_status + "\n");
+        return str.toString();
     }
 }

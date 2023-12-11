@@ -11,18 +11,20 @@ public class Vehicle {
     protected Date date_of_register;
     protected int horsepower, range, chargingSpeed, engine_displacement;
     protected double battery_capacity;
+    protected boolean isCharging = false;
 
-    public Vehicle(String brand, 
-                   String model, 
-                   String license_plate, 
-                   String eletric_hybrid, 
-                   String fuel_type,
-                   Date date_of_register, 
-                   int horsepower, 
-                   int range, 
-                   int chargingSpeed, 
-                   int engine_displacement,
-                   double battery_capacity) {
+    public Vehicle(String brand,
+            String model,
+            String license_plate,
+            String eletric_hybrid,
+            String fuel_type,
+            Date date_of_register,
+            int horsepower,
+            int range,
+            int chargingSpeed,
+            int engine_displacement,
+            double battery_capacity,
+            boolean isCharging) {
         this.brand = brand;
         this.model = model;
         this.license_plate = license_plate;
@@ -34,6 +36,7 @@ public class Vehicle {
         this.chargingSpeed = chargingSpeed;
         this.engine_displacement = engine_displacement;
         this.battery_capacity = battery_capacity;
+        this.isCharging = isCharging;
     }
 
     public String getBrand() {
@@ -124,6 +127,14 @@ public class Vehicle {
         this.fuel_type = fuel_type;
     }
 
+    public boolean isCharging() {
+        return isCharging;
+    }
+
+    public void setCharging(boolean isCharging) {
+        this.isCharging = isCharging;
+    }
+
     @Override
     public String toString() {
         StringBuilder str = new StringBuilder();
@@ -131,6 +142,10 @@ public class Vehicle {
         str.append("Data de registo: " + date_of_register + "\n");
         str.append("Informacoes: " + engine_displacement + " cm^3, " + horsepower + " cv, " + battery_capacity + " kWh, " + range + " km, " + chargingSpeed + "\n");
         str.append("Tipo: " + eletric_hybrid + " ," + fuel_type + "\n");
+        if (isCharging == false)
+            str.append("Estado: A descarregar");
+        else 
+            str.append("Estado: A carregar");
         return str.toString();
     }
 }

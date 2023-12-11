@@ -9,11 +9,6 @@ public class ChargingStation {
     protected int station_code, simultaneous_ev_charging;
     protected float charging_time, charging_cost;
 
-    // station_type
-    // Posto de Carregamento Normal (PCN) 
-    // Posto de Carregamento Rápido (PCR)
-    // Posto de Carregamento Ultrarrápido (PCUR)
-
     public ChargingStation(int station_code, 
                            int simultaneous_ev_charging, 
                            String address,
