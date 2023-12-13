@@ -16,6 +16,8 @@ import util.Consola;
 
 /*
  * To do list:
+ * Checker do generate session code, pra saber se ja existe uma sessao com o mesmo codigo
+ * Checker da matricula
  * Os carros devem estar associados aos clientes. Cada cliente pode ter multiplos carros. Talvez usar vetor ou lista nos clientes de veiculos
  * O resto do codigo...
  */
@@ -67,13 +69,15 @@ public class Projeto_pc2 {
                     secondary_option = Consola.lerInt("\nOpcao: ", 0, 3);
 
                     if (secondary_option == 1 || secondary_option == 3) {
-                        if (base.getTotalClients() > 0)
-                            if (secondary_option == 1)
+                        if (base.getTotalClients() > 0) {
+                            if (secondary_option == 1) {
                                 searchClient(base);
-                            else
+                            } else {
                                 changeClientData(base);
-                        else
+                            }
+                        } else {
                             System.err.println("\nNao existem clientes registados!");
+                        }
                     } else if (secondary_option == 2) {
                         addClient(base);
                     }
@@ -86,10 +90,11 @@ public class Projeto_pc2 {
                     secondary_option = Consola.lerInt("\nOpcao: ", 0, 2);
 
                     if (secondary_option == 1) {
-                        if (base.getTotalChargingStations() > 0)
+                        if (base.getTotalChargingStations() > 0) {
                             searchChargingStation(base);
-                        else
+                        } else {
                             System.err.println("\nNao existem estacoes de carregamento registadas!");
+                        }
                     } else if (secondary_option == 2) {
                         addChargingStation(base);
                     }
@@ -102,8 +107,12 @@ public class Projeto_pc2 {
                     secondary_option = Consola.lerInt("\nOpcao: ", 0, 2);
 
                     if (secondary_option == 1) {
-                        searchChargingSession(base);
-                    } else {
+                        if (base.getTotalChargingSessions() > 0) {
+                            searchChargingSession(base);
+                        } else {
+                            System.err.println("\nNao existem sessoes de carregamento registadas!");
+                        }
+                    } else if (secondary_option == 2) {
                         addChargingSession(base);
                     }
                     break;
@@ -125,7 +134,7 @@ public class Projeto_pc2 {
                 case 6:
                     System.out.println("[1] Lista dos 3 postos de carregamento com maior valor faturado");
                     System.out.println("[2] Lista de sessoes de carregamento com valor superior a x");
-                    System.out.println("[3] Total de sessoes de carregamento realizadas");
+                    System.out.println("[3] Total de sessoes€ de carregamento realizadas");
                     System.out
                             .println("[4] Media de energia consumida por posto de carregamento e por tipo de veiculo");
                     System.out.println("[5] Lista de pagamentos por efetuar");
@@ -278,7 +287,7 @@ public class Projeto_pc2 {
     public static void addChargingStation(Base base) {
         String address, station_type;
         int station_code, simultaneous_ev_charging, pos;
-        float charging_time, charging_cost;
+        double charging_time, charging_cost;
 
         do {
             station_code = Consola.lerInt("Codigo da estacao: ", 0, 999999999);
@@ -303,41 +312,66 @@ public class Projeto_pc2 {
         charging_time = Consola.lerFloat("Tempo de carregamento: ", 0, 168);
         simultaneous_ev_charging = Consola.lerInt("Carregamento em simultaneo: ", 0, 50);
 
-        ChargingStation newChargingStation = new ChargingStation(station_code, simultaneous_ev_charging, address,
+        ChargingStation newChargingStation = new ChargingStation(station_code, simultaneous_ev_charging, 0, address,
                 station_type, charging_time, charging_cost);
         base.addChargingStation(newChargingStation);
     }
 
     public static void addChargingSession(Base base) {
+        Client client = null;
         Vehicle vehicle = null;
-        String settlement_status;
-        int session_code = 0;
+        ChargingStation chargingStation = null;
+        String settlement_status, license_plate;
+        int session_code = 0, NIF, pos, station_code;
         Date start_time = null, finish_time = null;
 
-        Consola.lerInt("NIF do cliente a usar estacao: ", 0, 999999999);
-        Consola.lerString("Matricula do carro a carregar: ");
-
-        // do {
-        //     NIF = Consola.lerInt("NIF do cliente a usar estacao: ", 0, 999999999);
-        //     pos = base.searchClient(NIF);
-        //     if (pos != -1) {
-        //         System.err.println("Este cliente nao existe!");
-        //     }
-        // } while (pos != -1);
-
-        // do {
-        //     license_plate = Consola.lerString("Matricula do carro a carregar: ");
-        //     pos = base.searchVehicle(license_plate);
-        //     if (pos != -1) {
-        //         System.err.println("Esta matricula nao existe!");
-        //     } else {
-        //         vehicle = base.getVehicle(pos);
-        //         if (vehicle.isCharging())
-        //             System.err.println("Carro esta a carregar de momento!");
-        //     }
-        // } while (pos != -1 && (vehicle == null || !vehicle.isCharging()));
-
         boolean error = false;
+        do {
+            NIF = Consola.lerInt("NIF do cliente a usar estacao: ", 0, 999999999);
+            pos = base.searchClient(NIF);
+            if (pos == -1) {
+                System.err.println("Este cliente nao existe!");
+                error = true;
+            } else {
+                client = base.getClient(pos);
+                error = false;
+            }
+        } while (error);
+
+        do {
+            license_plate = Consola.lerString("Matricula do carro a carregar: ");
+            pos = base.searchVehicle(license_plate);
+            if (pos == -1) {
+                System.err.println("Esta matricula nao existe!");
+                error = true;
+            } else {
+                vehicle = base.getVehicle(pos);
+                if (vehicle.isCharging()) {
+                    System.err.println("Carro esta a carregar de momento!");
+                    error = true;
+                } else {
+                    error = false;
+                }
+            }
+        } while (error);
+
+        do {
+            station_code = Consola.lerInt("Codigo da estacao que pretende usar: ", 0, 999999999);
+            pos = base.searchChargingStation(station_code);
+            if (pos == -1) {
+                System.err.println("Este posto de carregamento nao existe!");
+                error = true;
+            } else {
+                chargingStation = base.getChargingStation(pos);
+                if (chargingStation.getChargingNow() == chargingStation.getSimultaneousEVCharging()) {
+                    System.err.println("Esta estacao nao consegue carregar mais veiculos em simultaneo!");
+                    error = true;
+                } else {
+                    error = false;
+                }
+            }
+        } while (error);
+
         do {
             try {
                 start_time = timeFormat.parse(Consola.lerString("Hora de inicio: "));
@@ -354,8 +388,9 @@ public class Projeto_pc2 {
         session_code = generateRandomSessionCode();
 
         System.out.println("Codigo da sessao gerado: " + session_code);
-
-        ChargingSession newChargingSession = new ChargingSession(session_code, settlement_status, start_time, finish_time);
+        vehicle.setChargingStation(chargingStation);
+        ChargingSession newChargingSession = new ChargingSession(chargingStation, vehicle, client, session_code,
+                start_time, finish_time, settlement_status);
         base.addChargingSession(newChargingSession);
     }
 
@@ -512,20 +547,50 @@ public class Projeto_pc2 {
                 257287914,
                 969096163,
                 null);
+        
+        Client c2 = new Client(
+                "Joao Domingos",
+                "Leiria",
+                "2222035@my.ipleiria.pt",
+                123456789,
+                123456789,
+                null);
 
         ChargingStation cs1 = new ChargingStation(
                 1,
-                5,
+                4,
+                0,
                 "Avenida Paulo Seixo",
                 "PCN",
-                7,
-                2);
+                10,
+                1.5);
+        
+        ChargingStation cs2 = new ChargingStation(
+                2,
+                3,
+                0,
+                "Avenida Joao Pecado",
+                "PCR",
+                6,
+                2.5);
+
+        ChargingStation cs3 = new ChargingStation(
+                3,
+                2,
+                0,
+                "Avenida D. Perdu",
+                "PCUR",
+                4,
+                4);
 
         base.addVehicle(volvoxc40);
         base.addVehicle(fiat500);
         base.addVehicle(mercedesbenzeqs);
         base.addClient(c1);
+        base.addClient(c2);
         base.addChargingStation(cs1);
+        base.addChargingStation(cs2);
+        base.addChargingStation(cs3);
     }
 
     public static int generateRandomSessionCode() {
