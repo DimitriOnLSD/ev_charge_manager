@@ -157,7 +157,7 @@ public class Vehicle {
         str.append("Potencia: " + horsepower + " cv\n");
         str.append("Autonomia: " + range + " km\n");
         str.append("Capacidade de bateria: " + battery_capacity + " kW/h\n");
-        str.append("Velocidade de carregamento: " + chargingSpeed + "\n");
+        str.append("Velocidade de carregamento: " + chargingSpeed + " kW\n");
         if (isCharging()) {
             str.append("Estado: A carregar (Cod. estacao: " + chargingStation.getStationCode() + ")");
         } else {

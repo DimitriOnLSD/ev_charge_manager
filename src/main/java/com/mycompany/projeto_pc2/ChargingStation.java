@@ -6,7 +6,7 @@ package com.mycompany.projeto_pc2;
  */
 public class ChargingStation {
     protected String address, station_type;
-    protected int station_code, simultaneous_ev_charging, charging_now;
+    protected int station_code, simultaneous_ev_charging, charging_now = 0;
     protected double charging_time, charging_cost;
 
     public ChargingStation(int station_code, 

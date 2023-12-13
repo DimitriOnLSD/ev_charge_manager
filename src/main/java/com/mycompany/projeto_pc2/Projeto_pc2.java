@@ -18,6 +18,7 @@ import util.Consola;
  * To do list:
  * Checker do generate session code, pra saber se ja existe uma sessao com o mesmo codigo
  * Checker da matricula
+ * Checker do charging_now. Depois de terminar a hora de carregar um carro, esta variavel devia decrementar
  * Os carros devem estar associados aos clientes. Cada cliente pode ter multiplos carros. Talvez usar vetor ou lista nos clientes de veiculos
  * O resto do codigo...
  */
@@ -386,11 +387,11 @@ public class Projeto_pc2 {
         vehicle.setCharging(true);
         settlement_status = "Por pagar";
         session_code = generateRandomSessionCode();
+        chargingStation.charging_now++;
 
         System.out.println("Codigo da sessao gerado: " + session_code);
         vehicle.setChargingStation(chargingStation);
-        ChargingSession newChargingSession = new ChargingSession(chargingStation, vehicle, client, session_code,
-                start_time, finish_time, settlement_status);
+        ChargingSession newChargingSession = new ChargingSession(chargingStation, vehicle, client, session_code, start_time, finish_time, settlement_status);
         base.addChargingSession(newChargingSession);
     }
 
@@ -507,7 +508,7 @@ public class Projeto_pc2 {
                 null,
                 178,
                 50,
-                1,
+                11,
                 1477,
                 10.7,
                 false);
@@ -519,11 +520,11 @@ public class Projeto_pc2 {
                 "Eletrico",
                 null,
                 null,
-                94,
-                190,
-                1,
+                116,
+                320,
+                85,
                 0,
-                23.8,
+                42,
                 false);
 
         Vehicle mercedesbenzeqs = new Vehicle(
@@ -563,7 +564,7 @@ public class Projeto_pc2 {
                 "Avenida Paulo Seixo",
                 "PCN",
                 10,
-                1.5);
+                0.2);
         
         ChargingStation cs2 = new ChargingStation(
                 2,
