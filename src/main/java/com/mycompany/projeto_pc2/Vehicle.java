@@ -7,24 +7,25 @@ import java.util.Date;
  * @author Paulo Sousa | João Domingos
  */
 public class Vehicle {
+    ChargingStation chargingStation;
     protected String brand, model, license_plate, eletric_hybrid, fuel_type;
     protected Date date_of_register;
-    protected int horsepower, range, chargingSpeed, engine_displacement;
+    protected int horsepower, range, chargingSpeed, engine_displacement, battery;
     protected double battery_capacity;
     protected boolean isCharging = false;
 
     public Vehicle(String brand,
-            String model,
-            String license_plate,
-            String eletric_hybrid,
-            String fuel_type,
-            Date date_of_register,
-            int horsepower,
-            int range,
-            int chargingSpeed,
-            int engine_displacement,
-            double battery_capacity,
-            boolean isCharging) {
+                   String model,
+                   String license_plate,
+                   String eletric_hybrid,
+                   String fuel_type,
+                   Date date_of_register,
+                   int horsepower,
+                   int range,
+                   int chargingSpeed,
+                   int engine_displacement,
+                   double battery_capacity,
+                   boolean isCharging) {
         this.brand = brand;
         this.model = model;
         this.license_plate = license_plate;
@@ -37,6 +38,14 @@ public class Vehicle {
         this.engine_displacement = engine_displacement;
         this.battery_capacity = battery_capacity;
         this.isCharging = isCharging;
+    }
+
+    public ChargingStation getChargingStation() {
+        return chargingStation;
+    }
+
+    public void setChargingStation(ChargingStation chargingStation) {
+        this.chargingStation = chargingStation;
     }
 
     public String getBrand() {
@@ -140,12 +149,20 @@ public class Vehicle {
         StringBuilder str = new StringBuilder();
         str.append("Carro: " + brand + " " + model + "\n");
         str.append("Data de registo: " + date_of_register + "\n");
-        str.append("Informacoes: " + engine_displacement + " cm^3, " + horsepower + " cv, " + battery_capacity + " kWh, " + range + " km, " + chargingSpeed + "\n");
-        str.append("Tipo: " + eletric_hybrid + " ," + fuel_type + "\n");
-        if (isCharging == false)
+        str.append("Tipo: " + eletric_hybrid + "\n");
+        if (isEletricHybrid().equals("Hibrido")) {
+            str.append("Combustivel: " + fuel_type + "\n");
+            str.append("Cilindrada: " + engine_displacement + " cm^3\n");
+        }
+        str.append("Potencia: " + horsepower + " cv\n");
+        str.append("Autonomia: " + range + " km\n");
+        str.append("Capacidade de bateria: " + battery_capacity + " kW/h\n");
+        str.append("Velocidade de carregamento: " + chargingSpeed + "\n");
+        if (isCharging()) {
+            str.append("Estado: A carregar (Cod. estacao: " + chargingStation.getStationCode() + ")");
+        } else {
             str.append("Estado: A descarregar");
-        else 
-            str.append("Estado: A carregar");
+        }
         return str.toString();
     }
 }
