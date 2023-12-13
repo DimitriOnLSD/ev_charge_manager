@@ -6,12 +6,12 @@ import java.util.Date;
  *
  * @author Paulo Sousa | João Domingos
  */
-public class Payment{
+public class Payment {
     ChargingSession chargingSession;
     private String type_of_payment;
     private Date time_transaction;
 
-    public Payment(String type_of_payment, 
+    public Payment(String type_of_payment,
                    Date time_transaction) {
         this.type_of_payment = type_of_payment;
         this.time_transaction = time_transaction;
