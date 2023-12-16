@@ -8,16 +8,24 @@ import java.util.Date;
  */
 public class Vehicle {
     ChargingStation chargingStation;
-    protected String brand, model, license_plate, eletric_hybrid, fuel_type;
+    protected String brand;
+    protected String model;
+    protected String license_plate;
+    protected String electric_hybrid;
+    protected String fuel_type;
     protected Date date_of_register;
-    protected int horsepower, range, chargingSpeed, engine_displacement, battery;
+    protected int horsepower;
+    protected int range;
+    protected int chargingSpeed;
+    protected int engine_displacement;
+    protected int battery;
     protected double battery_capacity;
     protected boolean isCharging = false;
 
     public Vehicle(String brand,
                    String model,
                    String license_plate,
-                   String eletric_hybrid,
+                   String electric_hybrid,
                    String fuel_type,
                    Date date_of_register,
                    int horsepower,
@@ -30,7 +38,7 @@ public class Vehicle {
         this.brand = brand;
         this.model = model;
         this.license_plate = license_plate;
-        this.eletric_hybrid = eletric_hybrid;
+        this.electric_hybrid = electric_hybrid;
         this.fuel_type = fuel_type;
         this.date_of_register = date_of_register;
         this.horsepower = horsepower;
@@ -72,8 +80,8 @@ public class Vehicle {
     public int getChargingSpeed()                                   { return chargingSpeed; }
     public void setChargingSpeed(int chargingSpeed)                 { this.chargingSpeed = chargingSpeed; }
 
-    public String isEletricHybrid()                                 { return eletric_hybrid; }
-    public void setEletricHybrid(String eletric_hybrid)             { this.eletric_hybrid = eletric_hybrid; }
+    public String isEletricHybrid()                                 { return electric_hybrid; }
+    public void setEletricHybrid(String electric_hybrid)            { this.electric_hybrid = electric_hybrid; }
 
     public String isFuelType()                                      { return fuel_type; }
     public void setFuelType(String fuel_type)                       { this.fuel_type = fuel_type; }
@@ -89,7 +97,7 @@ public class Vehicle {
         StringBuilder str = new StringBuilder();
         str.append("Carro: " + brand + " " + model + "\n");
         str.append("Data de registo: " + date_of_register + "\n");
-        str.append("Tipo: " + eletric_hybrid + "\n");
+        str.append("Tipo: " + electric_hybrid + "\n");
         if (isEletricHybrid().equals("Hibrido")) {
             str.append("Combustivel: " + fuel_type + "\n");
             str.append("Cilindrada: " + engine_displacement + " cm^3\n");
@@ -99,9 +107,9 @@ public class Vehicle {
         str.append("Capacidade de bateria: " + battery_capacity + " kW/h\n");
         str.append("Velocidade de carregamento: " + chargingSpeed + " kW\n");
         if (isCharging()) {
-            str.append("Estado: A carregar (Cod. estacao: " + chargingStation.getStationCode() + ")");
+            str.append("Estado: A carregar (Cod. estacao: " + chargingStation.getStationCode() + ")\n");
         } else {
-            str.append("Estado: A descarregar");
+            str.append("Estado: A descarregar\n");
         }
         return str.toString();
     }
