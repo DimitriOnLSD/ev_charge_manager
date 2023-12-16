@@ -3,6 +3,9 @@ package com.mycompany.projeto_pc2;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Random;
 import java.util.Scanner;
@@ -26,7 +29,7 @@ import util.Consola;
 
 /**
  *
- * @author Paulo Sousa | João Domingos
+ * @authors Paulo Sousa | João Domingos
  */
 public class Projeto_pc2 {
 
@@ -236,7 +239,7 @@ public class Projeto_pc2 {
             }
         } while (error);
 
-        Vehicle newVehicle = new Vehicle(brand, model, license_plate, eletric_hybrid, fuel_type, date_of_register, horsepower, range, chargingSpeed, engine_displacement, battery_capacity, false);
+        Vehicle newVehicle = new Vehicle(brand, model, license_plate, eletric_hybrid, fuel_type, date_of_register, horsepower, range, chargingSpeed, engine_displacement, 50, battery_capacity, false);
         base.addVehicle(newVehicle);
     }
 
@@ -311,7 +314,10 @@ public class Projeto_pc2 {
         ChargingStation chargingStation = null;
         String settlement_status, license_plate;
         int session_code = 0, NIF, pos, station_code;
-        Date start_time = null, finish_time = null;
+        double energy_consumed, session_cost;
+        LocalDateTime start_time = null;
+        LocalDateTime finish_time = null;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
         boolean error = false;
         do {
@@ -337,6 +343,8 @@ public class Projeto_pc2 {
                 if (vehicle.isCharging()) {
                     System.err.println("Carro esta a carregar de momento!");
                     error = true;
+                } else if (vehicle.getBattery() == 100) {
+                    System.err.println("A bateria deste carro encontra-se carregada.");
                 } else {
                     error = false;
                 }
@@ -362,14 +370,37 @@ public class Projeto_pc2 {
 
         do {
             try {
-                start_time = timeFormat.parse(Consola.lerString("Hora de inicio: "));
-                finish_time = timeFormat.parse(Consola.lerString("Hora de termino: "));
+                start_time = LocalDateTime.parse(Consola.lerString("Data e hora de inicio (yyyy-MM-dd HH:mm): "), formatter);
+                finish_time = LocalDateTime.parse(Consola.lerString("Data e hora de fim (yyyy-MM-dd HH:mm): "), formatter);
                 error = false;
             } catch (Exception e) {
-                System.out.println("Hora invalida");
+                System.out.println("Foramto da data ou hora esta errado.");
                 error = true;
             }
         } while (error);
+
+        Duration time_charging = Duration.between(start_time, finish_time);
+        double hours = time_charging.toHours() % 24;
+
+        int max_charge = 0;
+
+        switch (chargingStation.getStationType()) {
+            case "PCN":
+                max_charge = 22;
+                break;
+            case "PCR":
+                max_charge = 50;
+                break;
+            case "PCUR":
+                max_charge = 160;
+                break;
+        }
+
+        energy_consumed = Math.min(vehicle.getChargingSpeed(), max_charge) * hours;
+        session_cost = energy_consumed * chargingStation.getChargingCost();
+
+        chargingStation.total_energy_consumed += energy_consumed;
+        chargingStation.total_revenue += session_cost;
 
         vehicle.setCharging(true);
         settlement_status = "Por pagar";
@@ -378,14 +409,16 @@ public class Projeto_pc2 {
 
         System.out.println("Codigo da sessao gerado: " + session_code);
         vehicle.setChargingStation(chargingStation);
-        ChargingSession newChargingSession = new ChargingSession(chargingStation, vehicle, client, session_code, start_time, finish_time, settlement_status);
+        ChargingSession newChargingSession = new ChargingSession(chargingStation, vehicle, client, session_code, start_time, finish_time, settlement_status, energy_consumed, session_cost);
         base.addChargingSession(newChargingSession);
     }
 
     public static void addPayment(Base base) {
         ChargingSession chargingSession = null;
+        ChargingStation chargingStation = null;
         int session_code = 0, pos, type_of_payment;
-        Date time_transaction = null;
+        LocalDateTime time_transaction = null;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
         boolean error = false;
         do {
@@ -406,7 +439,15 @@ public class Projeto_pc2 {
         System.out.println("[3] Transferencia Bancaria");
         type_of_payment = Consola.lerInt("Opcao: ", 1, 3);
 
-        // time of transaction here
+        do {
+            try {
+                time_transaction = LocalDateTime.parse(Consola.lerString("Data e hora de transacao (yyyy-MM-dd HH:mm): "), formatter);
+                error = false;
+            } catch (Exception e) {
+                System.out.println("Foramto da data ou hora esta errado.");
+                error = true;
+            }
+        } while (error);
 
         chargingSession.setSettlementStatus("Pago");
         chargingSession.setTypeOfPayment(type_of_payment);
@@ -528,6 +569,7 @@ public class Projeto_pc2 {
                 50,
                 11,
                 1477,
+                50,
                 10.7,
                 false);
 
@@ -542,6 +584,7 @@ public class Projeto_pc2 {
                 320,
                 85,
                 0,
+                50,
                 42,
                 false);
 
@@ -556,6 +599,7 @@ public class Projeto_pc2 {
                 617,
                 170,
                 0,
+                50,
                 100,
                 false);
 
