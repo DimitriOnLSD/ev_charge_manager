@@ -7,15 +7,17 @@ import java.time.LocalDateTime;
  * @authors Paulo Sousa | João Domingos
  */
 public class ChargingSession {
-    ChargingStation chargingStation;
-    Vehicle vehicle;
-    Client client;
-    protected int session_code, type_of_payment;
+    protected int session_code;
+    protected int type_of_payment;
+    protected double energy_consumed;
+    protected double session_cost;
+    protected String settlement_status;
     protected LocalDateTime start_time;
     protected LocalDateTime finish_time;
     protected LocalDateTime time_transaction;
-    protected double energy_consumed, session_cost;
-    protected String settlement_status;
+    ChargingStation chargingStation;
+    Vehicle vehicle;
+    Client client;
 
     public ChargingSession(ChargingStation chargingStation,
                            Vehicle vehicle,
