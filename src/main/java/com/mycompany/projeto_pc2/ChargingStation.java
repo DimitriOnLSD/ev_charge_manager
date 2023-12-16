@@ -5,10 +5,15 @@ package com.mycompany.projeto_pc2;
  * @authors Paulo Sousa | João Domingos
  */
 public class ChargingStation {
-    protected String address, station_type;
-    protected int station_code, simultaneous_ev_charging, charging_now = 0;
-    protected double charging_time, charging_cost;
-    protected double total_energy_consumed, total_revenue;
+    protected String address;
+    protected String station_type;
+    protected int station_code;
+    protected int simultaneous_ev_charging;
+    protected int charging_now = 0;
+    protected double charging_time;
+    protected double charging_cost;
+    protected double total_energy_consumed;
+    protected double total_revenue;
 
     public ChargingStation(int station_code, 
                            int simultaneous_ev_charging, 
