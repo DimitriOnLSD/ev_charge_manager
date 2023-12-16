@@ -7,10 +7,12 @@ import java.util.Date;
  * @authors Paulo Sousa | João Domingos
  */
 public class Client {
-    protected String name, address, email;
-    protected int NIF, contact;
+    protected String name;
+    protected String address;
+    protected String email;
     protected Date birth_date;
-    private int totalClients = 0;
+    protected int NIF;
+    protected int contact;
 
     public Client(String name, 
                   String address, 
@@ -43,9 +45,6 @@ public class Client {
 
     public Date getBirthDate()                    { return birth_date; }
     public void setBirthDate(Date birth_date)     { this.birth_date = birth_date; }
-
-    public int getTotalClients()                  { return totalClients; }
-    public void setTotalClients(int totalClients) { this.totalClients = totalClients; }
 
     @Override
     public String toString() {
