@@ -4,7 +4,7 @@ import java.util.Date;
 
 /**
  *
- * @author Paulo Sousa | João Domingos
+ * @authors Paulo Sousa | João Domingos
  */
 public class Client {
     protected String name, address, email;
@@ -26,61 +26,26 @@ public class Client {
         this.birth_date = birth_date;
     }
 
-    public String getName() {
-        return name;
-    }
+    public String getName()                       { return name; }
+    public void setName(String name)              { this.name = name; }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    public String getAddress()                    { return address; }
+    public void setAddress(String address)        { this.address = address; }
 
-    public String getAddress() {
-        return address;
-    }
+    public String getEmail()                      { return email; }
+    public void setEmail(String email)            { this.email = email; }
 
-    public void setAddress(String address) {
-        this.address = address;
-    }
+    public int getNIF()                           { return NIF; }
+    public void setNIF(int nIF)                   { NIF = nIF; }
 
-    public String getEmail() {
-        return email;
-    }
+    public int getContact()                       { return contact; }
+    public void setContact(int contact)           { this.contact = contact; }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
+    public Date getBirthDate()                    { return birth_date; }
+    public void setBirthDate(Date birth_date)     { this.birth_date = birth_date; }
 
-    public int getNIF() {
-        return NIF;
-    }
-
-    public void setNIF(int nIF) {
-        NIF = nIF;
-    }
-
-    public int getContact() {
-        return contact;
-    }
-
-    public void setContact(int contact) {
-        this.contact = contact;
-    }
-
-    public Date getBirthDate() {
-        return birth_date;
-    }
-
-    public void setBirthDate(Date birth_date) {
-        this.birth_date = birth_date;
-    }
-
-    public int getTotalClients() {
-        return totalClients;
-    }
-
-    public void setTotalClients(int totalClients) {
-        this.totalClients = totalClients;
-    }
+    public int getTotalClients()                  { return totalClients; }
+    public void setTotalClients(int totalClients) { this.totalClients = totalClients; }
 
     @Override
     public String toString() {
