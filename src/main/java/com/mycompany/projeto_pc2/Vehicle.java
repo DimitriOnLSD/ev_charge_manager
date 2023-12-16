@@ -4,7 +4,7 @@ import java.util.Date;
 
 /**
  *
- * @author Paulo Sousa | João Domingos
+ * @authors Paulo Sousa | João Domingos
  */
 public class Vehicle {
     ChargingStation chargingStation;
@@ -24,6 +24,7 @@ public class Vehicle {
                    int range,
                    int chargingSpeed,
                    int engine_displacement,
+                   int battery,
                    double battery_capacity,
                    boolean isCharging) {
         this.brand = brand;
@@ -38,111 +39,50 @@ public class Vehicle {
         this.engine_displacement = engine_displacement;
         this.battery_capacity = battery_capacity;
         this.isCharging = isCharging;
+        this.battery = battery;
     }
 
-    public ChargingStation getChargingStation() {
-        return chargingStation;
-    }
+    public ChargingStation getChargingStation()                     { return chargingStation; }
+    public void setChargingStation(ChargingStation chargingStation) { this.chargingStation = chargingStation; }
 
-    public void setChargingStation(ChargingStation chargingStation) {
-        this.chargingStation = chargingStation;
-    }
+    public String getBrand()                                        { return brand; }
+    public void setBrand(String brand)                              { this.brand = brand; }
 
-    public String getBrand() {
-        return brand;
-    }
+    public String getModel()                                        { return model; }
+    public void setModel(String model)                              { this.model = model; }
 
-    public void setBrand(String brand) {
-        this.brand = brand;
-    }
+    public String getLicensePlate()                                 { return license_plate; }
+    public void setLicensePlate(String license_plate)               { this.license_plate = license_plate; }
 
-    public String getModel() {
-        return model;
-    }
+    public int getEngineDsplacement()                               { return engine_displacement; }
+    public void setEngineDisplacement(int engine_displacement)      { this.engine_displacement = engine_displacement; }
 
-    public void setModel(String model) {
-        this.model = model;
-    }
+    public Date getDateOfRegister()                                 { return date_of_register; }
+    public void setDateOfRegisterg(Date date_of_register)           { this.date_of_register = date_of_register; }
 
-    public String getLicensePlate() {
-        return license_plate;
-    }
+    public int getHorsepower()                                      { return horsepower; }
+    public void setHorsepower(int horsepower)                       { this.horsepower = horsepower; }
 
-    public void setLicensePlate(String license_plate) {
-        this.license_plate = license_plate;
-    }
+    public double getBatteryCapacity()                              { return battery_capacity; }
+    public void setBatteryCapacity(int battery_capacity)            { this.battery_capacity = battery_capacity; }
 
-    public int getEngineDsplacement() {
-        return engine_displacement;
-    }
+    public int getRange()                                           { return range; }
+    public void setRange(int range)                                 { this.range = range; }
 
-    public void setEngineDisplacement(int engine_displacement) {
-        this.engine_displacement = engine_displacement;
-    }
+    public int getChargingSpeed()                                   { return chargingSpeed; }
+    public void setChargingSpeed(int chargingSpeed)                 { this.chargingSpeed = chargingSpeed; }
 
-    public Date getDateOfRegister() {
-        return date_of_register;
-    }
+    public String isEletricHybrid()                                 { return eletric_hybrid; }
+    public void setEletricHybrid(String eletric_hybrid)             { this.eletric_hybrid = eletric_hybrid; }
 
-    public void setDateOfRegisterg(Date date_of_register) {
-        this.date_of_register = date_of_register;
-    }
+    public String isFuelType()                                      { return fuel_type; }
+    public void setFuelType(String fuel_type)                       { this.fuel_type = fuel_type; }
 
-    public int getHorsepower() {
-        return horsepower;
-    }
+    public boolean isCharging()                                     { return isCharging; }
+    public void setCharging(boolean isCharging)                     { this.isCharging = isCharging; }
 
-    public void setHorsepower(int horsepower) {
-        this.horsepower = horsepower;
-    }
-
-    public double getBatteryCapacity() {
-        return battery_capacity;
-    }
-
-    public void setBatteryCapacity(int battery_capacity) {
-        this.battery_capacity = battery_capacity;
-    }
-
-    public int getRange() {
-        return range;
-    }
-
-    public void setRange(int range) {
-        this.range = range;
-    }
-
-    public int getChargingSpeed() {
-        return chargingSpeed;
-    }
-
-    public void setChargingSpeed(int chargingSpeed) {
-        this.chargingSpeed = chargingSpeed;
-    }
-
-    public String isEletricHybrid() {
-        return eletric_hybrid;
-    }
-
-    public void setEletricHybrid(String eletric_hybrid) {
-        this.eletric_hybrid = eletric_hybrid;
-    }
-
-    public String isFuelType() {
-        return fuel_type;
-    }
-
-    public void setFuelType(String fuel_type) {
-        this.fuel_type = fuel_type;
-    }
-
-    public boolean isCharging() {
-        return isCharging;
-    }
-
-    public void setCharging(boolean isCharging) {
-        this.isCharging = isCharging;
-    }
+    public int getBattery()                                         { return battery; }
+    public void setBattery(int battery)                             { this.battery = battery; }
 
     @Override
     public String toString() {
