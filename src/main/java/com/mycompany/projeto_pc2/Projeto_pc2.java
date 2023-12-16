@@ -20,6 +20,7 @@ import util.Consola;
  * Checker da matricula
  * Checker do charging_now. Depois de terminar a hora de carregar um carro, esta variavel devia decrementar
  * Os carros devem estar associados aos clientes. Cada cliente pode ter multiplos carros. Talvez usar vetor ou lista nos clientes de veiculos
+ * Uma funcao que devolve o tempo total de carregamento. Será usada para verificar quantos carros estao a usar a mesma estacao naquele periodo de tempo, o custo da sessao e energia consumida
  * O resto do codigo...
  */
 
@@ -103,41 +104,30 @@ public class Projeto_pc2 {
                 case 4:
                     System.out.println("[1] Consultar sessao de carregamento");
                     System.out.println("[2] Registar sessao de carregamento");
+                    System.out.println("[3] Registar pagamento");
                     System.out.println("[0] Voltar");
 
-                    secondary_option = Consola.lerInt("\nOpcao: ", 0, 2);
+                    secondary_option = Consola.lerInt("\nOpcao: ", 0, 3);
 
-                    if (secondary_option == 1) {
+                    if (secondary_option == 1 || secondary_option == 3) {
                         if (base.getTotalChargingSessions() > 0) {
-                            searchChargingSession(base);
+                            if (secondary_option == 1) {
+                                searchChargingSession(base);
+                            } else {
+                                addPayment(base);
+                            }
                         } else {
-                            System.err.println("\nNao existem sessoes de carregamento registadas!");
+                            System.err.println("\nNao existem sessoes registadas!");
                         }
                     } else if (secondary_option == 2) {
                         addChargingSession(base);
                     }
                     break;
                 case 5:
-                    System.out.println("[1] Registar pagamento");
-                    System.out.println("[2] Consultar pagamento");
-                    System.out.println("[0] Voltar");
-
-                    secondary_option = Consola.lerInt("\nOpcao: ", 0, 2);
-
-                    if (secondary_option == 1) {
-                        // Registar pagamento
-                    } else if (secondary_option == 2) {
-                        // Consultar pagamento
-                    } else {
-                        // Voltar
-                    }
-                    break;
-                case 6:
                     System.out.println("[1] Lista dos 3 postos de carregamento com maior valor faturado");
                     System.out.println("[2] Lista de sessoes de carregamento com valor superior a x");
                     System.out.println("[3] Total de sessoes€ de carregamento realizadas");
-                    System.out
-                            .println("[4] Media de energia consumida por posto de carregamento e por tipo de veiculo");
+                    System.out.println("[4] Media de energia consumida por posto de carregamento e por tipo de veiculo");
                     System.out.println("[5] Lista de pagamentos por efetuar");
                     System.out.println("[6] Historico de sessoes de carregamento");
                     System.out.println("[0] Voltar");
@@ -178,11 +168,10 @@ public class Projeto_pc2 {
         System.out.println("[2] Clientes registados");
         System.out.println("[3] Postos de carregamento");
         System.out.println("[4] Sessao de carregamento");
-        System.out.println("[5] Estado do pagamento");
-        System.out.println("[6] Estatisticas");
+        System.out.println("[5] Estatisticas");
         System.out.println("[0] Sair");
 
-        int option = Consola.lerInt("\nOpcao: ", 0, 6);
+        int option = Consola.lerInt("\nOpcao: ", 0, 5);
         clearConsole();
         return option;
     }
@@ -247,8 +236,7 @@ public class Projeto_pc2 {
             }
         } while (error);
 
-        Vehicle newVehicle = new Vehicle(brand, model, license_plate, eletric_hybrid, fuel_type, date_of_register,
-                horsepower, range, chargingSpeed, engine_displacement, battery_capacity, false);
+        Vehicle newVehicle = new Vehicle(brand, model, license_plate, eletric_hybrid, fuel_type, date_of_register, horsepower, range, chargingSpeed, engine_displacement, battery_capacity, false);
         base.addVehicle(newVehicle);
     }
 
@@ -313,8 +301,7 @@ public class Projeto_pc2 {
         charging_time = Consola.lerFloat("Tempo de carregamento: ", 0, 168);
         simultaneous_ev_charging = Consola.lerInt("Carregamento em simultaneo: ", 0, 50);
 
-        ChargingStation newChargingStation = new ChargingStation(station_code, simultaneous_ev_charging, 0, address,
-                station_type, charging_time, charging_cost);
+        ChargingStation newChargingStation = new ChargingStation(station_code, simultaneous_ev_charging, 0, address, station_type, charging_time, charging_cost);
         base.addChargingStation(newChargingStation);
     }
 
@@ -393,6 +380,37 @@ public class Projeto_pc2 {
         vehicle.setChargingStation(chargingStation);
         ChargingSession newChargingSession = new ChargingSession(chargingStation, vehicle, client, session_code, start_time, finish_time, settlement_status);
         base.addChargingSession(newChargingSession);
+    }
+
+    public static void addPayment(Base base) {
+        ChargingSession chargingSession = null;
+        int session_code = 0, pos, type_of_payment;
+        Date time_transaction = null;
+
+        boolean error = false;
+        do {
+            session_code = Consola.lerInt("Codigo da sessao: ", 0, 999999999);
+            pos = base.searchChargingSession(session_code);
+            if (pos == -1) {
+                System.err.println("Esta sessao nao existe!");
+                error = true;
+            } else {
+                chargingSession = base.getChargingSession(pos);
+                error = false;
+            }
+        } while (error);
+
+        System.out.println("Metodo de pagamento:");
+        System.out.println("[1] MB WAY");
+        System.out.println("[2] Debito Direto");
+        System.out.println("[3] Transferencia Bancaria");
+        type_of_payment = Consola.lerInt("Opcao: ", 1, 3);
+
+        // time of transaction here
+
+        chargingSession.setSettlementStatus("Pago");
+        chargingSession.setTypeOfPayment(type_of_payment);
+        chargingSession.setTimeOftransaction(time_transaction);
     }
 
     public static void searchVehicle(Base base) {
@@ -548,7 +566,7 @@ public class Projeto_pc2 {
                 257287914,
                 969096163,
                 null);
-        
+
         Client c2 = new Client(
                 "Joao Domingos",
                 "Leiria",
@@ -565,7 +583,7 @@ public class Projeto_pc2 {
                 "PCN",
                 10,
                 0.2);
-        
+
         ChargingStation cs2 = new ChargingStation(
                 2,
                 3,

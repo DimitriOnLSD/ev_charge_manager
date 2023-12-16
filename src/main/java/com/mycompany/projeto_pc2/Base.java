@@ -60,7 +60,7 @@ public class Base implements Serializable {
         return -1;
     }
     public int searchChargingSession(int session_code) {
-        for (int i = 0; i < chargingStations.size(); i++) {
+        for (int i = 0; i < chargingSessions.size(); i++) {
             if (chargingSessions.get(i).getSessionCode() == session_code) {
                 return i;
             }
