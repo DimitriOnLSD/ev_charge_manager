@@ -17,6 +17,11 @@ import util.Consola;
  * 
  */
 
+/* 
+ * Os clientes so podem carregar os seus carros?
+ * 
+ */
+
 /*
  * To do list:
  * Checker do generate session code, pra saber se ja existe uma sessao com o mesmo codigo
@@ -59,7 +64,7 @@ public class Projeto_pc2 {
                         if (base.getTotalCars() > 0) {
                             searchVehicle(base);
                         } else {
-                            System.err.println("\nNao existem veiculos registados!");
+                            System.err.println("\nNao existem veiculos registados!\n");
                         }
                     } else if (secondary_option == 2) {
                         addVehicle(base);
@@ -81,7 +86,7 @@ public class Projeto_pc2 {
                                 changeClientData(base);
                             }
                         } else {
-                            System.err.println("\nNao existem clientes registados!");
+                            System.err.println("\nNao existem clientes registados!\n");
                         }
                     } else if (secondary_option == 2) {
                         addClient(base);
@@ -98,7 +103,7 @@ public class Projeto_pc2 {
                         if (base.getTotalChargingStations() > 0) {
                             searchChargingStation(base);
                         } else {
-                            System.err.println("\nNao existem estacoes de carregamento registadas!");
+                            System.err.println("\nNao existem estacoes de carregamento registadas!\n");
                         }
                     } else if (secondary_option == 2) {
                         addChargingStation(base);
@@ -120,7 +125,7 @@ public class Projeto_pc2 {
                                 addPayment(base);
                             }
                         } else {
-                            System.err.println("\nNao existem sessoes registadas!");
+                            System.err.println("\nNao existem sessoes registadas!\n");
                         }
                     } else if (secondary_option == 2) {
                         addChargingSession(base);
@@ -129,14 +134,13 @@ public class Projeto_pc2 {
                 case 5:
                     System.out.println("[1] Lista dos 3 postos de carregamento com maior valor faturado");
                     System.out.println("[2] Lista de sessoes de carregamento com valor superior a x");
-                    System.out.println("[3] Total de sessoes€ de carregamento realizadas");
-                    System.out.println("[4] Media de energia consumida por posto de carregamento e por tipo de veiculo");
+                    System.out.println("[3] Total de sessoes de carregamento realizadas");
+                    System.out.println("[4] Media de energia consumida por: posto de carregamento e tipo de veiculo");
                     System.out.println("[5] Lista de pagamentos por efetuar");
                     System.out.println("[6] Historico de sessoes de carregamento");
                     System.out.println("[0] Voltar");
 
                     secondary_option = Consola.lerInt("\nOpcao: ", 0, 6);
-                    clearConsole();
 
                     switch (secondary_option) {
                         case 1:
@@ -185,16 +189,28 @@ public class Projeto_pc2 {
     }
 
     public static void holdConsole() {
-        System.out.println("\nPressione qualquer tecla para continuar...");
+        System.out.println("Pressione enter para continuar...");
         sc.nextLine();
     }
 
     public static void addVehicle(Base base) {
-        String brand, model, license_plate, eletric_hybrid, fuel_type = null;
+        String brand;
+        String model;
+        String license_plate;
+        String electric_hybrid;
+        String fuel_type = null;
         Date date_of_register = null;
-        int horsepower, range, chargingSpeed, engine_displacement = 0, pos;
+        int horsepower;
+        int range;
+        int chargingSpeed;
+        int engine_displacement = 0;
+        int battery = 50;
+        int pos;
         double battery_capacity;
+        boolean isCharging = false;
         boolean isHybrid = false;
+        boolean check_ev_type = true;
+        boolean error = false;
 
         do {
             license_plate = Consola.lerString("Insira a matricula: ");
@@ -208,16 +224,16 @@ public class Projeto_pc2 {
         model = Consola.lerString("Modelo: ");
         horsepower = Consola.lerInt("Potencia: ", 0, 99999);
 
-        boolean check_ev_type = true;
+        
         do {
-            eletric_hybrid = Consola.lerString("Eletrico ou Hibrido: ");
-            if (eletric_hybrid.equals("Hibrido")) {
+            electric_hybrid = Consola.lerString("Eletrico ou Hibrido: ");
+            if (electric_hybrid.equals("Hibrido")) {
                 isHybrid = true;
                 check_ev_type = false;
-            } else if (eletric_hybrid.equals("Eletrico"))
+            } else if (electric_hybrid.equals("Eletrico"))
                 check_ev_type = false;
             else
-                System.err.println(eletric_hybrid + " nao existe. Tente novamente...");
+                System.err.println(electric_hybrid + " nao existe. Tente novamente...");
         } while (check_ev_type);
 
         if (isHybrid) {
@@ -228,7 +244,6 @@ public class Projeto_pc2 {
         range = Consola.lerInt("Autonomia: ", 0, 99999);
         chargingSpeed = Consola.lerInt("Velocidade de carregamento: ", 0, 99999);
 
-        boolean error = false;
         do {
             try {
                 date_of_register = dateFormat.parse(Consola.lerString("Data de registo: "));
@@ -239,15 +254,20 @@ public class Projeto_pc2 {
             }
         } while (error);
 
-        Vehicle newVehicle = new Vehicle(brand, model, license_plate, eletric_hybrid, fuel_type, date_of_register, horsepower, range, chargingSpeed, engine_displacement, 50, battery_capacity, false);
+        Vehicle newVehicle = new Vehicle(brand, model, license_plate, electric_hybrid, fuel_type, date_of_register, horsepower, range, chargingSpeed, engine_displacement, battery, battery_capacity, isCharging);
         base.addVehicle(newVehicle);
     }
 
     public static void addClient(Base base) {
-        String name, address, email;
+        String name;
+        String address;
+        String email;
         Date birth_date = null;
-        int NIF, contact, pos;
-
+        int NIF;
+        int pos;
+        int contact;
+        boolean error = false;
+        
         do {
             NIF = Consola.lerInt("NIF: ", 0, 999999999);
             pos = base.searchClient(NIF);
@@ -261,7 +281,6 @@ public class Projeto_pc2 {
         contact = Consola.lerInt("Contacto: ", 0, 999999999);
         email = Consola.lerString("E-mail: ");
 
-        boolean error = false;
         do {
             try {
                 birth_date = dateFormat.parse(Consola.lerString("Data de nascimento: "));
@@ -277,9 +296,15 @@ public class Projeto_pc2 {
     }
 
     public static void addChargingStation(Base base) {
-        String address, station_type;
-        int station_code, simultaneous_ev_charging, pos;
-        double charging_time, charging_cost;
+        String address;
+        String station_type;
+        int station_code;
+        int simultaneous_ev_charging;
+        int pos;
+        int charging_now = 0;
+        double charging_time;
+        double charging_cost;
+        boolean check_station_type = true;
 
         do {
             station_code = Consola.lerInt("Codigo da estacao: ", 0, 999999999);
@@ -289,9 +314,6 @@ public class Projeto_pc2 {
             }
         } while (pos != -1);
 
-        address = Consola.lerString("Morada: ");
-
-        boolean check_station_type = true;
         do {
             station_type = Consola.lerString("Tipo de estacao [PCN PCR PCUR]: ");
             if (station_type.equals("PCN") || station_type.equals("PCR") || station_type.equals("PCUR"))
@@ -300,26 +322,33 @@ public class Projeto_pc2 {
                 System.err.println("Este tipo de estacao nao existe! Tente novamente...");
         } while (check_station_type);
 
+        address = Consola.lerString("Morada: ");
         charging_cost = Consola.lerFloat("Custo de carregamento: ", 0, 999999999);
         charging_time = Consola.lerFloat("Tempo de carregamento: ", 0, 168);
         simultaneous_ev_charging = Consola.lerInt("Carregamento em simultaneo: ", 0, 50);
 
-        ChargingStation newChargingStation = new ChargingStation(station_code, simultaneous_ev_charging, 0, address, station_type, charging_time, charging_cost);
+        ChargingStation newChargingStation = new ChargingStation(station_code, simultaneous_ev_charging, charging_now, address, station_type, charging_time, charging_cost);
         base.addChargingStation(newChargingStation);
     }
 
     public static void addChargingSession(Base base) {
-        Client client = null;
-        Vehicle vehicle = null;
         ChargingStation chargingStation = null;
-        String settlement_status, license_plate;
-        int session_code = 0, NIF, pos, station_code;
-        double energy_consumed, session_cost;
+        Vehicle vehicle = null;
+        Client client = null;
         LocalDateTime start_time = null;
         LocalDateTime finish_time = null;
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm dd-MM-yyyy");
+        String settlement_status;
+        String license_plate;
+        int session_code = 0;
+        int NIF;
+        int pos;
+        int station_code;
+        int max_charge = 0;
+        double energy_consumed;
+        double session_cost;
         boolean error = false;
+
         do {
             NIF = Consola.lerInt("NIF do cliente a usar estacao: ", 0, 999999999);
             pos = base.searchClient(NIF);
@@ -370,8 +399,10 @@ public class Projeto_pc2 {
 
         do {
             try {
-                start_time = LocalDateTime.parse(Consola.lerString("Data e hora de inicio (yyyy-MM-dd HH:mm): "), formatter);
-                finish_time = LocalDateTime.parse(Consola.lerString("Data e hora de fim (yyyy-MM-dd HH:mm): "), formatter);
+                start_time = LocalDateTime.parse(Consola.lerString("Data e hora de inicio (HH:mm dd-MM-yyyy): "),
+                        formatter);
+                finish_time = LocalDateTime.parse(Consola.lerString("Data e hora de fim (HH:mm dd-MM-yyyy): "),
+                        formatter);
                 error = false;
             } catch (Exception e) {
                 System.out.println("Foramto da data ou hora esta errado.");
@@ -381,8 +412,6 @@ public class Projeto_pc2 {
 
         Duration time_charging = Duration.between(start_time, finish_time);
         double hours = time_charging.toHours() % 24;
-
-        int max_charge = 0;
 
         switch (chargingStation.getStationType()) {
             case "PCN":
@@ -405,7 +434,8 @@ public class Projeto_pc2 {
         vehicle.setCharging(true);
         settlement_status = "Por pagar";
         session_code = generateRandomSessionCode();
-        chargingStation.charging_now++;
+        // comentado, pois vai existir outra forma de verificar se um carro esta a ser carregado naquele periodo de tempo. talvez com listas
+        // chargingStation.charging_now++;
 
         System.out.println("Codigo da sessao gerado: " + session_code);
         vehicle.setChargingStation(chargingStation);
@@ -415,12 +445,13 @@ public class Projeto_pc2 {
 
     public static void addPayment(Base base) {
         ChargingSession chargingSession = null;
-        ChargingStation chargingStation = null;
-        int session_code = 0, pos, type_of_payment;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm dd-MM-yyyy");
         LocalDateTime time_transaction = null;
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-
+        int session_code = 0;
+        int pos;
+        int type_of_payment;
         boolean error = false;
+
         do {
             session_code = Consola.lerInt("Codigo da sessao: ", 0, 999999999);
             pos = base.searchChargingSession(session_code);
@@ -441,7 +472,8 @@ public class Projeto_pc2 {
 
         do {
             try {
-                time_transaction = LocalDateTime.parse(Consola.lerString("Data e hora de transacao (yyyy-MM-dd HH:mm): "), formatter);
+                time_transaction = LocalDateTime
+                        .parse(Consola.lerString("Data e hora de transacao (HH:mm dd-MM-yyyy): "), formatter);
                 error = false;
             } catch (Exception e) {
                 System.out.println("Foramto da data ou hora esta errado.");
@@ -472,7 +504,8 @@ public class Projeto_pc2 {
 
     public static void searchClient(Base base) {
         Client client;
-        int nif, pos;
+        int nif;
+        int pos;
 
         nif = Consola.lerInt("NIF: ", 0, 999999999);
         pos = base.searchClient(nif);
@@ -487,7 +520,8 @@ public class Projeto_pc2 {
 
     public static void searchChargingStation(Base base) {
         ChargingStation chargingStation;
-        int station_code, pos;
+        int station_code;
+        int pos;
 
         station_code = Consola.lerInt("Codigo da estacao: ", 0, 999999999);
         pos = base.searchChargingStation(station_code);
@@ -502,7 +536,8 @@ public class Projeto_pc2 {
 
     public static void searchChargingSession(Base base) {
         ChargingSession chargingSession;
-        int session_code, pos;
+        int session_code;
+        int pos;
 
         session_code = Consola.lerInt("Codigo da sessao: ", 0, 999999999);
         pos = base.searchChargingSession(session_code);
@@ -517,9 +552,13 @@ public class Projeto_pc2 {
 
     public static void changeClientData(Base base) {
         Client client;
-        String name, address, email;
+        String name;
+        String address;
+        String email;
         Date birth_date = null;
-        int nif, contact, pos;
+        int nif;
+        int contact;
+        int pos;
 
         nif = Consola.lerInt("NIF: ", 1, 999999999);
         pos = base.searchClient(nif);
