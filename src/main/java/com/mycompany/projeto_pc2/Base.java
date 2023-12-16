@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 /**
  *
- * @author Paulo Sousa | João Domingos
+ * @authors Paulo Sousa | João Domingos
  */
 public class Base implements Serializable {
     private ArrayList<Vehicle> vehicles;
@@ -25,13 +25,13 @@ public class Base implements Serializable {
     public int getTotalChargingStations() { return chargingStations.size(); }
     public int getTotalChargingSessions() { return chargingSessions.size(); }
 
-    public void addVehicle(Vehicle newVehicle)                         { vehicles.add(newVehicle); }
-    public void addClient(Client newClient)                            { clients.add(newClient); }
+    public void addVehicle        (Vehicle         newVehicle)         { vehicles.add(newVehicle); }
+    public void addClient         (Client          newClient)          { clients.add(newClient); }
     public void addChargingStation(ChargingStation newChargingStation) { chargingStations.add(newChargingStation); }
     public void addChargingSession(ChargingSession newChargingSession) { chargingSessions.add(newChargingSession); }
 
-    public Vehicle getVehicle(int pos)                 { return vehicles.get(pos); }
-    public Client getClient(int pos)                   { return clients.get(pos); }
+    public Vehicle         getVehicle        (int pos) { return vehicles.get(pos); }
+    public Client          getClient         (int pos) { return clients.get(pos); }
     public ChargingStation getChargingStation(int pos) { return chargingStations.get(pos); }
     public ChargingSession getChargingSession(int pos) { return chargingSessions.get(pos); }
 
