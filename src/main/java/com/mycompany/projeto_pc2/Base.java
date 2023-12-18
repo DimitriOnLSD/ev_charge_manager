@@ -100,23 +100,18 @@ public class Base implements Serializable {
             }  
         }
     }
+    public int getTotalChargingSessionsByUser(int nif) {
+        Client client;
+        int pos;
+        int total;
+        pos = searchClient(nif);
+        if (pos == -1) {
+            System.err.println("\nEste NIF nao se encontra registado!\n");
+            total = pos;
+        } else {
+            client = getClient(pos);
+            total = client.getTotalSessions();
+        }
+        return total;
+    } 
 }
-
-/*
- * public void show3most() {
- * if (numContas == 0) {
- * System.out.println("Nao existem contas");
- * 
- * } else {
- * System.out.
- * println("____________________Todas as contas: ____________________");
- * System.out.println("Numero - \tSaldo - \tNumero Cliente");
- * for (int i = 0; i < numContas; i++) {
- * System.out.println(
- * contas[i].getNumContas() +
- * "\t" + contas[i].getSaldo() +
- * "\t" + contas[i].getNumCliente());
- * }
- * }
- * }
- */

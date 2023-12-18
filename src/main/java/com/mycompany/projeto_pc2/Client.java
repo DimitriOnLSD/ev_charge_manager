@@ -13,6 +13,7 @@ public class Client {
     protected Date birth_date;
     protected int NIF;
     protected int contact;
+    protected int total_sessions = 0;
 
     public Client(String name, 
                   String address, 
@@ -28,23 +29,26 @@ public class Client {
         this.birth_date = birth_date;
     }
 
-    public String getName()                       { return name; }
-    public void setName(String name)              { this.name = name; }
+    public String getName()                           { return name; }
+    public void setName(String name)                  { this.name = name; }
 
-    public String getAddress()                    { return address; }
-    public void setAddress(String address)        { this.address = address; }
+    public String getAddress()                        { return address; }
+    public void setAddress(String address)            { this.address = address; }
 
-    public String getEmail()                      { return email; }
-    public void setEmail(String email)            { this.email = email; }
+    public String getEmail()                          { return email; }
+    public void setEmail(String email)                { this.email = email; }
 
-    public int getNIF()                           { return NIF; }
-    public void setNIF(int nIF)                   { NIF = nIF; }
+    public int getNIF()                               { return NIF; }
+    public void setNIF(int nIF)                       { NIF = nIF; }
 
-    public int getContact()                       { return contact; }
-    public void setContact(int contact)           { this.contact = contact; }
+    public int getContact()                           { return contact; }
+    public void setContact(int contact)               { this.contact = contact; }
 
-    public Date getBirthDate()                    { return birth_date; }
-    public void setBirthDate(Date birth_date)     { this.birth_date = birth_date; }
+    public Date getBirthDate()                        { return birth_date; }
+    public void setBirthDate(Date birth_date)         { this.birth_date = birth_date; }
+
+    public int getTotalSessions()                     { return total_sessions; }
+    public void setTotalSessions(int total_sessions)  { this.total_sessions = total_sessions; }
 
     @Override
     public String toString() {

@@ -138,7 +138,7 @@ public class Projeto_pc2 {
                 case 5:
                     System.out.println("[1] Lista dos 3 postos de carregamento com maior valor faturado");
                     System.out.println("[2] Lista de sessoes de carregamento com valor superior a X");
-                    System.out.println("[3] Total de sessoes de carregamento realizadas");
+                    System.out.println("[3] Total de sessoes de carregamento realizadas por utilizador");
                     System.out.println("[4] Media de energia consumida por: posto de carregamento e tipo de veiculo");
                     System.out.println("[5] Lista de pagamentos por efetuar");
                     System.out.println("[6] Historico de sessoes de carregamento");
@@ -169,7 +169,7 @@ public class Projeto_pc2 {
                             }
                             break;
                         case 3:
-
+                            System.out.println("Total de sessoes realizadas: " + base.getTotalChargingSessionsByUser(Consola.lerInt("Insira NIF: ", 0, 999999999)));
                             break;
                         case 4:
 
@@ -449,6 +449,7 @@ public class Projeto_pc2 {
 
         chargingStation.total_energy_consumed += energy_consumed;
         chargingStation.total_revenue += session_cost;
+        client.total_sessions++;
 
         vehicle.setCharging(true);
         settlement_status = "Por pagar";
