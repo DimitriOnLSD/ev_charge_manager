@@ -14,6 +14,7 @@ public class Client {
     protected int NIF;
     protected int contact;
     protected int total_sessions = 0;
+    private boolean payment_is_pending = false;
 
     public Client(String name, 
                   String address, 
@@ -50,11 +51,14 @@ public class Client {
     public int getTotalSessions()                     { return total_sessions; }
     public void setTotalSessions(int total_sessions)  { this.total_sessions = total_sessions; }
 
+    public boolean isPaymentIsPending() { return payment_is_pending; }
+    public void setPaymentIsPending(boolean payment_is_pending) { this.payment_is_pending = payment_is_pending; }
+
     @Override
     public String toString() {
         StringBuilder str = new StringBuilder();
         str.append("Nome: " + name + "\n");
-        str.append("Data de nascimento: " + birth_date + "\n");
+        str.append("Data de nascimento: " + Projeto_pc2.dateFormat.format(birth_date) + "\n");
         str.append("Morada: " + address + "\n");
         str.append("Contacto telefonico: " + contact + "\n");
         str.append("Email: " + email + "\n");

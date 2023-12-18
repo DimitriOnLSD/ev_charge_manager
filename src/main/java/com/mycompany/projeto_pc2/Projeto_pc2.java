@@ -16,13 +16,12 @@ import util.Consola;
 
 /*
  * Bugs: 
- * linha 150: valor do double nao esta a converter corretamente para string
- * linha 432: valor de hours e absurdo e causa valores altissimos em session cost
+ * 
  */
 
 /* 
  * To ask:
- * Os clientes so podem carregar os seus carros?
+ * Os clientes so podem carregar os seus carros? sim
  * Ao consultar os clientes, deve aparecer os seus carros (matriculas)?
  * No registo de uma sessao, o programa guarda a hora de inicio e pergunta ao utilizador quanto tempo quer carregar o veiculo
  * 
@@ -30,7 +29,6 @@ import util.Consola;
 
 /*
  * To do list:
- * 2 casas decimais em chargingSession, para os kWh e euros (ex: 1.25€ 1.36 kW/h)
  * Checker do charging_now. Depois de terminar a hora de carregar um carro, esta variavel devia decrementar
  * Os carros devem estar associados aos clientes. Cada cliente pode ter multiplos carros. Talvez usar vetor ou lista nos clientes de veiculos
  * Uma funcao que devolve o tempo total de carregamento. Será usada para verificar quantos carros estao a usar a mesma estacao naquele periodo de tempo, o custo da sessao e energia consumida
@@ -140,7 +138,7 @@ public class Projeto_pc2 {
                     System.out.println("[2] Lista de sessoes de carregamento com valor superior a X");
                     System.out.println("[3] Total de sessoes de carregamento realizadas por utilizador");
                     System.out.println("[4] Media de energia consumida por: posto de carregamento e tipo de veiculo");
-                    System.out.println("[5] Lista de pagamentos por efetuar");
+                    System.out.println("[5] Lista de pagamentos pendentes por cliente");
                     System.out.println("[6] Historico de sessoes de carregamento");
                     System.out.println("[0] Voltar");
 
@@ -242,7 +240,7 @@ public class Projeto_pc2 {
 
         brand = Consola.lerString("Marca: ");
         model = Consola.lerString("Modelo: ");
-        horsepower = Consola.lerInt("Potencia: ", 0, 99999);
+        horsepower = Consola.lerInt("Potencia: ", 1, 99999);
 
         do {
             electric_hybrid = Consola.lerString("Eletrico ou Hibrido: ");
@@ -256,12 +254,12 @@ public class Projeto_pc2 {
         } while (check_ev_type);
 
         if (isHybrid) {
-            engine_displacement = Consola.lerInt("Cilindrada: ", 0, 99999);
+            engine_displacement = Consola.lerInt("Cilindrada: ", 1, 99999);
             fuel_type = Consola.lerString("Tipo de combustivel: ");
         }
-        battery_capacity = Consola.lerDouble("Capacidade da bateria: ", 0, 99999);
-        range = Consola.lerInt("Autonomia: ", 0, 99999);
-        chargingSpeed = Consola.lerInt("Velocidade de carregamento: ", 0, 99999);
+        battery_capacity = Consola.lerDouble("Capacidade da bateria: ", 1, 99999);
+        range = Consola.lerInt("Autonomia: ", 1, 99999);
+        chargingSpeed = Consola.lerInt("Velocidade de carregamento: ", 1, 99999);
 
         do {
             try {
@@ -288,7 +286,7 @@ public class Projeto_pc2 {
         boolean error = false;
         
         do {
-            NIF = Consola.lerInt("NIF: ", 0, 999999999);
+            NIF = Consola.lerInt("NIF: ", 100000000, 999999999);
             pos = base.searchClient(NIF);
             if (pos != -1) {
                 System.err.println("Este cliente ja se encontra registado!");
@@ -342,8 +340,8 @@ public class Projeto_pc2 {
         } while (check_station_type);
 
         address = Consola.lerString("Morada: ");
-        charging_cost = Consola.lerFloat("Custo de carregamento: ", 0, 999999999);
-        charging_time = Consola.lerFloat("Tempo de carregamento: ", 0, 168);
+        charging_cost = Consola.lerDouble("Custo de carregamento: ", 0, 999999999);
+        charging_time = Consola.lerDouble("Tempo de carregamento: ", 0, 168);
         simultaneous_ev_charging = Consola.lerInt("Carregamento em simultaneo: ", 0, 50);
 
         ChargingStation newChargingStation = new ChargingStation(station_code, simultaneous_ev_charging, charging_now, address, station_type, charging_time, charging_cost);
@@ -424,13 +422,16 @@ public class Projeto_pc2 {
                 finish_time = LocalDateTime.parse(Consola.lerString("Data e hora de fim (HH:mm dd-MM-yyyy): "), formatter);
                 error = false;
             } catch (Exception e) {
-                System.err.println("Foramto da data ou hora esta errado.");
+                System.err.println("Formato da data ou hora esta errado.");
                 error = true;
             }
+            // if (chargingStation.canCharge(start_time, finish_time)) {
+
+            // }
         } while (error);
 
         time_charging = Duration.between(start_time, finish_time);
-        hours = time_charging.toMinutes() / 60;
+        hours = (double) time_charging.toMinutes() / 60;
 
         switch (chargingStation.getStationType()) {
             case "PCN":
@@ -619,14 +620,14 @@ public class Projeto_pc2 {
         }
     }
 
-    public static void populateList(Base base) {
+    public static void populateList(Base base) throws ParseException {
         Vehicle volvoxc40 = new Vehicle(
                 "Volvo",
                 "XC40 Recharge T5",
                 "69-04-AF",
                 "Hibrido",
                 "Gasolina",
-                null,
+                dateFormat.parse("19-01-2021"),
                 178,
                 50,
                 11,
@@ -641,12 +642,12 @@ public class Projeto_pc2 {
                 "24-NF-01",
                 "Eletrico",
                 null,
-                null,
+                dateFormat.parse("05-04-2020"),
                 116,
                 320,
-                85,
                 0,
                 50,
+                85,
                 42,
                 false);
 
@@ -656,13 +657,44 @@ public class Projeto_pc2 {
                 "37-61-MX",
                 "Eletrico",
                 null,
-                null,
+                dateFormat.parse("30-11-2023"),
                 284,
                 617,
-                170,
                 0,
                 50,
+                170,
                 100,
+                false);
+
+        Vehicle peugeote208 = new Vehicle(
+                "Peugeot",
+                "e-208",
+                "06-08-AG",
+                "Eletrico",
+                null,
+                dateFormat.parse("01-06-2020"),
+                134,
+                340,
+                0,
+                50,
+                7.4,
+                50,
+                false);
+
+
+            Vehicle bmwi4m50 = new Vehicle(
+                "BMW",
+                "I4 M50",
+                "01-01-AA",
+                "Eletrico",
+                null,
+                dateFormat.parse("18-12-2023"),
+                537,
+                510,
+                0,
+                50,
+                207,
+                83.9,
                 false);
 
         Client c1 = new Client(
@@ -671,15 +703,39 @@ public class Projeto_pc2 {
                 "2222031@my.ipleiria.pt",
                 257287914,
                 969096163,
-                null);
+                dateFormat.parse("31-01-2000"));
 
         Client c2 = new Client(
                 "Joao Domingos",
                 "Leiria",
+                "2222034@my.ipleiria.pt",
+                244685673,
+                967655031,
+                dateFormat.parse("06-08-2002"));
+
+        Client c3 = new Client(
+                "Bernardo Gordo",
+                "Sacristia",
+                "2222033@my.ipleiria.pt",
+                251986730,
+                911139898,
+                dateFormat.parse("29-06-2002"));
+
+        Client c4 = new Client(
+                "Perdu Ferreira",
+                "FerMar",
                 "2222035@my.ipleiria.pt",
-                123456789,
-                123456789,
-                null);
+                111111111,
+                916849913,
+                dateFormat.parse("13-05-2001"));
+
+        Client c5 = new Client(
+                "Cravo Morcela",
+                "Morcela",
+                "2222030@my.ipleiria.pt",
+                222222222,
+                918402249,
+                dateFormat.parse("17-05-2001"));
 
         ChargingStation cs1 = new ChargingStation(
                 1,
@@ -730,7 +786,7 @@ public class Projeto_pc2 {
                 6,
                 1,
                 0,
-                "Praça Existente",
+                "Praca Existente",
                 "PCUR",
                 4,
                 5);
@@ -738,8 +794,13 @@ public class Projeto_pc2 {
         base.addVehicle(volvoxc40);
         base.addVehicle(fiat500);
         base.addVehicle(mercedesbenzeqs);
+        base.addVehicle(peugeote208);
+        base.addVehicle(bmwi4m50);
         base.addClient(c1);
         base.addClient(c2);
+        base.addClient(c3);
+        base.addClient(c4);
+        base.addClient(c5);
         base.addChargingStation(cs1);
         base.addChargingStation(cs2);
         base.addChargingStation(cs3);

@@ -1,6 +1,8 @@
 package com.mycompany.projeto_pc2;
 
 import java.io.Serializable;
+import java.lang.reflect.Array;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 /**
@@ -68,6 +70,16 @@ public class Base implements Serializable {
         return -1;
     }
 
+    // public boolean canCharge(LocalDateTime start_time, LocalDateTime finish_time) {
+    //     ChargingSession chargingSession = null;
+    //     for (int i = 0; i < chargingSessions.size(); i++) {
+    //         if (chargingSession.isOverlapping(start_time, finish_time)) {
+    //             return false;
+    //         }
+    //     }
+    //     return true;
+    // }
+
     public double[] searchStationRevenue() {
         double[] to_return = { 0.0, 0.0, 0.0, 0, 0, 0 };
 
@@ -114,4 +126,8 @@ public class Base implements Serializable {
         }
         return total;
     } 
+    public int getPendingPaymentByUser(int nif) {
+        // code
+        return 1;
+    }
 }

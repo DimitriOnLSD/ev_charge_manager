@@ -16,9 +16,9 @@ public class Vehicle {
     protected Date date_of_register;
     protected int horsepower;
     protected int range;
-    protected int chargingSpeed;
     protected int engine_displacement;
     protected int battery;
+    protected double chargingSpeed;
     protected double battery_capacity;
     protected boolean isCharging = false;
 
@@ -30,9 +30,9 @@ public class Vehicle {
                    Date date_of_register,
                    int horsepower,
                    int range,
-                   int chargingSpeed,
                    int engine_displacement,
                    int battery,
+                   double chargingSpeed,
                    double battery_capacity,
                    boolean isCharging) {
         this.brand = brand;
@@ -77,8 +77,8 @@ public class Vehicle {
     public int getRange()                                           { return range; }
     public void setRange(int range)                                 { this.range = range; }
 
-    public int getChargingSpeed()                                   { return chargingSpeed; }
-    public void setChargingSpeed(int chargingSpeed)                 { this.chargingSpeed = chargingSpeed; }
+    public double getChargingSpeed()                                { return chargingSpeed; }
+    public void setChargingSpeed(double chargingSpeed)              { this.chargingSpeed = chargingSpeed; }
 
     public String isEletricHybrid()                                 { return electric_hybrid; }
     public void setEletricHybrid(String electric_hybrid)            { this.electric_hybrid = electric_hybrid; }
@@ -96,7 +96,7 @@ public class Vehicle {
     public String toString() {
         StringBuilder str = new StringBuilder();
         str.append("Carro: " + brand + " " + model + "\n");
-        str.append("Data de registo: " + date_of_register + "\n");
+        str.append("Data de registo: " + Projeto_pc2.dateFormat.format(date_of_register) + "\n");
         str.append("Tipo: " + electric_hybrid + "\n");
         if (isEletricHybrid().equals("Hibrido")) {
             str.append("Combustivel: " + fuel_type + "\n");
