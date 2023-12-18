@@ -67,6 +67,32 @@ public class Base implements Serializable {
         }
         return -1;
     }
+
+    public double[] searchStationRevenue() {
+        double[] to_return = { 0.0, 0.0, 0.0, 0, 0, 0 };
+
+        for (int i = 0; i < chargingStations.size(); i++) {
+            double revenue = chargingStations.get(i).getTotalRevenue();
+
+            if (revenue > to_return[0]) {
+                to_return[2] = to_return[1];
+                to_return[1] = to_return[0];
+                to_return[0] = revenue;
+                to_return[5] = to_return[4];
+                to_return[4] = to_return[3];
+                to_return[3] = chargingStations.get(i).getStationCode();
+            } else if (revenue > to_return[1]) {
+                to_return[2] = to_return[1];
+                to_return[1] = revenue;
+                to_return[5] = to_return[4];
+                to_return[4] = chargingStations.get(i).getStationCode();
+            } else if (revenue > to_return[2]) {
+                to_return[2] = revenue;
+                to_return[5] = chargingStations.get(i).getStationCode();
+            }
+        }
+        return to_return;
+    }
 }
 
 /*

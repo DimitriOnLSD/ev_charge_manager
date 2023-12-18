@@ -52,11 +52,11 @@ public class ChargingStation {
     public int getChargingNow()                                         { return charging_now; }
     public void setChargingNow(int charging_now)                        { this.charging_now = charging_now; }
 
-    public double getTotal_energy_consumed()                            { return total_energy_consumed; }
-    public void setTotal_energy_consumed(double total_energy_consumed)  { this.total_energy_consumed = total_energy_consumed; }
+    public double getTotalEnergyConsumed()                              { return total_energy_consumed; }
+    public void setTotalEnergyConsumed(double total_energy_consumed)    { this.total_energy_consumed = total_energy_consumed; }
 
-    public double getTotal_revenue()                                    { return total_revenue; }
-    public void setTotal_revenue(double total_revenue)                  { this.total_revenue = total_revenue; }
+    public double getTotalRevenue()                                     { return total_revenue; }
+    public void setTotalRevenue(double total_revenue)                   { this.total_revenue = total_revenue; }
 
     @Override
     public String toString() {

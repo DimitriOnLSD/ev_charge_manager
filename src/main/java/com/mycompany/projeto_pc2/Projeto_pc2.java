@@ -9,23 +9,25 @@ import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Random;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import util.Consola;
 
 /*
  * Bugs: 
- * 
+ * linha 150: valor do double nao esta a converter corretamente para string
  */
 
 /* 
+ * To ask:
  * Os clientes so podem carregar os seus carros?
+ * Ao consultar os clientes, deve aparecer os seus carros (matriculas)?
  * 
  */
 
 /*
  * To do list:
- * Checker do generate session code, pra saber se ja existe uma sessao com o mesmo codigo
- * Checker da matricula
  * Checker do charging_now. Depois de terminar a hora de carregar um carro, esta variavel devia decrementar
  * Os carros devem estar associados aos clientes. Cada cliente pode ter multiplos carros. Talvez usar vetor ou lista nos clientes de veiculos
  * Uma funcao que devolve o tempo total de carregamento. Será usada para verificar quantos carros estao a usar a mesma estacao naquele periodo de tempo, o custo da sessao e energia consumida
@@ -40,7 +42,6 @@ public class Projeto_pc2 {
 
     static DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
     static SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
-
     public static Scanner sc = new Scanner(System.in);
 
     public static void main(String[] args) throws ParseException {
@@ -144,7 +145,16 @@ public class Projeto_pc2 {
 
                     switch (secondary_option) {
                         case 1:
+                            double[] result = base.searchStationRevenue();
 
+                            String str1 = String.format("%.2f", result[0]);
+                            String str2 = String.format("%.2f", result[1]);
+                            String str3 = String.format("%.2f", result[2]);
+
+                            System.out.println("1. Valor faturado: " + str1 + " euros, Codigo da estacao: " + (int) result[3]);
+                            System.out.println("2. Valor faturado: " + str2 + " euros, Codigo da estacao: " + (int) result[4]);
+                            System.out.println("3. Valor faturado: " + str3 + " euros, Codigo da estacao: " + (int) result[5]);
+                            System.out.println();
                             break;
                         case 2:
 
@@ -183,16 +193,6 @@ public class Projeto_pc2 {
         return option;
     }
 
-    public static void clearConsole() {
-        System.out.print("\033[H\033[2J");
-        System.out.flush();
-    }
-
-    public static void holdConsole() {
-        System.out.println("Pressione enter para continuar...");
-        sc.nextLine();
-    }
-
     public static void addVehicle(Base base) {
         String brand;
         String model;
@@ -211,20 +211,30 @@ public class Projeto_pc2 {
         boolean isHybrid = false;
         boolean check_ev_type = true;
         boolean error = false;
+        Pattern pattern = Pattern.compile("\\p{XDigit}{2}-\\p{XDigit}{2}-\\p{XDigit}{2}");
 
         do {
             license_plate = Consola.lerString("Insira a matricula: ");
             pos = base.searchVehicle(license_plate);
+
             if (pos != -1) {
                 System.err.println("Esta matricula ja se encontra registada!");
+                error = true;
+            } else {
+                Matcher matcher = pattern.matcher(license_plate);
+                if (!matcher.matches()) {
+                    System.err.println("Matricula invalida. Formato certo deve ser XX-XX-XX");
+                    error = true;
+                } else {
+                    error = false;
+                }
             }
-        } while (pos != -1);
+        } while (error);
 
         brand = Consola.lerString("Marca: ");
         model = Consola.lerString("Modelo: ");
         horsepower = Consola.lerInt("Potencia: ", 0, 99999);
 
-        
         do {
             electric_hybrid = Consola.lerString("Eletrico ou Hibrido: ");
             if (electric_hybrid.equals("Hibrido")) {
@@ -337,6 +347,7 @@ public class Projeto_pc2 {
         Client client = null;
         LocalDateTime start_time = null;
         LocalDateTime finish_time = null;
+        Duration time_charging = null;
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm dd-MM-yyyy");
         String settlement_status;
         String license_plate;
@@ -347,6 +358,7 @@ public class Projeto_pc2 {
         int max_charge = 0;
         double energy_consumed;
         double session_cost;
+        double hours;
         boolean error = false;
 
         do {
@@ -399,10 +411,8 @@ public class Projeto_pc2 {
 
         do {
             try {
-                start_time = LocalDateTime.parse(Consola.lerString("Data e hora de inicio (HH:mm dd-MM-yyyy): "),
-                        formatter);
-                finish_time = LocalDateTime.parse(Consola.lerString("Data e hora de fim (HH:mm dd-MM-yyyy): "),
-                        formatter);
+                start_time = LocalDateTime.parse(Consola.lerString("Data e hora de inicio (HH:mm dd-MM-yyyy): "), formatter);
+                finish_time = LocalDateTime.parse(Consola.lerString("Data e hora de fim (HH:mm dd-MM-yyyy): "), formatter);
                 error = false;
             } catch (Exception e) {
                 System.out.println("Foramto da data ou hora esta errado.");
@@ -410,8 +420,8 @@ public class Projeto_pc2 {
             }
         } while (error);
 
-        Duration time_charging = Duration.between(start_time, finish_time);
-        double hours = time_charging.toHours() % 24;
+        time_charging = Duration.between(start_time, finish_time);
+        hours = time_charging.toSeconds() * 3600;
 
         switch (chargingStation.getStationType()) {
             case "PCN":
@@ -433,7 +443,10 @@ public class Projeto_pc2 {
 
         vehicle.setCharging(true);
         settlement_status = "Por pagar";
-        session_code = generateRandomSessionCode();
+        do {
+            session_code = generateRandomSessionCode();
+        } while (base.searchChargingSession(session_code) != -1);
+        
         // comentado, pois vai existir outra forma de verificar se um carro esta a ser carregado naquele periodo de tempo. talvez com listas
         // chargingStation.charging_now++;
 
@@ -662,7 +675,7 @@ public class Projeto_pc2 {
                 1,
                 4,
                 0,
-                "Avenida Paulo Seixo",
+                "Av. Paulo Seixo",
                 "PCN",
                 10,
                 0.2);
@@ -671,7 +684,7 @@ public class Projeto_pc2 {
                 2,
                 3,
                 0,
-                "Avenida Joao Pecado",
+                "Av. Joao Pecado",
                 "PCR",
                 6,
                 2.5);
@@ -680,10 +693,37 @@ public class Projeto_pc2 {
                 3,
                 2,
                 0,
-                "Avenida D. Perdu",
+                "Av. D. Perdu",
                 "PCUR",
                 4,
                 4);
+        
+        ChargingStation cs4 = new ChargingStation(
+                4,
+                2,
+                0,
+                "Rua nao sei",
+                "PCR",
+                4,
+                2.2);
+        
+        ChargingStation cs5 = new ChargingStation(
+                5,
+                2,
+                0,
+                "Av. Qualquer coisa",
+                "PCR",
+                4,
+                2.25);
+        
+        ChargingStation cs6 = new ChargingStation(
+                6,
+                1,
+                0,
+                "Praça Existente",
+                "PCUR",
+                4,
+                5);
 
         base.addVehicle(volvoxc40);
         base.addVehicle(fiat500);
@@ -693,6 +733,19 @@ public class Projeto_pc2 {
         base.addChargingStation(cs1);
         base.addChargingStation(cs2);
         base.addChargingStation(cs3);
+        base.addChargingStation(cs4);
+        base.addChargingStation(cs5);
+        base.addChargingStation(cs6);
+    }
+
+    public static void clearConsole() {
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
+    }
+
+    public static void holdConsole() {
+        System.out.println("Pressione enter para continuar...");
+        sc.nextLine();
     }
 
     public static int generateRandomSessionCode() {
