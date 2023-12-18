@@ -17,17 +17,20 @@ import util.Consola;
 /*
  * Bugs: 
  * linha 150: valor do double nao esta a converter corretamente para string
+ * linha 432: valor de hours e absurdo e causa valores altissimos em session cost
  */
 
 /* 
  * To ask:
  * Os clientes so podem carregar os seus carros?
  * Ao consultar os clientes, deve aparecer os seus carros (matriculas)?
+ * No registo de uma sessao, o programa guarda a hora de inicio e pergunta ao utilizador quanto tempo quer carregar o veiculo
  * 
  */
 
 /*
  * To do list:
+ * 2 casas decimais em chargingSession, para os kWh e euros (ex: 1.25€ 1.36 kW/h)
  * Checker do charging_now. Depois de terminar a hora de carregar um carro, esta variavel devia decrementar
  * Os carros devem estar associados aos clientes. Cada cliente pode ter multiplos carros. Talvez usar vetor ou lista nos clientes de veiculos
  * Uma funcao que devolve o tempo total de carregamento. Será usada para verificar quantos carros estao a usar a mesma estacao naquele periodo de tempo, o custo da sessao e energia consumida
@@ -134,7 +137,7 @@ public class Projeto_pc2 {
                     break;
                 case 5:
                     System.out.println("[1] Lista dos 3 postos de carregamento com maior valor faturado");
-                    System.out.println("[2] Lista de sessoes de carregamento com valor superior a x");
+                    System.out.println("[2] Lista de sessoes de carregamento com valor superior a X");
                     System.out.println("[3] Total de sessoes de carregamento realizadas");
                     System.out.println("[4] Media de energia consumida por: posto de carregamento e tipo de veiculo");
                     System.out.println("[5] Lista de pagamentos por efetuar");
@@ -157,7 +160,13 @@ public class Projeto_pc2 {
                             System.out.println();
                             break;
                         case 2:
-
+                            if (base.getTotalChargingSessions() > 0) {
+                                double x = Consola.lerDouble("Custo das sessoes com valor superior a: ", 0, 999999999);
+                                base.searchSessionCostSuperiorToN(x);
+                                System.out.println();
+                            } else {
+                                System.err.println("\nNao existem sessoes registadas!\n");
+                            }
                             break;
                         case 3:
 
@@ -415,13 +424,13 @@ public class Projeto_pc2 {
                 finish_time = LocalDateTime.parse(Consola.lerString("Data e hora de fim (HH:mm dd-MM-yyyy): "), formatter);
                 error = false;
             } catch (Exception e) {
-                System.out.println("Foramto da data ou hora esta errado.");
+                System.err.println("Foramto da data ou hora esta errado.");
                 error = true;
             }
         } while (error);
 
         time_charging = Duration.between(start_time, finish_time);
-        hours = time_charging.toSeconds() * 3600;
+        hours = time_charging.toMinutes() / 60;
 
         switch (chargingStation.getStationType()) {
             case "PCN":

@@ -93,6 +93,13 @@ public class Base implements Serializable {
         }
         return to_return;
     }
+    public void searchSessionCostSuperiorToN(double n) {
+        for (int i = 0; i < chargingSessions.size(); i++) {
+            if (chargingSessions.get(i).getSessionCost() > n) {
+                System.out.println("Codigo da sessao: " + chargingSessions.get(i).getSessionCode());
+            }  
+        }
+    }
 }
 
 /*
