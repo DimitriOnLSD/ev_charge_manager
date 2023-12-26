@@ -7,6 +7,7 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.regex.Matcher;
@@ -29,9 +30,10 @@ import util.Consola;
 
 /*
  * To do list:
+ * O codigo das estatisticas deve estar dentro de funçoes fora da main
+ * Ponto decimal na opcao 5 do menu estatisticas
  * Checker do charging_now. Depois de terminar a hora de carregar um carro, esta variavel devia decrementar
  * Os carros devem estar associados aos clientes. Cada cliente pode ter multiplos carros. Talvez usar vetor ou lista nos clientes de veiculos
- * Uma funcao que devolve o tempo total de carregamento. Será usada para verificar quantos carros estao a usar a mesma estacao naquele periodo de tempo, o custo da sessao e energia consumida
  * O resto do codigo...
  */
 
@@ -170,13 +172,13 @@ public class Projeto_pc2 {
                             System.out.println("Total de sessoes realizadas: " + base.getTotalChargingSessionsByUser(Consola.lerInt("Insira NIF: ", 0, 999999999)));
                             break;
                         case 4:
-
+                            // code
                             break;
                         case 5:
-
+                            base.getUnpaidSessionsByClient(Consola.lerInt("NIF: ", 0, 999999999));
                             break;
                         case 6:
-
+                            base.getSessionHistoryByStation(Consola.lerInt("Cod. da estacao: ", 0, 999999999));
                             break;
                     }
                     break;
@@ -426,7 +428,7 @@ public class Projeto_pc2 {
                 error = true;
             }
             // if (chargingStation.canCharge(start_time, finish_time)) {
-
+            //     code
             // }
         } while (error);
 
@@ -454,16 +456,19 @@ public class Projeto_pc2 {
 
         vehicle.setCharging(true);
         settlement_status = "Por pagar";
+
         do {
             session_code = generateRandomSessionCode();
         } while (base.searchChargingSession(session_code) != -1);
+        System.out.println("Codigo da sessao gerado: " + session_code);
         
         // comentado, pois vai existir outra forma de verificar se um carro esta a ser carregado naquele periodo de tempo. talvez com listas
         // chargingStation.charging_now++;
-
-        System.out.println("Codigo da sessao gerado: " + session_code);
+        
+        ChargingSession newChargingSession = new ChargingSession(chargingStation, vehicle, client, session_code, start_time, finish_time, settlement_status, energy_consumed, session_cost, false);
         vehicle.setChargingStation(chargingStation);
-        ChargingSession newChargingSession = new ChargingSession(chargingStation, vehicle, client, session_code, start_time, finish_time, settlement_status, energy_consumed, session_cost);
+        client.addChargingSession(newChargingSession);
+        chargingStation.addChargingSession(newChargingSession);
         base.addChargingSession(newChargingSession);
     }
 
@@ -506,6 +511,7 @@ public class Projeto_pc2 {
         } while (error);
 
         chargingSession.setSettlementStatus("Pago");
+        chargingSession.setIsPaid(true);
         chargingSession.setTypeOfPayment(type_of_payment);
         chargingSession.setTimeOftransaction(time_transaction);
     }

@@ -1,6 +1,8 @@
 package com.mycompany.projeto_pc2;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  *
@@ -14,7 +16,7 @@ public class Client {
     protected int NIF;
     protected int contact;
     protected int total_sessions = 0;
-    private boolean payment_is_pending = false;
+    private List<ChargingSession> chargingSessions;
 
     public Client(String name, 
                   String address, 
@@ -28,31 +30,32 @@ public class Client {
         NIF = nIF;
         this.contact = contact;
         this.birth_date = birth_date;
+        this.chargingSessions = new ArrayList<>();
     }
 
-    public String getName()                           { return name; }
-    public void setName(String name)                  { this.name = name; }
+    public String getName()                                 { return name; }
+    public void setName(String name)                        { this.name = name; }
 
-    public String getAddress()                        { return address; }
-    public void setAddress(String address)            { this.address = address; }
+    public String getAddress()                              { return address; }
+    public void setAddress(String address)                  { this.address = address; }
 
-    public String getEmail()                          { return email; }
-    public void setEmail(String email)                { this.email = email; }
+    public String getEmail()                                { return email; }
+    public void setEmail(String email)                      { this.email = email; }
 
-    public int getNIF()                               { return NIF; }
-    public void setNIF(int nIF)                       { NIF = nIF; }
+    public int getNIF()                                     { return NIF; }
+    public void setNIF(int nIF)                             { NIF = nIF; }
 
-    public int getContact()                           { return contact; }
-    public void setContact(int contact)               { this.contact = contact; }
+    public int getContact()                                 { return contact; }
+    public void setContact(int contact)                     { this.contact = contact; }
 
-    public Date getBirthDate()                        { return birth_date; }
-    public void setBirthDate(Date birth_date)         { this.birth_date = birth_date; }
+    public Date getBirthDate()                              { return birth_date; }
+    public void setBirthDate(Date birth_date)               { this.birth_date = birth_date; }
 
-    public int getTotalSessions()                     { return total_sessions; }
-    public void setTotalSessions(int total_sessions)  { this.total_sessions = total_sessions; }
+    public int getTotalSessions()                           { return total_sessions; }
+    public void setTotalSessions(int total_sessions)        { this.total_sessions = total_sessions; }
 
-    public boolean isPaymentIsPending() { return payment_is_pending; }
-    public void setPaymentIsPending(boolean payment_is_pending) { this.payment_is_pending = payment_is_pending; }
+    public List<ChargingSession> getChargingSessions()      { return chargingSessions; }
+    public void addChargingSession(ChargingSession session) { chargingSessions.add(session); }
 
     @Override
     public String toString() {

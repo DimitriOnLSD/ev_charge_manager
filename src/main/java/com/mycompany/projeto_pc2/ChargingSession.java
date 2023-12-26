@@ -8,9 +8,11 @@ import java.time.LocalDateTime;
  */
 public class ChargingSession {
     protected int session_code;
+    protected int client_ID;
     protected int type_of_payment;
     protected double energy_consumed;
     protected double session_cost;
+    protected boolean is_paid;
     protected String settlement_status;
     protected LocalDateTime start_time;
     protected LocalDateTime finish_time;
@@ -27,7 +29,8 @@ public class ChargingSession {
                            LocalDateTime finish_time,
                            String settlement_status,
                            double energy_consumed,
-                           double session_cost) {
+                           double session_cost,
+                           boolean is_paid) {
         this.chargingStation = chargingStation;
         this.vehicle = vehicle;
         this.client = client;
@@ -37,6 +40,7 @@ public class ChargingSession {
         this.settlement_status = settlement_status;
         this.energy_consumed = energy_consumed;
         this.session_cost = session_cost;
+        this.is_paid = is_paid;
     }
 
     public int getSessionCode()                                      { return session_code; }
@@ -62,6 +66,12 @@ public class ChargingSession {
 
     public LocalDateTime getTimeOftransaction()                      { return time_transaction; }
     public void setTimeOftransaction(LocalDateTime time_transaction) { this.time_transaction = time_transaction; }
+
+    public int getClientID()                                         { return client_ID; }
+    public void setClientID(int client_ID)                           { this.client_ID = client_ID; }
+
+    public boolean getIsPaid()                                       { return is_paid; }
+    public void setIsPaid(boolean is_paid)                           { this.is_paid = is_paid; }
 
     public boolean isOverlapping(LocalDateTime newStartTime, LocalDateTime newFinishTime) {
         return (newStartTime.isBefore(finish_time) || newStartTime.isEqual(finish_time)) &&

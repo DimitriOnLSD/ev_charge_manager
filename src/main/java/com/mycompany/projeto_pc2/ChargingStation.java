@@ -1,5 +1,8 @@
 package com.mycompany.projeto_pc2;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  *
  * @authors Paulo Sousa | João Domingos
@@ -14,6 +17,7 @@ public class ChargingStation {
     protected double charging_cost;
     protected double total_energy_consumed;
     protected double total_revenue;
+    private List<ChargingSession> chargingSessions;
 
     public ChargingStation(int station_code, 
                            int simultaneous_ev_charging, 
@@ -29,6 +33,7 @@ public class ChargingStation {
         this.charging_time = charging_time;
         this.charging_cost = charging_cost;
         this.charging_now = charging_now;
+        this.chargingSessions = new ArrayList<>();
     }
 
     public int getStationCode()                                         { return station_code; }
@@ -57,6 +62,9 @@ public class ChargingStation {
 
     public double getTotalRevenue()                                     { return total_revenue; }
     public void setTotalRevenue(double total_revenue)                   { this.total_revenue = total_revenue; }
+
+    public List<ChargingSession> getChargingSessions()                  { return chargingSessions; }
+    public void addChargingSession(ChargingSession session)             { chargingSessions.add(session); }
 
     @Override
     public String toString() {

@@ -1,9 +1,10 @@
 package com.mycompany.projeto_pc2;
 
 import java.io.Serializable;
-import java.lang.reflect.Array;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
+
+import util.Consola;
 
 /**
  *
@@ -126,8 +127,44 @@ public class Base implements Serializable {
         }
         return total;
     } 
-    public int getPendingPaymentByUser(int nif) {
+    public double getAverageEnergyConsumedByStation() {
         // code
         return 1;
+    }
+    public double getAverageEnergyConsumedByEVType() {
+        // code
+        return 1;
+    }
+    public void getUnpaidSessionsByClient(int nif) {
+        Client client;
+        int pos = searchClient(nif);
+        if (pos == -1) {
+            System.err.println("Cliente nao existe!");
+        } else {
+            client = getClient(pos);
+            List<ChargingSession> clientSessions = client.getChargingSessions();
+            for (ChargingSession session : clientSessions) {
+                if (!session.getIsPaid()) {
+                    System.out.println("Cod. sessao: " + session.getSessionCode() + " Custo: " + session.getSessionCost() + " euros");
+                }
+            }
+            System.out.println();
+        }
+    }
+    public void getSessionHistoryByStation(int station_code) {
+        ChargingStation chargingStation;
+        int pos = searchChargingStation(station_code);
+        if (pos == -1) {
+            System.err.println("Estacao de carregamento nao existe!");
+        } else {
+            chargingStation = getChargingStation(pos);
+            List<ChargingSession> sessionHistory = chargingStation.getChargingSessions();
+            for (ChargingSession session : sessionHistory) {
+                if (session.getSessionCode() > 0) {
+                    System.out.println("Cod. sessao: " + session.getSessionCode());
+                }
+            }
+            System.out.println();
+        }
     }
 }
