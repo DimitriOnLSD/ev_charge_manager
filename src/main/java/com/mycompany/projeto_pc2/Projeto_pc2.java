@@ -43,14 +43,10 @@ public class Projeto_pc2 {
         populateList(base);
 
         do {
-            primary_option = menu();
+            primary_option = primaryMenu();
             switch (primary_option) {
                 case 1:
-                    System.out.println("[1] Procurar veiculo");
-                    System.out.println("[2] Registar veiculo");
-                    System.out.println("[0] Voltar");
-
-                    secondary_option = Consola.lerInt("\nOpcao: ", 0, 2);
+                    secondary_option = vehicleMenu();
 
                     if (secondary_option == 1) {
                         if (base.getTotalCars() > 0) {
@@ -63,12 +59,7 @@ public class Projeto_pc2 {
                     }
                     break;
                 case 2:
-                    System.out.println("[1] Procurar cliente");
-                    System.out.println("[2] Registar cliente");
-                    System.out.println("[3] Alterar dados do cliente");
-                    System.out.println("[0] Voltar");
-
-                    secondary_option = Consola.lerInt("\nOpcao: ", 0, 3);
+                    secondary_option = clientMenu();
 
                     if (secondary_option == 1 || secondary_option == 3) {
                         if (base.getTotalClients() > 0) {
@@ -85,11 +76,7 @@ public class Projeto_pc2 {
                     }
                     break;
                 case 3:
-                    System.out.println("[1] Consultar posto de carregamento");
-                    System.out.println("[2] Registar posto de carregamento");
-                    System.out.println("[0] Voltar");
-
-                    secondary_option = Consola.lerInt("\nOpcao: ", 0, 2);
+                    secondary_option = chargingStationMenu();
 
                     if (secondary_option == 1) {
                         if (base.getTotalChargingStations() > 0) {
@@ -102,12 +89,7 @@ public class Projeto_pc2 {
                     }
                     break;
                 case 4:
-                    System.out.println("[1] Consultar sessao de carregamento");
-                    System.out.println("[2] Registar sessao de carregamento");
-                    System.out.println("[3] Registar pagamento");
-                    System.out.println("[0] Voltar");
-
-                    secondary_option = Consola.lerInt("\nOpcao: ", 0, 3);
+                    secondary_option = chargingSessionMenu();
 
                     if (secondary_option == 1 || secondary_option == 3) {
                         if (base.getTotalChargingSessions() > 0) {
@@ -117,23 +99,14 @@ public class Projeto_pc2 {
                                 addPayment(base);
                             }
                         } else {
-                            System.err.println("\nNao existem sessoes registadas!\n");
+                            System.err.println("\nNao existem sessoes de carregamento registadas!\n");
                         }
                     } else if (secondary_option == 2) {
                         addChargingSession(base);
                     }
                     break;
                 case 5:
-                    System.out.println("[1] Lista dos 3 postos de carregamento com maior valor faturado");
-                    System.out.println("[2] Lista de sessoes de carregamento com valor superior a X");
-                    System.out.println("[3] Total de sessoes de carregamento realizadas por utilizador");
-                    System.out.println("[4] Media de energia consumida por: posto de carregamento e tipo de veiculo");
-                    System.out.println("[5] Lista de pagamentos pendentes por cliente");
-                    System.out.println("[6] Historico de sessoes de carregamento");
-                    System.out.println("[0] Voltar");
-
-                    secondary_option = Consola.lerInt("\nOpcao: ", 0, 6);
-
+                    secondary_option = statisticsMenu();
                     switch (secondary_option) {
                         case 1:
                             double[] revenue = base.searchStationRevenue();
@@ -142,8 +115,7 @@ public class Projeto_pc2 {
                                 if (revenue[i] != 0) {
                                     int station_code = (int) revenue[i];
                                     String format_revenue = String.format("%.2f", revenue[i - 3]);
-                                    System.out.println((i - 2) + ". Valor faturado: " + format_revenue
-                                            + " euros, Codigo da estacao: " + station_code);
+                                    System.out.println((i - 2) + ". Valor faturado: " + format_revenue + " euros, Codigo da estacao: " + station_code);
                                 }
                             }
                             System.out.println();
@@ -158,20 +130,17 @@ public class Projeto_pc2 {
                             }
                             break;
                         case 3:
-                            System.out.println("Total de sessoes realizadas: " + base
-                                    .getTotalChargingSessionsByUser(Consola.lerInt("Insira NIF: ", 0, 999999999)));
+                            System.out.println("Total de sessoes realizadas: " + base.getTotalChargingSessionsByUser(Consola.lerInt("Insira NIF: ", 0, 999999999)));
                             break;
                         case 4:
-                            double[] average = base.getAverageEnergyConsumedByStation(
-                                    Consola.lerInt("Insira cod. da estacao: ", 0, 99999));
+                            double[] average = base.getAverageEnergyConsumedByStation(Consola.lerInt("Insira cod. da estacao: ", 0, 99999));
 
                             if (average[0] != -1) {
                                 String[] labels = { ": ", "(em Hibridos): ", "(em Eletricos): " };
 
                                 for (int i = 0; i < 3; i++) {
                                     String format_average = String.format("%.2f", average[i]);
-                                    System.out.println(
-                                            "Media de energia consumida" + labels[i] + format_average + " kW/h");
+                                    System.out.println("Media de energia consumida" + labels[i] + format_average + " kW/h");
                                 }
                                 System.out.println();
                             }
@@ -191,7 +160,7 @@ public class Projeto_pc2 {
         } while (primary_option != 0);
     }
 
-    public static int menu() {
+    public static int primaryMenu() {
         System.out.println("[1] Veiculos registados");
         System.out.println("[2] Clientes registados");
         System.out.println("[3] Postos de carregamento");
@@ -201,6 +170,57 @@ public class Projeto_pc2 {
 
         int option = Consola.lerInt("\nOpcao: ", 0, 5);
         clearConsole();
+        return option;
+    }
+
+    public static int vehicleMenu() {
+        System.out.println("[1] Procurar veiculo");
+        System.out.println("[2] Registar veiculo");
+        System.out.println("[0] Voltar");
+
+        int option = Consola.lerInt("\nOpcao: ", 0, 2);
+        return option;
+    }
+
+    public static int clientMenu() {
+        System.out.println("[1] Procurar cliente");
+        System.out.println("[2] Registar cliente");
+        System.out.println("[3] Alterar dados do cliente");
+        System.out.println("[0] Voltar");
+
+        int option = Consola.lerInt("\nOpcao: ", 0, 3);
+        return option;
+    }
+
+    public static int chargingStationMenu() {
+        System.out.println("[1] Consultar posto de carregamento");
+        System.out.println("[2] Registar posto de carregamento");
+        System.out.println("[0] Voltar");
+
+        int option = Consola.lerInt("\nOpcao: ", 0, 2);
+        return option;
+    }
+
+    public static int chargingSessionMenu() {
+        System.out.println("[1] Consultar sessao de carregamento");
+        System.out.println("[2] Registar sessao de carregamento");
+        System.out.println("[3] Registar pagamento");
+        System.out.println("[0] Voltar");
+
+        int option = Consola.lerInt("\nOpcao: ", 0, 3);
+        return option;
+    }
+
+    public static int statisticsMenu() {
+        System.out.println("[1] Lista dos 3 postos de carregamento com maior valor faturado");
+        System.out.println("[2] Lista de sessoes de carregamento com valor superior a X");
+        System.out.println("[3] Total de sessoes de carregamento realizadas por utilizador");
+        System.out.println("[4] Media de energia consumida por: posto de carregamento e tipo de veiculo");
+        System.out.println("[5] Lista de pagamentos pendentes por cliente");
+        System.out.println("[6] Historico de sessoes de carregamento");
+        System.out.println("[0] Voltar");
+
+        int option = Consola.lerInt("\nOpcao: ", 0, 6);
         return option;
     }
 
