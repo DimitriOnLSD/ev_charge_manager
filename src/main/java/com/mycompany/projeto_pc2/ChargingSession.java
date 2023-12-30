@@ -22,15 +22,15 @@ public class ChargingSession {
     Client client;
 
     public ChargingSession(ChargingStation chargingStation,
-                           Vehicle vehicle,
-                           Client client,
-                           int session_code,
-                           LocalDateTime start_time,
-                           LocalDateTime finish_time,
-                           String settlement_status,
-                           double energy_consumed,
-                           double session_cost,
-                           boolean is_paid) {
+            Vehicle vehicle,
+            Client client,
+            int session_code,
+            LocalDateTime start_time,
+            LocalDateTime finish_time,
+            String settlement_status,
+            double energy_consumed,
+            double session_cost,
+            boolean is_paid) {
         this.chargingStation = chargingStation;
         this.vehicle = vehicle;
         this.client = client;
@@ -43,39 +43,89 @@ public class ChargingSession {
         this.is_paid = is_paid;
     }
 
-    public int getSessionCode()                                      { return session_code; }
-    public void setSessionCode(int session_code)                     { this.session_code = session_code; }
+    public int getSessionCode() {
+        return session_code;
+    }
 
-    public LocalDateTime getStartTime()                              { return start_time; }
-    public void setStartTime(LocalDateTime start_time)               { this.start_time = start_time; }
+    public void setSessionCode(int session_code) {
+        this.session_code = session_code;
+    }
 
-    public LocalDateTime getFinishTime()                             { return finish_time; }
-    public void setFinishTime(LocalDateTime finish_time)             { this.finish_time = finish_time; }
+    public LocalDateTime getStartTime() {
+        return start_time;
+    }
 
-    public double getEnergyConsumed()                                { return energy_consumed; }
-    public void setEnergyConsumed(double energy_consumed)            { this.energy_consumed = energy_consumed; }
+    public void setStartTime(LocalDateTime start_time) {
+        this.start_time = start_time;
+    }
 
-    public double getSessionCost()                                   { return session_cost; }
-    public void setSessionCost(double session_cost)                  { this.session_cost = session_cost; }
+    public LocalDateTime getFinishTime() {
+        return finish_time;
+    }
 
-    public String getSettlementStatus()                              { return settlement_status; }
-    public void setSettlementStatus(String settlement_status)        { this.settlement_status = settlement_status; }
+    public void setFinishTime(LocalDateTime finish_time) {
+        this.finish_time = finish_time;
+    }
 
-    public int getTypeOfPayment()                                    { return type_of_payment; }
-    public void setTypeOfPayment(int type_of_payment)                { this.type_of_payment = type_of_payment; }
+    public double getEnergyConsumed() {
+        return energy_consumed;
+    }
 
-    public LocalDateTime getTimeOftransaction()                      { return time_transaction; }
-    public void setTimeOftransaction(LocalDateTime time_transaction) { this.time_transaction = time_transaction; }
+    public void setEnergyConsumed(double energy_consumed) {
+        this.energy_consumed = energy_consumed;
+    }
 
-    public int getClientID()                                         { return client_ID; }
-    public void setClientID(int client_ID)                           { this.client_ID = client_ID; }
+    public double getSessionCost() {
+        return session_cost;
+    }
 
-    public boolean getIsPaid()                                       { return is_paid; }
-    public void setIsPaid(boolean is_paid)                           { this.is_paid = is_paid; }
+    public void setSessionCost(double session_cost) {
+        this.session_cost = session_cost;
+    }
+
+    public String getSettlementStatus() {
+        return settlement_status;
+    }
+
+    public void setSettlementStatus(String settlement_status) {
+        this.settlement_status = settlement_status;
+    }
+
+    public int getTypeOfPayment() {
+        return type_of_payment;
+    }
+
+    public void setTypeOfPayment(int type_of_payment) {
+        this.type_of_payment = type_of_payment;
+    }
+
+    public LocalDateTime getTimeOftransaction() {
+        return time_transaction;
+    }
+
+    public void setTimeOftransaction(LocalDateTime time_transaction) {
+        this.time_transaction = time_transaction;
+    }
+
+    public int getClientID() {
+        return client_ID;
+    }
+
+    public void setClientID(int client_ID) {
+        this.client_ID = client_ID;
+    }
+
+    public boolean getIsPaid() {
+        return is_paid;
+    }
+
+    public void setIsPaid(boolean is_paid) {
+        this.is_paid = is_paid;
+    }
 
     public boolean isOverlapping(LocalDateTime newStartTime, LocalDateTime newFinishTime) {
         return (newStartTime.isBefore(finish_time) || newStartTime.isEqual(finish_time)) &&
-               (newFinishTime.isAfter(start_time) || newFinishTime.isEqual(start_time));
+                (newFinishTime.isAfter(start_time) || newFinishTime.isEqual(start_time));
     }
 
     @Override

@@ -8,63 +8,129 @@ import java.util.List;
  * @authors Paulo Sousa | João Domingos
  */
 public class ChargingStation {
+    Vehicle vehicle;
     protected String address;
     protected String station_type;
     protected int station_code;
     protected int simultaneous_ev_charging;
-    protected int charging_now = 0;
     protected double charging_time;
     protected double charging_cost;
-    protected double total_energy_consumed;
-    protected double total_revenue;
+    protected double total_energy_consumed = 0;
+    protected double energy_consumed_by_ev = 0;
+    protected double energy_consumed_by_hybrid = 0;
+    protected double total_revenue = 0;
     private List<ChargingSession> chargingSessions;
 
-    public ChargingStation(int station_code, 
-                           int simultaneous_ev_charging, 
-                           int charging_now,
-                           String address,
-                           String station_type, 
-                           double charging_time, 
-                           double charging_cost) {
+    public ChargingStation(int station_code,
+            int simultaneous_ev_charging,
+            String address,
+            String station_type,
+            double charging_time,
+            double charging_cost) {
         this.station_code = station_code;
         this.simultaneous_ev_charging = simultaneous_ev_charging;
         this.address = address;
         this.station_type = station_type;
         this.charging_time = charging_time;
         this.charging_cost = charging_cost;
-        this.charging_now = charging_now;
         this.chargingSessions = new ArrayList<>();
     }
 
-    public int getStationCode()                                         { return station_code; }
-    public void setStationCode(int station_code)                        { this.station_code = station_code; }
+    public int getStationCode() {
+        return station_code;
+    }
 
-    public String getAddress()                                          { return address; }
-    public void setAddress(String address)                              { this.address = address; }
+    public void setStationCode(int station_code) {
+        this.station_code = station_code;
+    }
 
-    public String getStationType()                                      { return station_type; }
-    public void setStationType(String station_type)                     { this.station_type = station_type; }
+    public String getAddress() {
+        return address;
+    }
 
-    public double getChargingTime()                                     { return charging_time; }
-    public void setChargingTime(double charging_time)                   { this.charging_time = charging_time; }
+    public void setAddress(String address) {
+        this.address = address;
+    }
 
-    public double getChargingCost()                                     { return charging_cost; }
-    public void setChargingCost(double charging_cost)                   { this.charging_cost = charging_cost; }
+    public String getStationType() {
+        return station_type;
+    }
 
-    public int getSimultaneousEVCharging()                              { return simultaneous_ev_charging; }
-    public void setSimultaneousEVCharging(int simultaneous_ev_charging) { this.simultaneous_ev_charging = simultaneous_ev_charging; }
+    public void setStationType(String station_type) {
+        this.station_type = station_type;
+    }
 
-    public int getChargingNow()                                         { return charging_now; }
-    public void setChargingNow(int charging_now)                        { this.charging_now = charging_now; }
+    public double getChargingTime() {
+        return charging_time;
+    }
 
-    public double getTotalEnergyConsumed()                              { return total_energy_consumed; }
-    public void setTotalEnergyConsumed(double total_energy_consumed)    { this.total_energy_consumed = total_energy_consumed; }
+    public void setChargingTime(double charging_time) {
+        this.charging_time = charging_time;
+    }
 
-    public double getTotalRevenue()                                     { return total_revenue; }
-    public void setTotalRevenue(double total_revenue)                   { this.total_revenue = total_revenue; }
+    public double getChargingCost() {
+        return charging_cost;
+    }
 
-    public List<ChargingSession> getChargingSessions()                  { return chargingSessions; }
-    public void addChargingSession(ChargingSession session)             { chargingSessions.add(session); }
+    public void setChargingCost(double charging_cost) {
+        this.charging_cost = charging_cost;
+    }
+
+    public int getSimultaneousEVCharging() {
+        return simultaneous_ev_charging;
+    }
+
+    public void setSimultaneousEVCharging(int simultaneous_ev_charging) {
+        this.simultaneous_ev_charging = simultaneous_ev_charging;
+    }
+
+    public double getTotalEnergyConsumed() {
+        return total_energy_consumed;
+    }
+
+    public void setTotalEnergyConsumed(double total_energy_consumed) {
+        this.total_energy_consumed = total_energy_consumed;
+    }
+
+    public double getTotalRevenue() {
+        return total_revenue;
+    }
+
+    public void setTotalRevenue(double total_revenue) {
+        this.total_revenue = total_revenue;
+    }
+
+    public double getEnergyConsumedByEv() {
+        return energy_consumed_by_ev;
+    }
+
+    public void setEnergyConsumedByEv(double energy_consumed_by_ev) {
+        this.energy_consumed_by_ev = energy_consumed_by_ev;
+    }
+
+    public double getEnergyConsumedByHybrid() {
+        return energy_consumed_by_hybrid;
+    }
+
+    public void setEnergyConsumedByHybrid(double energy_consumed_by_hybrid) {
+        this.energy_consumed_by_hybrid = energy_consumed_by_hybrid;
+    }
+
+    public Vehicle getVehicle() {
+        return vehicle;
+    }
+
+    public void setVehicle(Vehicle vehicle) {
+        this.vehicle = vehicle;
+    }
+
+    public List<ChargingSession> getChargingSessions() {
+        return chargingSessions;
+    }
+
+    public void addChargingSession(ChargingSession session) {
+        chargingSessions.add(session);
+    }
 
     @Override
     public String toString() {

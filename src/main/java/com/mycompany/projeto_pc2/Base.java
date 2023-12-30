@@ -1,10 +1,9 @@
 package com.mycompany.projeto_pc2;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-
-import util.Consola;
 
 /**
  *
@@ -17,26 +16,59 @@ public class Base implements Serializable {
     private ArrayList<ChargingSession> chargingSessions;
 
     public Base() {
-        vehicles         = new ArrayList<>();
-        clients          = new ArrayList<>();
+        vehicles = new ArrayList<>();
+        clients = new ArrayList<>();
         chargingStations = new ArrayList<>();
         chargingSessions = new ArrayList<>();
     }
 
-    public int getTotalCars()             { return vehicles.size(); }
-    public int getTotalClients()          { return clients.size(); }
-    public int getTotalChargingStations() { return chargingStations.size(); }
-    public int getTotalChargingSessions() { return chargingSessions.size(); }
+    public int getTotalCars() {
+        return vehicles.size();
+    }
 
-    public void addVehicle        (Vehicle         newVehicle)         { vehicles.add(newVehicle); }
-    public void addClient         (Client          newClient)          { clients.add(newClient); }
-    public void addChargingStation(ChargingStation newChargingStation) { chargingStations.add(newChargingStation); }
-    public void addChargingSession(ChargingSession newChargingSession) { chargingSessions.add(newChargingSession); }
+    public int getTotalClients() {
+        return clients.size();
+    }
 
-    public Vehicle         getVehicle        (int pos) { return vehicles.get(pos); }
-    public Client          getClient         (int pos) { return clients.get(pos); }
-    public ChargingStation getChargingStation(int pos) { return chargingStations.get(pos); }
-    public ChargingSession getChargingSession(int pos) { return chargingSessions.get(pos); }
+    public int getTotalChargingStations() {
+        return chargingStations.size();
+    }
+
+    public int getTotalChargingSessions() {
+        return chargingSessions.size();
+    }
+
+    public void addVehicle(Vehicle newVehicle) {
+        vehicles.add(newVehicle);
+    }
+
+    public void addClient(Client newClient) {
+        clients.add(newClient);
+    }
+
+    public void addChargingStation(ChargingStation newChargingStation) {
+        chargingStations.add(newChargingStation);
+    }
+
+    public void addChargingSession(ChargingSession newChargingSession) {
+        chargingSessions.add(newChargingSession);
+    }
+
+    public Vehicle getVehicle(int pos) {
+        return vehicles.get(pos);
+    }
+
+    public Client getClient(int pos) {
+        return clients.get(pos);
+    }
+
+    public ChargingStation getChargingStation(int pos) {
+        return chargingStations.get(pos);
+    }
+
+    public ChargingSession getChargingSession(int pos) {
+        return chargingSessions.get(pos);
+    }
 
     public int searchVehicle(String license_plate) {
         for (int i = 0; i < vehicles.size(); i++) {
@@ -46,6 +78,7 @@ public class Base implements Serializable {
         }
         return -1;
     }
+
     public int searchClient(int nif) {
         for (int i = 0; i < clients.size(); i++) {
             if (clients.get(i).getNIF() == nif) {
@@ -54,6 +87,7 @@ public class Base implements Serializable {
         }
         return -1;
     }
+
     public int searchChargingStation(int station_code) {
         for (int i = 0; i < chargingStations.size(); i++) {
             if (chargingStations.get(i).getStationCode() == station_code) {
@@ -62,6 +96,7 @@ public class Base implements Serializable {
         }
         return -1;
     }
+
     public int searchChargingSession(int session_code) {
         for (int i = 0; i < chargingSessions.size(); i++) {
             if (chargingSessions.get(i).getSessionCode() == session_code) {
@@ -71,15 +106,24 @@ public class Base implements Serializable {
         return -1;
     }
 
-    // public boolean canCharge(LocalDateTime start_time, LocalDateTime finish_time) {
-    //     ChargingSession chargingSession = null;
-    //     for (int i = 0; i < chargingSessions.size(); i++) {
-    //         if (chargingSession.isOverlapping(start_time, finish_time)) {
-    //             return false;
-    //         }
-    //     }
-    //     return true;
-    // }
+    public int canCharge(ChargingStation chargingStation, Vehicle vehicle, LocalDateTime start_time,
+            LocalDateTime finish_time) {
+        int simultaneous_ev_charging_counter = 0;
+        for (int i = 0; i < chargingSessions.size(); i++) {
+            if (chargingSessions.get(i).isOverlapping(start_time, finish_time)) {
+                simultaneous_ev_charging_counter++;
+                for (int j = 0; i < chargingStations.size(); i++) {
+                    if (chargingStations.get(j).getVehicle() == vehicle) {
+                        return 1;
+                    }
+                }
+            }
+            if (simultaneous_ev_charging_counter == chargingStation.getSimultaneousEVCharging()) {
+                return 2;
+            }
+        }
+        return 0;
+    }
 
     public double[] searchStationRevenue() {
         double[] to_return = { 0.0, 0.0, 0.0, 0, 0, 0 };
@@ -106,13 +150,15 @@ public class Base implements Serializable {
         }
         return to_return;
     }
+
     public void searchSessionCostSuperiorToN(double n) {
         for (int i = 0; i < chargingSessions.size(); i++) {
             if (chargingSessions.get(i).getSessionCost() > n) {
                 System.out.println("Codigo da sessao: " + chargingSessions.get(i).getSessionCode());
-            }  
+            }
         }
     }
+
     public int getTotalChargingSessionsByUser(int nif) {
         Client client;
         int pos;
@@ -123,18 +169,35 @@ public class Base implements Serializable {
             total = pos;
         } else {
             client = getClient(pos);
-            total = client.getTotalSessions();
+            total = client.getChargingSessions().size();
         }
         return total;
-    } 
-    public double getAverageEnergyConsumedByStation() {
-        // code
-        return 1;
     }
-    public double getAverageEnergyConsumedByEVType() {
-        // code
-        return 1;
+
+    public double[] getAverageEnergyConsumedByStation(int station_code) {
+        ChargingStation chargingStation;
+        int pos;
+        double[] average = { 0.0, 0.0, 0.0 }; // Index n1 = Media energia consumida. Index n2 e n3 = Media energia
+                                              // consumida de veiculos hibridos e eletricos
+        pos = searchChargingStation(station_code);
+        if (pos == -1) {
+            System.err.println("\nEsta estacao de carregamento nao existe!\n");
+            average[0] = pos;
+        } else {
+            chargingStation = getChargingStation(pos);
+            if (chargingStation.getChargingSessions().size() > 0) {
+                double energy_consumed = chargingStation.getTotalEnergyConsumed();
+                int total_sessions = chargingStation.getChargingSessions().size();
+                average[0] = total_sessions > 0 ? energy_consumed / total_sessions : 0.0;
+                average[1] = chargingStation.getEnergyConsumedByHybrid();
+                average[2] = chargingStation.getEnergyConsumedByEv();
+            } else {
+                System.err.println("\nEsta estacao de carregamento nao tem sessoes registadas!\n");
+            }
+        }
+        return average;
     }
+
     public void getUnpaidSessionsByClient(int nif) {
         Client client;
         int pos = searchClient(nif);
@@ -145,12 +208,14 @@ public class Base implements Serializable {
             List<ChargingSession> clientSessions = client.getChargingSessions();
             for (ChargingSession session : clientSessions) {
                 if (!session.getIsPaid()) {
-                    System.out.println("Cod. sessao: " + session.getSessionCode() + " Custo: " + session.getSessionCost() + " euros");
+                    String str1 = String.format("%.2f", session.getSessionCost());
+                    System.out.println("Cod. sessao: " + session.getSessionCode() + " Custo: " + str1 + " euros");
                 }
             }
             System.out.println();
         }
     }
+
     public void getSessionHistoryByStation(int station_code) {
         ChargingStation chargingStation;
         int pos = searchChargingStation(station_code);

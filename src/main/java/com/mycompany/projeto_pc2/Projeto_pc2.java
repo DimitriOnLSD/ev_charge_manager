@@ -7,7 +7,6 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
-import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.regex.Matcher;
@@ -20,21 +19,10 @@ import util.Consola;
  * 
  */
 
-/* 
- * To ask:
- * Os clientes so podem carregar os seus carros? sim
- * Ao consultar os clientes, deve aparecer os seus carros (matriculas)?
- * No registo de uma sessao, o programa guarda a hora de inicio e pergunta ao utilizador quanto tempo quer carregar o veiculo
- * 
- */
-
 /*
  * To do list:
- * O codigo das estatisticas deve estar dentro de funçoes fora da main
- * Ponto decimal na opcao 5 do menu estatisticas
- * Checker do charging_now. Depois de terminar a hora de carregar um carro, esta variavel devia decrementar
- * Os carros devem estar associados aos clientes. Cada cliente pode ter multiplos carros. Talvez usar vetor ou lista nos clientes de veiculos
- * O resto do codigo...
+ * Comentar o codigo (existe exemplo no addChargingSession() e Client.java)
+ * Guardar dados num ficheiro
  */
 
 /**
@@ -148,15 +136,16 @@ public class Projeto_pc2 {
 
                     switch (secondary_option) {
                         case 1:
-                            double[] result = base.searchStationRevenue();
+                            double[] revenue = base.searchStationRevenue();
 
-                            String str1 = String.format("%.2f", result[0]);
-                            String str2 = String.format("%.2f", result[1]);
-                            String str3 = String.format("%.2f", result[2]);
-
-                            System.out.println("1. Valor faturado: " + str1 + " euros, Codigo da estacao: " + (int) result[3]);
-                            System.out.println("2. Valor faturado: " + str2 + " euros, Codigo da estacao: " + (int) result[4]);
-                            System.out.println("3. Valor faturado: " + str3 + " euros, Codigo da estacao: " + (int) result[5]);
+                            for (int i = 3; i < 6; i++) {
+                                if (revenue[i] != 0) {
+                                    int station_code = (int) revenue[i];
+                                    String format_revenue = String.format("%.2f", revenue[i - 3]);
+                                    System.out.println((i - 2) + ". Valor faturado: " + format_revenue
+                                            + " euros, Codigo da estacao: " + station_code);
+                                }
+                            }
                             System.out.println();
                             break;
                         case 2:
@@ -169,10 +158,23 @@ public class Projeto_pc2 {
                             }
                             break;
                         case 3:
-                            System.out.println("Total de sessoes realizadas: " + base.getTotalChargingSessionsByUser(Consola.lerInt("Insira NIF: ", 0, 999999999)));
+                            System.out.println("Total de sessoes realizadas: " + base
+                                    .getTotalChargingSessionsByUser(Consola.lerInt("Insira NIF: ", 0, 999999999)));
                             break;
                         case 4:
-                            // code
+                            double[] average = base.getAverageEnergyConsumedByStation(
+                                    Consola.lerInt("Insira cod. da estacao: ", 0, 99999));
+
+                            if (average[0] != -1) {
+                                String[] labels = { ": ", "(em Hibridos): ", "(em Eletricos): " };
+
+                                for (int i = 0; i < 3; i++) {
+                                    String format_average = String.format("%.2f", average[i]);
+                                    System.out.println(
+                                            "Media de energia consumida" + labels[i] + format_average + " kW/h");
+                                }
+                                System.out.println();
+                            }
                             break;
                         case 5:
                             base.getUnpaidSessionsByClient(Consola.lerInt("NIF: ", 0, 999999999));
@@ -203,6 +205,7 @@ public class Projeto_pc2 {
     }
 
     public static void addVehicle(Base base) {
+        Client client = null;
         String brand;
         String model;
         String license_plate;
@@ -214,16 +217,23 @@ public class Projeto_pc2 {
         int chargingSpeed;
         int engine_displacement = 0;
         int battery = 50;
+        int nif;
         int pos;
         double battery_capacity;
-        boolean isCharging = false;
         boolean isHybrid = false;
         boolean check_ev_type = true;
         boolean error = false;
         Pattern pattern = Pattern.compile("\\p{XDigit}{2}-\\p{XDigit}{2}-\\p{XDigit}{2}");
 
         do {
-            license_plate = Consola.lerString("Insira a matricula: ");
+            license_plate = Consola.lerString("Insira a matricula [0 para voltar]: ");
+            String[] labels = { "0", "0 para voltar", "NAO", "QUERO VOLTAR POR FAVOR", "epah, enganei-me", "voltar", "O", "Nao tenho carro", "O meu carro e importado", "Pessu deshculpa" };
+            int array_size = labels.length;
+            for (int i = 0; i < array_size; i++) {
+                if (license_plate.equals(labels[i])) {
+                    return;
+                }
+            }
             pos = base.searchVehicle(license_plate);
 
             if (pos != -1) {
@@ -237,6 +247,22 @@ public class Projeto_pc2 {
                 } else {
                     error = false;
                 }
+            }
+        } while (error);
+
+        do {
+            nif = Consola.lerInt("Registar o veiculo a (NIF) [0 para voltar]: ", 0, 999999999);
+            if (nif == 0) {
+                return;
+            }
+            pos = base.searchClient(nif);
+
+            if (pos == -1) {
+                System.err.println("Cliente nao existe!");
+                error = true;
+            } else {
+                client = base.getClient(pos);
+                error = false;
             }
         } while (error);
 
@@ -273,8 +299,9 @@ public class Projeto_pc2 {
             }
         } while (error);
 
-        Vehicle newVehicle = new Vehicle(brand, model, license_plate, electric_hybrid, fuel_type, date_of_register, horsepower, range, chargingSpeed, engine_displacement, battery, battery_capacity, isCharging);
+        Vehicle newVehicle = new Vehicle(client, brand, model, license_plate, electric_hybrid, fuel_type, date_of_register, horsepower, range, chargingSpeed, engine_displacement, battery, battery_capacity);
         base.addVehicle(newVehicle);
+        client.addVehicle(newVehicle);
     }
 
     public static void addClient(Base base) {
@@ -286,9 +313,12 @@ public class Projeto_pc2 {
         int pos;
         int contact;
         boolean error = false;
-        
+
         do {
-            NIF = Consola.lerInt("NIF: ", 100000000, 999999999);
+            NIF = Consola.lerInt("NIF [0 para voltar]: ", 0, 999999999);
+            if (NIF == 0) {
+                return;
+            }
             pos = base.searchClient(NIF);
             if (pos != -1) {
                 System.err.println("Este cliente ja se encontra registado!");
@@ -320,13 +350,15 @@ public class Projeto_pc2 {
         int station_code;
         int simultaneous_ev_charging;
         int pos;
-        int charging_now = 0;
         double charging_time;
         double charging_cost;
         boolean check_station_type = true;
 
         do {
-            station_code = Consola.lerInt("Codigo da estacao: ", 0, 999999999);
+            station_code = Consola.lerInt("Codigo da estacao [0 para voltar]: ", 0, 999999999);
+            if (station_code == 0) {
+                return;
+            }
             pos = base.searchChargingStation(station_code);
             if (pos != -1) {
                 System.err.println("Esta estacao de carregamento ja se encontra registada!");
@@ -346,10 +378,15 @@ public class Projeto_pc2 {
         charging_time = Consola.lerDouble("Tempo de carregamento: ", 0, 168);
         simultaneous_ev_charging = Consola.lerInt("Carregamento em simultaneo: ", 0, 50);
 
-        ChargingStation newChargingStation = new ChargingStation(station_code, simultaneous_ev_charging, charging_now, address, station_type, charging_time, charging_cost);
+        ChargingStation newChargingStation = new ChargingStation(station_code, simultaneous_ev_charging, address, station_type, charging_time, charging_cost);
         base.addChargingStation(newChargingStation);
     }
 
+    /**
+     * Adiciona elemento na lista de sessoes de carregamento
+     * 
+     * @param base
+     */
     public static void addChargingSession(Base base) {
         ChargingStation chargingStation = null;
         Vehicle vehicle = null;
@@ -368,10 +405,15 @@ public class Projeto_pc2 {
         double energy_consumed;
         double session_cost;
         double hours;
+        boolean is_paid;
         boolean error = false;
 
+        // Aqui vamos buscar o cliente que esta a registar a sessao
         do {
-            NIF = Consola.lerInt("NIF do cliente a usar estacao: ", 0, 999999999);
+            NIF = Consola.lerInt("NIF do cliente a usar estacao [0 para voltar]: ", 0, 999999999);
+            if (NIF == 0) {
+                return;
+            }
             pos = base.searchClient(NIF);
             if (pos == -1) {
                 System.err.println("Este cliente nao existe!");
@@ -382,6 +424,7 @@ public class Projeto_pc2 {
             }
         } while (error);
 
+        // O veiculo que o cliente pretende carregar
         do {
             license_plate = Consola.lerString("Matricula do carro a carregar: ");
             pos = base.searchVehicle(license_plate);
@@ -390,17 +433,16 @@ public class Projeto_pc2 {
                 error = true;
             } else {
                 vehicle = base.getVehicle(pos);
-                if (vehicle.isCharging()) {
-                    System.err.println("Carro esta a carregar de momento!");
-                    error = true;
-                } else if (vehicle.getBattery() == 100) {
+                if (vehicle.getBattery() == 100) {
                     System.err.println("A bateria deste carro encontra-se carregada.");
+                    error = true;
                 } else {
                     error = false;
                 }
             }
         } while (error);
 
+        // A estacao que pretende usar
         do {
             station_code = Consola.lerInt("Codigo da estacao que pretende usar: ", 0, 999999999);
             pos = base.searchChargingStation(station_code);
@@ -409,15 +451,12 @@ public class Projeto_pc2 {
                 error = true;
             } else {
                 chargingStation = base.getChargingStation(pos);
-                if (chargingStation.getChargingNow() == chargingStation.getSimultaneousEVCharging()) {
-                    System.err.println("Esta estacao nao consegue carregar mais veiculos em simultaneo!");
-                    error = true;
-                } else {
-                    error = false;
-                }
+                error = false;
             }
         } while (error);
 
+        // A hora e data (inicio e fim) do carregamento. É verificado aqui se existem
+        // veiculos a carregar neste periodo temporal
         do {
             try {
                 start_time = LocalDateTime.parse(Consola.lerString("Data e hora de inicio (HH:mm dd-MM-yyyy): "), formatter);
@@ -427,14 +466,21 @@ public class Projeto_pc2 {
                 System.err.println("Formato da data ou hora esta errado.");
                 error = true;
             }
-            // if (chargingStation.canCharge(start_time, finish_time)) {
-            //     code
-            // }
+            int check_if_can_charge = base.canCharge(chargingStation, vehicle, start_time, finish_time);
+            if (check_if_can_charge == 2) {
+                System.err.println("Esta estacao nao consegue carregar mais veiculos em simultaneo neste periodo temporal!");
+                error = true;
+            } else if (check_if_can_charge == 1) {
+                System.err.println("Esta carro ja se encontra a carregar noutra estacao neste periodo temporal!");
+                error = true;
+            }
         } while (error);
 
-        time_charging = Duration.between(start_time, finish_time);
-        hours = (double) time_charging.toMinutes() / 60;
+        time_charging = Duration.between(start_time, finish_time); // time_charging vai guardar o tempo que o veiculo esteve a carregar
+        hours = (double) time_charging.toMinutes() / 60; // e aqui converte para horas em tipo double
 
+        // Aqui vamos ver que tipo de estacao selecionamos. Se o nosso carro possuir um
+        // charge power de 75, e escolher uma estacao PCR, ele carrega um maximo de 50 kW/h
         switch (chargingStation.getStationType()) {
             case "PCN":
                 max_charge = 22;
@@ -447,28 +493,39 @@ public class Projeto_pc2 {
                 break;
         }
 
-        energy_consumed = Math.min(vehicle.getChargingSpeed(), max_charge) * hours;
-        session_cost = energy_consumed * chargingStation.getChargingCost();
+        energy_consumed = Math.min(vehicle.getChargingSpeed(), max_charge) * hours; // A energia consumida é: os kW
+                                                                                    // consumidos multiplicados pela
+                                                                                    // duracao da carga (em horas)
+        session_cost = energy_consumed * chargingStation.getChargingCost(); // Custo da sessao é: energia consumida (kW)
+                                                                            // multiplicado pelo custo da sessao que vem
+                                                                            // em euros/kW
 
+        // Aqui verificamos qual o tipo do veiculo e guardamos na variavel adequada.
+        // Apos isso, incrementamos o total de energia consumida e o valor faturado
+        if (vehicle.isEletricHybrid().equals("Hibrido")) {
+            chargingStation.energy_consumed_by_hybrid += energy_consumed;
+        } else {
+            chargingStation.energy_consumed_by_ev += energy_consumed;
+        }
         chargingStation.total_energy_consumed += energy_consumed;
         chargingStation.total_revenue += session_cost;
-        client.total_sessions++;
 
-        vehicle.setCharging(true);
+        // Aqui dizemos que a sessao ainda nao esta paga
         settlement_status = "Por pagar";
+        is_paid = false;
 
         do {
-            session_code = generateRandomSessionCode();
-        } while (base.searchChargingSession(session_code) != -1);
+            session_code = generateRandomSessionCode(); // Gerar um codigo aleatorio
+        } while (base.searchChargingSession(session_code) != -1); // Verificar se este codigo existe na base de dados
         System.out.println("Codigo da sessao gerado: " + session_code);
-        
-        // comentado, pois vai existir outra forma de verificar se um carro esta a ser carregado naquele periodo de tempo. talvez com listas
-        // chargingStation.charging_now++;
-        
-        ChargingSession newChargingSession = new ChargingSession(chargingStation, vehicle, client, session_code, start_time, finish_time, settlement_status, energy_consumed, session_cost, false);
+
+        // Aqui definimos os atributos para o construtor da classe, e tambem criamos
+        // elementos de listas
+        ChargingSession newChargingSession = new ChargingSession(chargingStation, vehicle, client, session_code, start_time, finish_time, settlement_status, energy_consumed, session_cost, is_paid);
         vehicle.setChargingStation(chargingStation);
         client.addChargingSession(newChargingSession);
         chargingStation.addChargingSession(newChargingSession);
+        chargingStation.setVehicle(vehicle);
         base.addChargingSession(newChargingSession);
     }
 
@@ -482,7 +539,10 @@ public class Projeto_pc2 {
         boolean error = false;
 
         do {
-            session_code = Consola.lerInt("Codigo da sessao: ", 0, 999999999);
+            session_code = Consola.lerInt("Codigo da sessao [0 para voltar]: ", 0, 999999999);
+            if (session_code == 0) {
+                return;
+            }
             pos = base.searchChargingSession(session_code);
             if (pos == -1) {
                 System.err.println("Esta sessao nao existe!");
@@ -521,7 +581,14 @@ public class Projeto_pc2 {
         String license_plate;
         int pos;
 
-        license_plate = Consola.lerString("Matricula: ");
+        license_plate = Consola.lerString("Matricula [0 para voltar]: ");
+        String[] labels = { "0", "0 para voltar", "NAO", "QUERO VOLTAR POR FAVOR", "epah, enganei-me", "voltar", "O", "Nao tenho carro", "O meu carro e importado", "Pessu deshculpa" };
+        int array_size = labels.length;
+        for (int i = 0; i < array_size; i++) {
+            if (license_plate.equals(labels[i])) {
+                return;
+            }
+        }
         pos = base.searchVehicle(license_plate);
 
         if (pos == -1) {
@@ -537,7 +604,10 @@ public class Projeto_pc2 {
         int nif;
         int pos;
 
-        nif = Consola.lerInt("NIF: ", 0, 999999999);
+        nif = Consola.lerInt("NIF [0 para voltar]: ", 0, 999999999);
+        if (nif == 0) {
+            return;
+        }
         pos = base.searchClient(nif);
 
         if (pos == -1) {
@@ -553,7 +623,10 @@ public class Projeto_pc2 {
         int station_code;
         int pos;
 
-        station_code = Consola.lerInt("Codigo da estacao: ", 0, 999999999);
+        station_code = Consola.lerInt("Codigo da estacao [0 para voltar]: ", 0, 999999999);
+        if (station_code == 0) {
+            return;
+        }
         pos = base.searchChargingStation(station_code);
 
         if (pos == -1) {
@@ -569,7 +642,10 @@ public class Projeto_pc2 {
         int session_code;
         int pos;
 
-        session_code = Consola.lerInt("Codigo da sessao: ", 0, 999999999);
+        session_code = Consola.lerInt("Codigo da sessao [0 para voltar]: ", 0, 999999999);
+        if (session_code == 0) {
+            return;
+        }
         pos = base.searchChargingSession(session_code);
 
         if (pos == -1) {
@@ -590,7 +666,10 @@ public class Projeto_pc2 {
         int contact;
         int pos;
 
-        nif = Consola.lerInt("NIF: ", 1, 999999999);
+        nif = Consola.lerInt("NIF [0 para voltar]: ", 1, 999999999);
+        if (nif == 0) {
+            return;
+        }
         pos = base.searchClient(nif);
 
         if (pos == -1)
@@ -627,82 +706,6 @@ public class Projeto_pc2 {
     }
 
     public static void populateList(Base base) throws ParseException {
-        Vehicle volvoxc40 = new Vehicle(
-                "Volvo",
-                "XC40 Recharge T5",
-                "69-04-AF",
-                "Hibrido",
-                "Gasolina",
-                dateFormat.parse("19-01-2021"),
-                178,
-                50,
-                11,
-                1477,
-                50,
-                10.7,
-                false);
-
-        Vehicle fiat500 = new Vehicle(
-                "Fiat",
-                "500 2021 500e",
-                "24-NF-01",
-                "Eletrico",
-                null,
-                dateFormat.parse("05-04-2020"),
-                116,
-                320,
-                0,
-                50,
-                85,
-                42,
-                false);
-
-        Vehicle mercedesbenzeqs = new Vehicle(
-                "Mercedes-Benz",
-                "EQS 350",
-                "37-61-MX",
-                "Eletrico",
-                null,
-                dateFormat.parse("30-11-2023"),
-                284,
-                617,
-                0,
-                50,
-                170,
-                100,
-                false);
-
-        Vehicle peugeote208 = new Vehicle(
-                "Peugeot",
-                "e-208",
-                "06-08-AG",
-                "Eletrico",
-                null,
-                dateFormat.parse("01-06-2020"),
-                134,
-                340,
-                0,
-                50,
-                7.4,
-                50,
-                false);
-
-
-            Vehicle bmwi4m50 = new Vehicle(
-                "BMW",
-                "I4 M50",
-                "01-01-AA",
-                "Eletrico",
-                null,
-                dateFormat.parse("18-12-2023"),
-                537,
-                510,
-                0,
-                50,
-                207,
-                83.9,
-                false);
-
         Client c1 = new Client(
                 "Paulo Sousa",
                 "Torres Novas",
@@ -743,10 +746,114 @@ public class Projeto_pc2 {
                 918402249,
                 dateFormat.parse("17-05-2001"));
 
+        Vehicle volvoxc40 = new Vehicle(
+                c1,
+                "Volvo",
+                "XC40 Recharge T5",
+                "69-04-AF",
+                "Hibrido",
+                "Gasolina",
+                dateFormat.parse("19-01-2021"),
+                178,
+                50,
+                11,
+                1477,
+                50,
+                10.7);
+
+        Vehicle fiat500 = new Vehicle(
+                c5,
+                "Fiat",
+                "500 2021 500e",
+                "24-NF-01",
+                "Eletrico",
+                null,
+                dateFormat.parse("05-04-2020"),
+                116,
+                320,
+                0,
+                50,
+                85,
+                42);
+
+        Vehicle mercedesbenzeqs = new Vehicle(
+                c3,
+                "Mercedes-Benz",
+                "EQS 350",
+                "37-61-MX",
+                "Eletrico",
+                null,
+                dateFormat.parse("30-11-2023"),
+                284,
+                617,
+                0,
+                50,
+                170,
+                100);
+
+        Vehicle peugeote208 = new Vehicle(
+                c2,
+                "Peugeot",
+                "e-208",
+                "06-08-AG",
+                "Eletrico",
+                null,
+                dateFormat.parse("01-06-2020"),
+                134,
+                340,
+                0,
+                50,
+                7.4,
+                50);
+
+        Vehicle bmwi4m50 = new Vehicle(
+                c4,
+                "BMW",
+                "I4 M50",
+                "01-01-AA",
+                "Eletrico",
+                null,
+                dateFormat.parse("18-12-2023"),
+                537,
+                510,
+                0,
+                50,
+                207,
+                83.9);
+
+        Vehicle teslamodel3 = new Vehicle(
+                c1,
+                "Tesla",
+                "Model 3",
+                "02-01-AB",
+                "Eletrico",
+                null,
+                dateFormat.parse("10-05-2021"),
+                506,
+                567,
+                0,
+                50,
+                250,
+                82.0);
+
+        Vehicle porschetaycanturbos = new Vehicle(
+                c1,
+                "Porsche",
+                "Taycan Turbo S",
+                "99-99-ZZ",
+                "Eletrico",
+                null,
+                dateFormat.parse("31-01-2023"),
+                751,
+                412,
+                0,
+                50,
+                350,
+                93.4);
+
         ChargingStation cs1 = new ChargingStation(
                 1,
-                4,
-                0,
+                1,
                 "Av. Paulo Seixo",
                 "PCN",
                 10,
@@ -755,7 +862,6 @@ public class Projeto_pc2 {
         ChargingStation cs2 = new ChargingStation(
                 2,
                 3,
-                0,
                 "Av. Joao Pecado",
                 "PCR",
                 6,
@@ -764,49 +870,54 @@ public class Projeto_pc2 {
         ChargingStation cs3 = new ChargingStation(
                 3,
                 2,
-                0,
                 "Av. D. Perdu",
                 "PCUR",
                 4,
                 4);
-        
+
         ChargingStation cs4 = new ChargingStation(
                 4,
                 2,
-                0,
                 "Rua nao sei",
                 "PCR",
                 4,
                 2.2);
-        
+
         ChargingStation cs5 = new ChargingStation(
                 5,
                 2,
-                0,
                 "Av. Qualquer coisa",
                 "PCR",
                 4,
                 2.25);
-        
+
         ChargingStation cs6 = new ChargingStation(
                 6,
                 1,
-                0,
                 "Praca Existente",
                 "PCUR",
                 4,
                 5);
 
-        base.addVehicle(volvoxc40);
-        base.addVehicle(fiat500);
-        base.addVehicle(mercedesbenzeqs);
-        base.addVehicle(peugeote208);
-        base.addVehicle(bmwi4m50);
         base.addClient(c1);
         base.addClient(c2);
         base.addClient(c3);
         base.addClient(c4);
         base.addClient(c5);
+        base.addVehicle(volvoxc40);
+        base.addVehicle(fiat500);
+        base.addVehicle(mercedesbenzeqs);
+        base.addVehicle(peugeote208);
+        base.addVehicle(bmwi4m50);
+        base.addVehicle(teslamodel3);
+        base.addVehicle(porschetaycanturbos);
+        c1.addVehicle(volvoxc40);
+        c1.addVehicle(teslamodel3);
+        c1.addVehicle(porschetaycanturbos);
+        c2.addVehicle(peugeote208);
+        c3.addVehicle(mercedesbenzeqs);
+        c4.addVehicle(bmwi4m50);
+        c5.addVehicle(fiat500);
         base.addChargingStation(cs1);
         base.addChargingStation(cs2);
         base.addChargingStation(cs3);
