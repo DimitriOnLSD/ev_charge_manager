@@ -10,18 +10,18 @@ import java.util.Date;
 public class Vehicle implements Serializable {
     ChargingStation chargingStation;
     Client client;
-    protected String brand;
-    protected String model;
-    protected String license_plate;
-    protected String electric_hybrid;
-    protected String fuel_type;
-    protected Date date_of_register;
-    protected int horsepower;
-    protected int range;
-    protected int engine_displacement;
-    protected int battery;
-    protected double chargingSpeed;
-    protected double battery_capacity;
+    private String brand;
+    private String model;
+    private String license_plate;
+    private String electric_hybrid;
+    private String fuel_type;
+    private Date date_of_register;
+    private int horsepower;
+    private int range;
+    private int engine_displacement;
+    private int battery;
+    private double chargingSpeed;
+    private double battery_capacity;
 
     public Vehicle(Client client,
             String brand,

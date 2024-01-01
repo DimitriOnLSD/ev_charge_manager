@@ -44,6 +44,7 @@ public class Projeto_pc2 {
         switch (primary_option) {
             case 1:
                 base.readFromFile("vehicles.dat", "clients.dat", "stations.dat", "sessions.dat");
+                holdConsole();
                 break;
             case 2:
                 populateList(base);
@@ -556,12 +557,12 @@ public class Projeto_pc2 {
         // Aqui verificamos qual o tipo do veiculo e guardamos na variavel adequada.
         // Apos isso, incrementamos o total de energia consumida e o valor faturado
         if (vehicle.isEletricHybrid().equals("Hibrido")) {
-            chargingStation.energy_consumed_by_hybrid += energy_consumed;
+            chargingStation.adequadaEnergyConsumedByHybrid(energy_consumed);
         } else {
-            chargingStation.energy_consumed_by_ev += energy_consumed;
+            chargingStation.addEnergyConsumedByEv(energy_consumed);
         }
-        chargingStation.total_energy_consumed += energy_consumed;
-        chargingStation.total_revenue += session_cost;
+        chargingStation.addTotalEnergyConsumed(energy_consumed);
+        chargingStation.addTotalRevenue(session_cost);
 
         // Aqui dizemos que a sessao ainda nao esta paga
         settlement_status = "Por pagar";

@@ -10,16 +10,16 @@ import java.util.List;
  */
 public class ChargingStation implements Serializable {
     Vehicle vehicle;
-    protected String address;
-    protected String station_type;
-    protected int station_code;
-    protected int simultaneous_ev_charging;
-    protected double charging_time;
-    protected double charging_cost;
-    protected double total_energy_consumed = 0;
-    protected double energy_consumed_by_ev = 0;
-    protected double energy_consumed_by_hybrid = 0;
-    protected double total_revenue = 0;
+    private String address;
+    private String station_type;
+    private int station_code;
+    private int simultaneous_ev_charging;
+    private double charging_time;
+    private double charging_cost;
+    private double total_energy_consumed = 0;
+    private double energy_consumed_by_ev = 0;
+    private double energy_consumed_by_hybrid = 0;
+    private double total_revenue = 0;
     private List<ChargingSession> chargingSessions;
 
     public ChargingStation(int station_code,
@@ -93,12 +93,20 @@ public class ChargingStation implements Serializable {
         this.total_energy_consumed = total_energy_consumed;
     }
 
+    public void addTotalEnergyConsumed(double adder) {
+        this.total_energy_consumed += adder;
+    }
+
     public double getTotalRevenue() {
         return total_revenue;
     }
 
     public void setTotalRevenue(double total_revenue) {
         this.total_revenue = total_revenue;
+    }
+
+    public void addTotalRevenue(double adder) {
+        this.total_revenue += adder;
     }
 
     public double getEnergyConsumedByEv() {
@@ -109,12 +117,20 @@ public class ChargingStation implements Serializable {
         this.energy_consumed_by_ev = energy_consumed_by_ev;
     }
 
+    public void addEnergyConsumedByEv(double adder) {
+        this.energy_consumed_by_ev += adder;
+    }
+
     public double getEnergyConsumedByHybrid() {
         return energy_consumed_by_hybrid;
     }
 
     public void setEnergyConsumedByHybrid(double energy_consumed_by_hybrid) {
         this.energy_consumed_by_hybrid = energy_consumed_by_hybrid;
+    }
+
+    public void adequadaEnergyConsumedByHybrid(double adder) {
+        this.energy_consumed_by_hybrid += adder;
     }
 
     public Vehicle getVehicle() {

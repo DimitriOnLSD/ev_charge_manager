@@ -12,12 +12,12 @@ import java.util.List;
  * @authors Paulo Sousa | João Domingos
  */
 public class Client implements Serializable {
-    protected String name;
-    protected String address;
-    protected String email;
-    protected Date birth_date;
-    protected int NIF;
-    protected int contact;
+    private String name;
+    private String address;
+    private String email;
+    private Date birth_date;
+    private int NIF;
+    private int contact;
     private List<ChargingSession> chargingSessions;
     private List<Vehicle> vehicles;
 

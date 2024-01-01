@@ -11,16 +11,16 @@ public class ChargingSession implements Serializable {
     ChargingStation chargingStation;
     Vehicle vehicle;
     Client client;
-    protected int session_code;
-    protected int client_ID;
-    protected int type_of_payment;
-    protected double energy_consumed;
-    protected double session_cost;
-    protected boolean is_paid;
-    protected String settlement_status;
-    protected LocalDateTime start_time;
-    protected LocalDateTime finish_time;
-    protected LocalDateTime time_transaction;
+    private int session_code;
+    private int client_ID;
+    private int type_of_payment;
+    private double energy_consumed;
+    private double session_cost;
+    private boolean is_paid;
+    private String settlement_status;
+    private LocalDateTime start_time;
+    private LocalDateTime finish_time;
+    private LocalDateTime time_transaction;
     
     public ChargingSession(ChargingStation chargingStation,
             Vehicle vehicle,
