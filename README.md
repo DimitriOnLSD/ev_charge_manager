@@ -12,6 +12,6 @@
 + Listagem de pagamentos por efetuar (por cliente)
 + Histórico de sessões de carregamento (por posto de carregamento)
 
-- Guardar dados num ficheiro
++ Guardar dados num ficheiro
 - Comentar o resto do código
 ```
