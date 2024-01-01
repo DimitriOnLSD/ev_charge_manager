@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
+ * Classe que representa o veículo com propriedades basicas de identificacao e
+ * caracteristicas do mesmo
  *
  * @authors Paulo Sousa | João Domingos
  */
@@ -23,6 +25,24 @@ public class Vehicle implements Serializable {
     private double chargingSpeed;
     private double battery_capacity;
 
+
+
+    /**
+     * Constroi o veículo com os atributos dados
+     * 
+     * @param brand Marca do veículo
+     * @param model Modelo do veículo
+     * @param license_plate Matricula do veículo
+     * @param electric_hybrid Veículo eletrico ou hibrido
+     * @param fuel_type Tipo de combustivel do veículo
+     * @param date_of_register Data de registo do veículo
+     * @param horsepower Potencia do veículo
+     * @param range Número de kilometros que uma carga completa conssegue fazer
+     * @param engine_displacement Cilindrada do mor do veículo
+     * @param battery ????
+     * @param chargingSpeed Velocidade de carregamento do veículo
+     * @param battery_capacity Capacidade da bateria do veículo em kWh
+     */
     public Vehicle(Client client,
             String brand,
             String model,

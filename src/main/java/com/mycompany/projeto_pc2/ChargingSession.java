@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
+ * Classe que representa as sessões de carregamento com as suas principais e
+ * custos associados para os clientes
  *
  * @authors Paulo Sousa | João Domingos
  */
@@ -22,6 +24,21 @@ public class ChargingSession implements Serializable {
     private LocalDateTime finish_time;
     private LocalDateTime time_transaction;
     
+
+
+     /**
+     * Constroi a sessão de carregamento com os atributos dados
+     * 
+     * @param vehicle 
+     * @param client 
+     * @param session_code código da sessão de carregamento
+     * @param start_time data de inicio da sessão de carregamento
+     * @param finish_time data de fim da sessão de carregamento
+     * @param settlement_status Estado do pagamento da sessão de carregamento
+     * @param energy_consumed Energia consumida
+     * @param session_cost Custo da sessão de carregamento
+     * @param is_paid a sessão de carregamento foi paga
+     */
     public ChargingSession(ChargingStation chargingStation,
             Vehicle vehicle,
             Client client,

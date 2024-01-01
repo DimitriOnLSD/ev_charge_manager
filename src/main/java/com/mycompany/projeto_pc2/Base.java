@@ -10,7 +10,10 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.management.ConstructorParameters;
+
 /**
+ * Classe que representa 
  *
  * @authors Paulo Sousa | João Domingos
  */
@@ -20,6 +23,15 @@ public class Base implements Serializable {
     private ArrayList<ChargingStation> chargingStations;
     private ArrayList<ChargingSession> chargingSessions;
 
+
+    /**
+     * Constroi a base com os atributos dados
+     * 
+     * @param vehicles lista de veículos
+     * @param clients lista dos clientes
+     * @param chargingStations lista estações de carregamento
+     * @param chargingSessions lista de sessões de carregamento
+     */
     public Base() {
         vehicles = new ArrayList<>();
         clients = new ArrayList<>();
@@ -27,10 +39,18 @@ public class Base implements Serializable {
         chargingSessions = new ArrayList<>();
     }
 
+
+
     public ArrayList<Vehicle> getVehicles() {
         return vehicles;
     }
 
+
+    /**
+     * Define um veículo a um cliente
+     * 
+     * @param vehicles um novo veículo ao cliente
+     */
     public void setVehicles(ArrayList<Vehicle> vehicles) {
         this.vehicles = vehicles;
     }

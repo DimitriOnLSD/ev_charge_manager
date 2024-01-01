@@ -22,6 +22,16 @@ public class ChargingStation implements Serializable {
     private double total_revenue = 0;
     private List<ChargingSession> chargingSessions;
 
+
+    /**
+     * Constroi a estação de carregamento com os atributos dados
+     * 
+     * @param simultaneous_ev_charging 
+     * @param address Morada da estação
+     * @param station_type Tipo de estação
+     * @param charging_time Tempo de carregamento
+     * @param charging_cost Custo de carregamento
+     */
     public ChargingStation(int station_code,
             int simultaneous_ev_charging,
             String address,

@@ -7,7 +7,7 @@ import java.util.List;
 
 /**
  * Classe que representa o cliente com propriedades basicas de identificacao,
- * possessao de veiculos registados ao mesmo e sessoes realizadas por este
+ * posse de veiculos registados ao mesmo e sessoes realizadas por este
  *
  * @authors Paulo Sousa | João Domingos
  */
@@ -86,7 +86,7 @@ public class Client implements Serializable {
     /**
      * Devolve o email do cliente
      * 
-     * @return
+     * @return o email do cliente
      */
     public String getEmail() {
         return email;
@@ -95,7 +95,7 @@ public class Client implements Serializable {
     /**
      * Define o email do cliente
      * 
-     * @param email
+     * @param email o novo email a ser definido ao cliente
      */
     public void setEmail(String email) {
         this.email = email;
@@ -104,7 +104,7 @@ public class Client implements Serializable {
     /**
      * Devolve o Numero de Identificação Fiscal do cliente
      * 
-     * @return
+     * @return O Numero de Identificação Fiscal do cliente
      */
     public int getNIF() {
         return NIF;
@@ -113,7 +113,7 @@ public class Client implements Serializable {
     /**
      * Define o Numero de Identificação Fiscal do cliente
      * 
-     * @param nIF
+     * @param nIF O novo Numero de Identificação Fiscal a ser definido do cliente
      */
     public void setNIF(int nIF) {
         NIF = nIF;
@@ -122,7 +122,7 @@ public class Client implements Serializable {
     /**
      * Devolve o contacto telefónico do cliente
      * 
-     * @return
+     * @return O contacto telefónico do cliente
      */
     public int getContact() {
         return contact;
@@ -131,7 +131,7 @@ public class Client implements Serializable {
     /**
      * Define o contacto telefónico do cliente
      * 
-     * @param contact
+     * @param contact O novo contacto telefónico definido ao cliente
      */
     public void setContact(int contact) {
         this.contact = contact;
@@ -140,7 +140,7 @@ public class Client implements Serializable {
     /**
      * Devolve a data de nascimento do cliente
      * 
-     * @return
+     * @return A data de nascimento do cliente
      */
     public Date getBirthDate() {
         return birth_date;
@@ -149,7 +149,7 @@ public class Client implements Serializable {
     /**
      * Define a data de nascimento do cliente
      * 
-     * @param birth_date
+     * @param birth_date A nova data de nascimento definida ao cliente
      */
     public void setBirthDate(Date birth_date) {
         this.birth_date = birth_date;
@@ -158,16 +158,16 @@ public class Client implements Serializable {
     /**
      * Devolve a lista de sessões de carregamento do cliente. É usada para saber quais estão pagas e quantas foram realizadas
      * 
-     * @return
+     * @return A lista de sessôes de carregamento do cliente
      */
     public List<ChargingSession> getChargingSessions() {
         return chargingSessions;
     }
 
     /**
-     * Adiciona uma sessaão de carregamento na lista como elemento. É chamada quando é registada uma sessão
+     * Adiciona uma sessão de carregamento na lista como elemento. É chamada quando é registada uma sessão
      * 
-     * @param session
+     * @param session Define uma nova sessão de carregamento na lista 
      */
     public void addChargingSession(ChargingSession session) {
         chargingSessions.add(session);
@@ -176,7 +176,7 @@ public class Client implements Serializable {
     /**
      * Devolve os veículos do cliente
      * 
-     * @return
+     * @return Os veículos do cliente
      */
     public List<Vehicle> getVehicles() {
         return vehicles;
@@ -185,7 +185,7 @@ public class Client implements Serializable {
     /**
      * Adiciona o veículo ao cliente no momento de regsitar um veículo
      * 
-     * @param vehicle
+     * @param vehicle um novo veículo é definido ao cliente 
      */
     public void addVehicle(Vehicle vehicle) {
         vehicles.add(vehicle);
