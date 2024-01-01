@@ -1,5 +1,6 @@
 package com.mycompany.projeto_pc2;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,7 +8,7 @@ import java.util.List;
  *
  * @authors Paulo Sousa | João Domingos
  */
-public class ChargingStation {
+public class ChargingStation implements Serializable {
     Vehicle vehicle;
     protected String address;
     protected String station_type;

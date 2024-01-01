@@ -22,7 +22,6 @@ import util.Consola;
 /*
  * To do list:
  * Comentar o codigo (existe exemplo no addChargingSession() e Client.java)
- * Guardar dados num ficheiro
  */
 
 /**
@@ -36,11 +35,23 @@ public class Projeto_pc2 {
     public static Scanner sc = new Scanner(System.in);
 
     public static void main(String[] args) throws ParseException {
-        Base base = new Base();
-        int primary_option, secondary_option = 0;
         clearConsole();
+        int primary_option, secondary_option = 0;
 
-        populateList(base);
+        Base base = new Base();
+
+        primary_option = firstRunMenu();
+        switch (primary_option) {
+            case 1:
+                base.readFromFile("vehicles.dat", "clients.dat", "stations.dat", "sessions.dat");
+                break;
+            case 2:
+                populateList(base);
+                break;
+            default:
+        }
+
+        clearConsole();
 
         do {
             primary_option = primaryMenu();
@@ -158,6 +169,28 @@ public class Projeto_pc2 {
                 holdConsole();
             clearConsole();
         } while (primary_option != 0);
+
+        primary_option = lastRunMenu();
+        if (primary_option == 1) {
+            base.writeToFile("vehicles.dat", "clients.dat", "stations.dat", "sessions.dat");
+        }
+    }
+
+    public static int firstRunMenu() {
+        System.out.println("[1] Carregar dados dos ficheiros");
+        System.out.println("[2] Carregar dados da funcao populateList()");
+        System.out.println("[3] Continuar sem dados");
+
+        int option = Consola.lerInt("\nOpcao: ", 1, 3);
+        return option;
+    }
+
+    public static int lastRunMenu() {
+        System.out.println("[1] Guardar dados e sair");
+        System.out.println("[2] Sair sem guardar dados");
+
+        int option = Consola.lerInt("\nOpcao: ", 1, 2);
+        return option;
     }
 
     public static int primaryMenu() {
@@ -247,7 +280,7 @@ public class Projeto_pc2 {
 
         do {
             license_plate = Consola.lerString("Insira a matricula [0 para voltar]: ");
-            String[] labels = { "0", "0 para voltar", "NAO", "QUERO VOLTAR POR FAVOR", "epah, enganei-me", "voltar", "O", "Nao tenho carro", "O meu carro e importado", "Pessu deshculpa" };
+            String[] labels = { "0", "O", "voltar", "0 para voltar", "NAO", "NAO QUERO", "QUERO VOLTAR POR FAVOR", "epah, enganei-me", "Nao tenho carro", "O meu carro e importado", "matricula?", "O meu carro nao tem matricula, mas é azul", "matricula de mota tambem serve?", "oh manel, como e pra ir ao feiceboque?"};
             int array_size = labels.length;
             for (int i = 0; i < array_size; i++) {
                 if (license_plate.equals(labels[i])) {

@@ -1,12 +1,16 @@
 package com.mycompany.projeto_pc2;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
  *
  * @authors Paulo Sousa | João Domingos
  */
-public class ChargingSession {
+public class ChargingSession implements Serializable {
+    ChargingStation chargingStation;
+    Vehicle vehicle;
+    Client client;
     protected int session_code;
     protected int client_ID;
     protected int type_of_payment;
@@ -17,10 +21,7 @@ public class ChargingSession {
     protected LocalDateTime start_time;
     protected LocalDateTime finish_time;
     protected LocalDateTime time_transaction;
-    ChargingStation chargingStation;
-    Vehicle vehicle;
-    Client client;
-
+    
     public ChargingSession(ChargingStation chargingStation,
             Vehicle vehicle,
             Client client,

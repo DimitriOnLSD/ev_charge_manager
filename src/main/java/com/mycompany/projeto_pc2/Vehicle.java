@@ -1,12 +1,13 @@
 package com.mycompany.projeto_pc2;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  *
  * @authors Paulo Sousa | João Domingos
  */
-public class Vehicle {
+public class Vehicle implements Serializable {
     ChargingStation chargingStation;
     Client client;
     protected String brand;

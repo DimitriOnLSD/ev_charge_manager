@@ -1,5 +1,6 @@
 package com.mycompany.projeto_pc2;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -10,7 +11,7 @@ import java.util.List;
  *
  * @authors Paulo Sousa | João Domingos
  */
-public class Client {
+public class Client implements Serializable {
     protected String name;
     protected String address;
     protected String email;
@@ -23,12 +24,12 @@ public class Client {
     /**
      * Constroi o cliente com os atributos dados
      * 
-     * @param name
-     * @param address
-     * @param email
-     * @param nIF
-     * @param contact
-     * @param birth_date
+     * @param name Nome do cliente
+     * @param address Morada do cliente
+     * @param email E-mail do cliente
+     * @param nIF Numero de Identificação fiscal do cliente
+     * @param contact Contacto telefónico do cliente
+     * @param birth_date Data de nascimento do cliente
      */
     public Client(String name,
             String address,
@@ -49,7 +50,7 @@ public class Client {
     /**
      * Devolve o nome do cliente
      * 
-     * @return
+     * @return O nome do cliente
      */
     public String getName() {
         return name;
@@ -58,7 +59,7 @@ public class Client {
     /**
      * Define o nome do cliente
      * 
-     * @param nome
+     * @param nome O novo nome a ser atribuído ao cliente.
      */
     public void setName(String name) {
         this.name = name;
@@ -67,7 +68,7 @@ public class Client {
     /**
      * Devolve o endereço do cliente
      * 
-     * @return
+     * @return O endereço do cliente
      */
     public String getAddress() {
         return address;
@@ -76,7 +77,7 @@ public class Client {
     /**
      * Define o endereço do cliente
      * 
-     * @param address
+     * @param address O novo endereço a ser atribuído ao cliente.
      */
     public void setAddress(String address) {
         this.address = address;

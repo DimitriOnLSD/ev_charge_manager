@@ -1,5 +1,10 @@
 package com.mycompany.projeto_pc2;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -20,6 +25,38 @@ public class Base implements Serializable {
         clients = new ArrayList<>();
         chargingStations = new ArrayList<>();
         chargingSessions = new ArrayList<>();
+    }
+
+    public ArrayList<Vehicle> getVehicles() {
+        return vehicles;
+    }
+
+    public void setVehicles(ArrayList<Vehicle> vehicles) {
+        this.vehicles = vehicles;
+    }
+
+    public ArrayList<Client> getClients() {
+        return clients;
+    }
+
+    public void setClients(ArrayList<Client> clients) {
+        this.clients = clients;
+    }
+
+    public ArrayList<ChargingStation> getChargingStations() {
+        return chargingStations;
+    }
+
+    public void setChargingStations(ArrayList<ChargingStation> chargingStations) {
+        this.chargingStations = chargingStations;
+    }
+
+    public ArrayList<ChargingSession> getChargingSessions() {
+        return chargingSessions;
+    }
+
+    public void setChargingSessions(ArrayList<ChargingSession> chargingSessions) {
+        this.chargingSessions = chargingSessions;
     }
 
     public int getTotalCars() {
@@ -231,5 +268,44 @@ public class Base implements Serializable {
             }
             System.out.println();
         }
+    }   
+
+    public static void writeArrayListToFile(ArrayList<?> objectToWrite, String filename) {
+        try {
+            ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(filename));
+            out.writeObject(objectToWrite);
+            out.close();
+            System.out.println("Dados guardados no finheiro " + filename + " com sucesso!");
+        } catch (IOException ex) {
+            System.out.println("Erro ao salvar no ficheiro: " + ex.getMessage());
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    public static <T> ArrayList<T> readArrayListFromFile(String filename) {
+        ArrayList<T> objectList = new ArrayList<>();
+        try {
+            ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(filename));
+            objectList = (ArrayList<T>) inputStream.readObject();
+            inputStream.close();
+            System.out.println("Ficheiro " + filename + " lido com sucesso!");
+        } catch (IOException | ClassNotFoundException ex) {
+            System.out.println("Erro ao ler ficheiro: " + ex.getMessage());
+        }
+        return objectList;
+    }
+
+    public void writeToFile(String vehiclesFile, String clientsFile, String stationsFile, String sessionsFile) {
+        writeArrayListToFile(getVehicles(), vehiclesFile);
+        writeArrayListToFile(getClients(), clientsFile);
+        writeArrayListToFile(getChargingStations(), stationsFile);
+        writeArrayListToFile(getChargingSessions(), sessionsFile);
+    }
+
+    public void readFromFile(String vehiclesFile, String clientsFile, String stationsFile, String sessionsFile) {
+        setVehicles(readArrayListFromFile(vehiclesFile));
+        setClients(readArrayListFromFile(clientsFile));
+        setChargingStations(readArrayListFromFile(stationsFile));
+        setChargingSessions(readArrayListFromFile(sessionsFile));
     }
 }
