@@ -332,7 +332,7 @@ public class Projeto_pc2 {
 
         brand = Consola.lerString("Marca: ");
         model = Consola.lerString("Modelo: ");
-        horsepower = Consola.lerInt("Potencia: ", 1, 99999);
+        horsepower = Consola.lerInt("Potencia [cv]: ", 1, 99999);
 
         do {
             electric_hybrid = Consola.lerString("Eletrico ou Hibrido: ");
@@ -359,18 +359,18 @@ public class Projeto_pc2 {
                     System.err.println("Exemplo: " + fuel_types[0] + " ou " + fuel_types[2]);
                 }
             } while (error);
-            engine_displacement = Consola.lerInt("Cilindrada: ", 1, 99999);
+            engine_displacement = Consola.lerInt("Cilindrada [cm^3]: ", 1, 99999);
         }
-        battery_capacity = Consola.lerDouble("Capacidade da bateria: ", 1, 99999);
-        range = Consola.lerInt("Autonomia: ", 1, 99999);
-        chargingSpeed = Consola.lerInt("Velocidade de carregamento: ", 1, 99999);
+        battery_capacity = Consola.lerDouble("Capacidade da bateria [kW]: ", 1, 99999);
+        range = Consola.lerInt("Autonomia [km]: ", 1, 99999);
+        chargingSpeed = Consola.lerInt("Velocidade de carregamento [kW/h]: ", 1, 99999);
 
         do {
             try {
                 date_of_register = dateFormat.parse(Consola.lerString("Data de registo: "));
                 error = false;
             } catch (Exception e) {
-                System.out.println("Data invalida");
+                System.err.println("Data invalida.");
                 error = true;
             }
         } while (error);
@@ -411,7 +411,7 @@ public class Projeto_pc2 {
                 birth_date = dateFormat.parse(Consola.lerString("Data de nascimento: "));
                 error = false;
             } catch (Exception e) {
-                System.out.println("Data invalida");
+                System.out.println("Data invalida.");
                 error = true;
             }
         } while (error);
@@ -539,10 +539,10 @@ public class Projeto_pc2 {
             }
             int check_if_can_charge = base.canCharge(chargingStation, vehicle, start_time, finish_time);
             if (check_if_can_charge == 2) {
-                System.err.println("Esta estacao nao consegue carregar mais veiculos em simultaneo neste periodo temporal!");
+                System.err.println("Esta estacao nao consegue carregar mais veiculos em simultaneo neste periodo temporal! Maximo = " + chargingStation.getSimultaneousEVCharging());
                 error = true;
             } else if (check_if_can_charge == 1) {
-                System.err.println("Esta carro ja se encontra a carregar noutra estacao neste periodo temporal!");
+                System.err.println("Esta carro ja se encontra a carregar numa estacao neste periodo temporal!");
                 error = true;
             }
         } while (error);

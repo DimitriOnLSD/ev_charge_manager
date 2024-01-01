@@ -244,14 +244,16 @@ public class Base implements Serializable {
             chargingStation = getChargingStation(pos);
             if (chargingStation.getChargingSessions().size() > 0) {
                 double energy_consumed = chargingStation.getTotalEnergyConsumed();
+                double energy_consumed_hybrid = chargingStation.getEnergyConsumedByHybrid();
+                double energy_consumed_by_ev = chargingStation.getEnergyConsumedByEv();
                 int total_sessions = chargingStation.getChargingSessions().size();
                 average[0] = total_sessions > 0 ? energy_consumed / total_sessions : 0.0;
-                average[1] = chargingStation.getEnergyConsumedByHybrid();
-                average[2] = chargingStation.getEnergyConsumedByEv();
+                average[1] = total_sessions > 0 ? energy_consumed_hybrid / total_sessions : 0.0;
+                average[2] = total_sessions > 0 ? energy_consumed_by_ev / total_sessions : 0.0;
             } else {
                 System.err.println("\nEsta estacao de carregamento nao tem sessoes registadas!\n");
             }
-        }
+        }   
         return average;
     }
 
