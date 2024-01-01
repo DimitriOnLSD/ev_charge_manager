@@ -14,7 +14,6 @@ public class ChargingSession implements Serializable {
     Vehicle vehicle;
     Client client;
     private int session_code;
-    private int client_ID;
     private int type_of_payment;
     private double energy_consumed;
     private double session_cost;
@@ -59,6 +58,22 @@ public class ChargingSession implements Serializable {
         this.energy_consumed = energy_consumed;
         this.session_cost = session_cost;
         this.is_paid = is_paid;
+    }
+
+    public Vehicle getVehicle() {
+        return vehicle;
+    }
+
+    public void setVehicle(Vehicle vehicle) {
+        this.vehicle = vehicle;
+    }
+
+    public Client getClient() {
+        return client;
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
     }
 
     public int getSessionCode() {
@@ -123,14 +138,6 @@ public class ChargingSession implements Serializable {
 
     public void setTimeOftransaction(LocalDateTime time_transaction) {
         this.time_transaction = time_transaction;
-    }
-
-    public int getClientID() {
-        return client_ID;
-    }
-
-    public void setClientID(int client_ID) {
-        this.client_ID = client_ID;
     }
 
     public boolean getIsPaid() {

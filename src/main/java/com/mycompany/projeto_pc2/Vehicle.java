@@ -21,7 +21,6 @@ public class Vehicle implements Serializable {
     private int horsepower;
     private int range;
     private int engine_displacement;
-    private int battery;
     private double chargingSpeed;
     private double battery_capacity;
 
@@ -39,7 +38,6 @@ public class Vehicle implements Serializable {
      * @param horsepower Potencia do veículo
      * @param range Número de kilometros que uma carga completa conssegue fazer
      * @param engine_displacement Cilindrada do mor do veículo
-     * @param battery ????
      * @param chargingSpeed Velocidade de carregamento do veículo
      * @param battery_capacity Capacidade da bateria do veículo em kWh
      */
@@ -68,7 +66,6 @@ public class Vehicle implements Serializable {
         this.chargingSpeed = chargingSpeed;
         this.engine_displacement = engine_displacement;
         this.battery_capacity = battery_capacity;
-        this.battery = battery;
     }
 
     public ChargingStation getChargingStation() {
@@ -173,14 +170,6 @@ public class Vehicle implements Serializable {
 
     public void setFuelType(String fuel_type) {
         this.fuel_type = fuel_type;
-    }
-
-    public int getBattery() {
-        return battery;
-    }
-
-    public void setBattery(int battery) {
-        this.battery = battery;
     }
 
     @Override

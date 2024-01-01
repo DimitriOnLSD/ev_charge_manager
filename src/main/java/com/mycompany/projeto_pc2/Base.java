@@ -10,8 +10,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.management.ConstructorParameters;
-
 /**
  * Classe que representa 
  *
@@ -211,7 +209,9 @@ public class Base implements Serializable {
     public void searchSessionCostSuperiorToN(double n) {
         for (int i = 0; i < chargingSessions.size(); i++) {
             if (chargingSessions.get(i).getSessionCost() > n) {
-                System.out.println("Codigo da sessao: " + chargingSessions.get(i).getSessionCode());
+                System.out.print("Codigo da sessao: " + chargingSessions.get(i).getSessionCode());
+                String cost = String.format("%.2f", chargingSessions.get(i).getSessionCost());
+                System.out.println(" # Custo: " + cost + " euros");
             }
         }
     }
@@ -265,8 +265,8 @@ public class Base implements Serializable {
             List<ChargingSession> clientSessions = client.getChargingSessions();
             for (ChargingSession session : clientSessions) {
                 if (!session.getIsPaid()) {
-                    String str1 = String.format("%.2f", session.getSessionCost());
-                    System.out.println("Cod. sessao: " + session.getSessionCode() + " Custo: " + str1 + " euros");
+                    String cost = String.format("%.2f", session.getSessionCost());
+                    System.out.println("Codigo da sessao: " + session.getSessionCode() + " # Custo: " + cost + " euros");
                 }
             }
             System.out.println();
@@ -283,7 +283,8 @@ public class Base implements Serializable {
             List<ChargingSession> sessionHistory = chargingStation.getChargingSessions();
             for (ChargingSession session : sessionHistory) {
                 if (session.getSessionCode() > 0) {
-                    System.out.println("Cod. sessao: " + session.getSessionCode());
+                    System.out.print("Codigo da sessao: " + session.getSessionCode());
+                    System.out.println(" # Realizada por (NIF): " + session.getClient().getNIF());
                 }
             }
             System.out.println();

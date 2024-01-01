@@ -36,6 +36,11 @@ public class Projeto_pc2 {
 
     public static void main(String[] args) throws ParseException {
         clearConsole();
+
+        String vehiclesFile = "vehicles.dat";
+        String clientsFile = "clients.dat";
+        String stationsFile = "stations.dat";
+        String sessionsFile = "sessions.dat";
         int primary_option, secondary_option = 0;
 
         Base base = new Base();
@@ -43,7 +48,7 @@ public class Projeto_pc2 {
         primary_option = firstRunMenu();
         switch (primary_option) {
             case 1:
-                base.readFromFile("vehicles.dat", "clients.dat", "stations.dat", "sessions.dat");
+                base.readFromFile(vehiclesFile, clientsFile, stationsFile, sessionsFile);
                 holdConsole();
                 break;
             case 2:
@@ -56,6 +61,7 @@ public class Projeto_pc2 {
 
         do {
             primary_option = primaryMenu();
+
             switch (primary_option) {
                 case 1:
                     secondary_option = vehicleMenu();
@@ -119,6 +125,7 @@ public class Projeto_pc2 {
                     break;
                 case 5:
                     secondary_option = statisticsMenu();
+
                     switch (secondary_option) {
                         case 1:
                             double[] revenue = base.searchStationRevenue();
@@ -127,7 +134,7 @@ public class Projeto_pc2 {
                                 if (revenue[i] != 0) {
                                     int station_code = (int) revenue[i];
                                     String format_revenue = String.format("%.2f", revenue[i - 3]);
-                                    System.out.println((i - 2) + ". Valor faturado: " + format_revenue + " euros, Codigo da estacao: " + station_code);
+                                    System.out.println((i - 2) + ". Valor faturado: " + format_revenue + " euros # Codigo da estacao: " + station_code);
                                 }
                             }
                             System.out.println();
@@ -152,7 +159,7 @@ public class Projeto_pc2 {
 
                                 for (int i = 0; i < 3; i++) {
                                     String format_average = String.format("%.2f", average[i]);
-                                    System.out.println("Media de energia consumida" + labels[i] + format_average + " kW/h");
+                                    System.out.println("Media de energia consumida " + labels[i] + format_average + " kW/h");
                                 }
                                 System.out.println();
                             }
@@ -173,7 +180,7 @@ public class Projeto_pc2 {
 
         primary_option = lastRunMenu();
         if (primary_option == 1) {
-            base.writeToFile("vehicles.dat", "clients.dat", "stations.dat", "sessions.dat");
+            base.writeToFile(vehiclesFile, clientsFile, stationsFile, sessionsFile);
         }
     }
 
@@ -260,12 +267,16 @@ public class Projeto_pc2 {
 
     public static void addVehicle(Base base) {
         Client client = null;
+        String[] labels = { "0", "O", "voltar", "0 para voltar", "NAO", "NAO QUERO", "QUERO VOLTAR POR FAVOR", "epah, enganei-me", "Nao tenho carro", "O meu carro e importado", "matricula?", "O meu carro nao tem matricula, mas é azul", "matricula de mota tambem serve?", "oh manel, como e pra ir ao feiceboque?"};
+        String[] fuel_types = {"Gasolina", "gasolina", "Gasoleo", "gasoleo", "gasóleo", "oleo fula", "óleo fula"};
         String brand;
         String model;
         String license_plate;
         String electric_hybrid;
         String fuel_type = null;
         Date date_of_register = null;
+        int labels_array_size = labels.length;
+        int fuel_types_array_size = fuel_types.length;
         int horsepower;
         int range;
         int chargingSpeed;
@@ -277,13 +288,12 @@ public class Projeto_pc2 {
         boolean isHybrid = false;
         boolean check_ev_type = true;
         boolean error = false;
-        Pattern pattern = Pattern.compile("\\p{XDigit}{2}-\\p{XDigit}{2}-\\p{XDigit}{2}");
+        Pattern pattern = Pattern.compile("[A-Z0-9]{2}-[A-Z0-9]{2}-[A-Z0-9]{2}");
 
         do {
             license_plate = Consola.lerString("Insira a matricula [0 para voltar]: ");
-            String[] labels = { "0", "O", "voltar", "0 para voltar", "NAO", "NAO QUERO", "QUERO VOLTAR POR FAVOR", "epah, enganei-me", "Nao tenho carro", "O meu carro e importado", "matricula?", "O meu carro nao tem matricula, mas é azul", "matricula de mota tambem serve?", "oh manel, como e pra ir ao feiceboque?"};
-            int array_size = labels.length;
-            for (int i = 0; i < array_size; i++) {
+
+            for (int i = 0; i < labels_array_size; i++) {
                 if (license_plate.equals(labels[i])) {
                     return;
                 }
@@ -336,8 +346,20 @@ public class Projeto_pc2 {
         } while (check_ev_type);
 
         if (isHybrid) {
+            error = true;
+            do {
+                fuel_type = Consola.lerString("Tipo de combustivel: ");
+                for (int i = 0; i < fuel_types_array_size; i++) {
+                    if (fuel_type.equals(fuel_types[i])) {
+                        error = false;
+                    }
+                }
+                if (error) {
+                    System.err.println("Insira um tipo de combustivel aceite.");
+                    System.err.println("Exemplo: " + fuel_types[0] + " ou " + fuel_types[2]);
+                }
+            } while (error);
             engine_displacement = Consola.lerInt("Cilindrada: ", 1, 99999);
-            fuel_type = Consola.lerString("Tipo de combustivel: ");
         }
         battery_capacity = Consola.lerDouble("Capacidade da bateria: ", 1, 99999);
         range = Consola.lerInt("Autonomia: ", 1, 99999);
@@ -439,7 +461,7 @@ public class Projeto_pc2 {
     /**
      * Adiciona elemento na lista de sessoes de carregamento
      * 
-     * @param base
+     * @param base Recebe a classe Base de forma a aceder ás funções e listas
      */
     public static void addChargingSession(Base base) {
         ChargingStation chargingStation = null;
@@ -487,12 +509,7 @@ public class Projeto_pc2 {
                 error = true;
             } else {
                 vehicle = base.getVehicle(pos);
-                if (vehicle.getBattery() == 100) {
-                    System.err.println("A bateria deste carro encontra-se carregada.");
-                    error = true;
-                } else {
-                    error = false;
-                }
+                error = false;
             }
         } while (error);
 
@@ -636,7 +653,7 @@ public class Projeto_pc2 {
         int pos;
 
         license_plate = Consola.lerString("Matricula [0 para voltar]: ");
-        String[] labels = { "0", "0 para voltar", "NAO", "QUERO VOLTAR POR FAVOR", "epah, enganei-me", "voltar", "O", "Nao tenho carro", "O meu carro e importado", "Pessu deshculpa" };
+        String[] labels = { "0", "O", "voltar", "0 para voltar", "NAO", "NAO QUERO", "QUERO VOLTAR POR FAVOR", "epah, enganei-me", "Ainda nao fui ver a matricula do carro", "Quero ver o carro do costa", "Quantas eguas tem o partido socialista?"};
         int array_size = labels.length;
         for (int i = 0; i < array_size; i++) {
             if (license_plate.equals(labels[i])) {
@@ -907,7 +924,7 @@ public class Projeto_pc2 {
 
         ChargingStation cs1 = new ChargingStation(
                 1,
-                1,
+                3,
                 "Av. Paulo Seixo",
                 "PCN",
                 10,
@@ -915,7 +932,7 @@ public class Projeto_pc2 {
 
         ChargingStation cs2 = new ChargingStation(
                 2,
-                3,
+                2,
                 "Av. Joao Pecado",
                 "PCR",
                 6,
@@ -923,7 +940,7 @@ public class Projeto_pc2 {
 
         ChargingStation cs3 = new ChargingStation(
                 3,
-                2,
+                1,
                 "Av. D. Perdu",
                 "PCUR",
                 4,
@@ -931,7 +948,7 @@ public class Projeto_pc2 {
 
         ChargingStation cs4 = new ChargingStation(
                 4,
-                2,
+                3,
                 "Rua nao sei",
                 "PCR",
                 4,
@@ -939,11 +956,11 @@ public class Projeto_pc2 {
 
         ChargingStation cs5 = new ChargingStation(
                 5,
-                2,
+                1,
                 "Av. Qualquer coisa",
                 "PCR",
                 4,
-                2.25);
+                2);
 
         ChargingStation cs6 = new ChargingStation(
                 6,
