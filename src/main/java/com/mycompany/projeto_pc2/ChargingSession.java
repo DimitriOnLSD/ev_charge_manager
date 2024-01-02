@@ -60,94 +60,167 @@ public class ChargingSession implements Serializable {
         this.is_paid = is_paid;
     }
 
+    /**
+     * @return
+     */
     public Vehicle getVehicle() {
         return vehicle;
     }
 
+    /**
+     * @param vehicle
+     */
     public void setVehicle(Vehicle vehicle) {
         this.vehicle = vehicle;
     }
 
+    /**
+     * @return
+     */
     public Client getClient() {
         return client;
     }
 
+    /**
+     * @param client
+     */
     public void setClient(Client client) {
         this.client = client;
     }
 
+    /**
+     * @return
+     */
     public int getSessionCode() {
         return session_code;
     }
 
+    /**
+     * @param session_code
+     */
     public void setSessionCode(int session_code) {
         this.session_code = session_code;
     }
 
+    /**
+     * @return
+     */
     public LocalDateTime getStartTime() {
         return start_time;
     }
 
+    /**
+     * @param start_time
+     */
     public void setStartTime(LocalDateTime start_time) {
         this.start_time = start_time;
     }
 
+    /**
+     * @return
+     */
     public LocalDateTime getFinishTime() {
         return finish_time;
     }
 
+    /**
+     * @param finish_time
+     */
     public void setFinishTime(LocalDateTime finish_time) {
         this.finish_time = finish_time;
     }
 
+    /**
+     * @return
+     */
     public double getEnergyConsumed() {
         return energy_consumed;
     }
 
+    /**
+     * @param energy_consumed
+     */
     public void setEnergyConsumed(double energy_consumed) {
         this.energy_consumed = energy_consumed;
     }
 
+    /**
+     * @return
+     */
     public double getSessionCost() {
         return session_cost;
     }
 
+    /**
+     * @param session_cost
+     */
     public void setSessionCost(double session_cost) {
         this.session_cost = session_cost;
     }
 
+    /**
+     * @return
+     */
     public String getSettlementStatus() {
         return settlement_status;
     }
 
+    /**
+     * @param settlement_status
+     */
     public void setSettlementStatus(String settlement_status) {
         this.settlement_status = settlement_status;
     }
 
+    /**
+     * @return
+     */
     public int getTypeOfPayment() {
         return type_of_payment;
     }
 
+    /**
+     * @param type_of_payment
+     */
     public void setTypeOfPayment(int type_of_payment) {
         this.type_of_payment = type_of_payment;
     }
 
+    /**
+     * @return
+     */
     public LocalDateTime getTimeOftransaction() {
         return time_transaction;
     }
 
+    /**
+     * @param time_transaction
+     */
     public void setTimeOftransaction(LocalDateTime time_transaction) {
         this.time_transaction = time_transaction;
     }
 
+    /**
+     * @return
+     */
     public boolean getIsPaid() {
         return is_paid;
     }
 
+    /**
+     * @param is_paid
+     */
     public void setIsPaid(boolean is_paid) {
         this.is_paid = is_paid;
     }
 
+    /**
+     * Verifica o periodo temporal entre todos os tempos de inicio e fim de carregamento 
+     * 
+     * @param newStartTime tempo de inicio de carregamento
+     * @param newFinishTime tempo de fim de carregamento
+     * @return caso exista overlap devolve "true"
+     */
     public boolean isOverlapping(LocalDateTime newStartTime, LocalDateTime newFinishTime) {
         return (newStartTime.isBefore(finish_time) || newStartTime.isEqual(finish_time)) &&
                 (newFinishTime.isAfter(start_time) || newFinishTime.isEqual(start_time));

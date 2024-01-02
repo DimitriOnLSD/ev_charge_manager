@@ -34,6 +34,10 @@ public class Projeto_pc2 {
     static SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
     public static Scanner sc = new Scanner(System.in);
 
+    /**
+     * @param args
+     * @throws ParseException
+     */
     public static void main(String[] args) throws ParseException {
         clearConsole();
 
@@ -184,6 +188,9 @@ public class Projeto_pc2 {
         }
     }
 
+    /**
+     * @return
+     */
     public static int firstRunMenu() {
         System.out.println("[1] Carregar dados dos ficheiros");
         System.out.println("[2] Carregar dados da funcao populateList()");
@@ -193,6 +200,9 @@ public class Projeto_pc2 {
         return option;
     }
 
+    /**
+     * @return
+     */
     public static int lastRunMenu() {
         System.out.println("[1] Guardar dados e sair");
         System.out.println("[2] Sair sem guardar dados");
@@ -201,6 +211,9 @@ public class Projeto_pc2 {
         return option;
     }
 
+    /**
+     * @return
+     */
     public static int primaryMenu() {
         System.out.println("[1] Veiculos registados");
         System.out.println("[2] Clientes registados");
@@ -214,6 +227,9 @@ public class Projeto_pc2 {
         return option;
     }
 
+    /**
+     * @return
+     */
     public static int vehicleMenu() {
         System.out.println("[1] Procurar veiculo");
         System.out.println("[2] Registar veiculo");
@@ -223,6 +239,9 @@ public class Projeto_pc2 {
         return option;
     }
 
+    /**
+     * @return
+     */
     public static int clientMenu() {
         System.out.println("[1] Procurar cliente");
         System.out.println("[2] Registar cliente");
@@ -233,6 +252,9 @@ public class Projeto_pc2 {
         return option;
     }
 
+    /**
+     * @return
+     */
     public static int chargingStationMenu() {
         System.out.println("[1] Consultar posto de carregamento");
         System.out.println("[2] Registar posto de carregamento");
@@ -242,6 +264,9 @@ public class Projeto_pc2 {
         return option;
     }
 
+    /**
+     * @return
+     */
     public static int chargingSessionMenu() {
         System.out.println("[1] Consultar sessao de carregamento");
         System.out.println("[2] Registar sessao de carregamento");
@@ -252,6 +277,9 @@ public class Projeto_pc2 {
         return option;
     }
 
+    /**
+     * @return
+     */
     public static int statisticsMenu() {
         System.out.println("[1] Lista dos 3 postos de carregamento com maior valor faturado");
         System.out.println("[2] Lista de sessoes de carregamento com valor superior a X");
@@ -265,6 +293,9 @@ public class Projeto_pc2 {
         return option;
     }
 
+    /**
+     * @param base
+     */
     public static void addVehicle(Base base) {
         Client client = null;
         String[] labels = { "0", "O", "voltar", "0 para voltar", "NAO", "NAO QUERO", "QUERO VOLTAR POR FAVOR", "epah, enganei-me", "Nao tenho carro", "O meu carro e importado", "matricula?", "O meu carro nao tem matricula, mas é azul", "matricula de mota tambem serve?", "oh manel, como e pra ir ao feiceboque?"};
@@ -281,7 +312,6 @@ public class Projeto_pc2 {
         int range;
         int chargingSpeed;
         int engine_displacement = 0;
-        int battery = 50;
         int nif;
         int pos;
         double battery_capacity;
@@ -375,11 +405,14 @@ public class Projeto_pc2 {
             }
         } while (error);
 
-        Vehicle newVehicle = new Vehicle(client, brand, model, license_plate, electric_hybrid, fuel_type, date_of_register, horsepower, range, chargingSpeed, engine_displacement, battery, battery_capacity);
+        Vehicle newVehicle = new Vehicle(client, brand, model, license_plate, electric_hybrid, fuel_type, date_of_register, horsepower, range, chargingSpeed, engine_displacement, battery_capacity);
         base.addVehicle(newVehicle);
         client.addVehicle(newVehicle);
     }
 
+    /**
+     * @param base
+     */
     public static void addClient(Base base) {
         String name;
         String address;
@@ -420,6 +453,9 @@ public class Projeto_pc2 {
         base.addClient(newClient);
     }
 
+    /**
+     * @param base
+     */
     public static void addChargingStation(Base base) {
         String address;
         String station_type;
@@ -600,6 +636,9 @@ public class Projeto_pc2 {
         base.addChargingSession(newChargingSession);
     }
 
+    /**
+     * @param base
+     */
     public static void addPayment(Base base) {
         ChargingSession chargingSession = null;
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm dd-MM-yyyy");
@@ -647,6 +686,9 @@ public class Projeto_pc2 {
         chargingSession.setTimeOftransaction(time_transaction);
     }
 
+    /**
+     * @param base
+     */
     public static void searchVehicle(Base base) {
         Vehicle vehicle;
         String license_plate;
@@ -670,6 +712,9 @@ public class Projeto_pc2 {
         }
     }
 
+    /**
+     * @param base
+     */
     public static void searchClient(Base base) {
         Client client;
         int nif;
@@ -689,6 +734,9 @@ public class Projeto_pc2 {
         }
     }
 
+    /**
+     * @param base
+     */
     public static void searchChargingStation(Base base) {
         ChargingStation chargingStation;
         int station_code;
@@ -708,6 +756,9 @@ public class Projeto_pc2 {
         }
     }
 
+    /**
+     * @param base
+     */
     public static void searchChargingSession(Base base) {
         ChargingSession chargingSession;
         int session_code;
@@ -727,6 +778,9 @@ public class Projeto_pc2 {
         }
     }
 
+    /**
+     * @param base
+     */
     public static void changeClientData(Base base) {
         Client client;
         String name;
@@ -776,6 +830,12 @@ public class Projeto_pc2 {
         }
     }
 
+    /**
+     * Adiciona elementos a lista (debuging & testing)
+     * 
+     * @param base
+     * @throws ParseException
+     */
     public static void populateList(Base base) throws ParseException {
         Client c1 = new Client(
                 "Paulo Sousa",
@@ -826,7 +886,6 @@ public class Projeto_pc2 {
                 "Gasolina",
                 dateFormat.parse("19-01-2021"),
                 178,
-                50,
                 11,
                 1477,
                 50,
@@ -843,7 +902,6 @@ public class Projeto_pc2 {
                 116,
                 320,
                 0,
-                50,
                 85,
                 42);
 
@@ -858,7 +916,6 @@ public class Projeto_pc2 {
                 284,
                 617,
                 0,
-                50,
                 170,
                 100);
 
@@ -873,7 +930,6 @@ public class Projeto_pc2 {
                 134,
                 340,
                 0,
-                50,
                 7.4,
                 50);
 
@@ -888,7 +944,6 @@ public class Projeto_pc2 {
                 537,
                 510,
                 0,
-                50,
                 207,
                 83.9);
 
@@ -903,7 +958,6 @@ public class Projeto_pc2 {
                 506,
                 567,
                 0,
-                50,
                 250,
                 82.0);
 
@@ -918,7 +972,6 @@ public class Projeto_pc2 {
                 751,
                 412,
                 0,
-                50,
                 350,
                 93.4);
 
@@ -997,16 +1050,29 @@ public class Projeto_pc2 {
         base.addChargingStation(cs6);
     }
 
+    /**
+     * Limpa a consola
+     * 
+     */
     public static void clearConsole() {
         System.out.print("\033[H\033[2J");
         System.out.flush();
     }
 
+    /**
+     * Scan a consola (espera um enter)
+     * 
+     */
     public static void holdConsole() {
         System.out.println("Pressione enter para continuar...");
         sc.nextLine();
     }
 
+    /**
+     * Gera um codigo aleatorio para a sessão
+     * 
+     * @return codigo aleatorio para a sessão
+     */
     public static int generateRandomSessionCode() {
         Random random = new Random();
         return random.nextInt(90000) + 10000;

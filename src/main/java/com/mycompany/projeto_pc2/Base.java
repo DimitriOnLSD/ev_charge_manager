@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Classe que representa 
+ * Classe que gere o comportamento das listas e das classes
  *
  * @authors Paulo Sousa | João Domingos
  */
@@ -39,92 +39,197 @@ public class Base implements Serializable {
 
 
 
+    /**
+     * Devolve o numero de elementos da lista "vehicles"
+     * 
+     * @return O numero de elementos da lista "vehicles"
+     */
     public ArrayList<Vehicle> getVehicles() {
         return vehicles;
     }
 
 
     /**
-     * Define um veículo a um cliente
+     * Define a lista parametrizada para a lista "vehicles"
      * 
-     * @param vehicles um novo veículo ao cliente
+     * @param vehicles A lista "vehicles"
      */
     public void setVehicles(ArrayList<Vehicle> vehicles) {
         this.vehicles = vehicles;
     }
 
+    /**
+     * 
+     * 
+     * @return
+     */
     public ArrayList<Client> getClients() {
         return clients;
     }
 
+    /**
+     * 
+     * 
+     * @param clients
+     */
     public void setClients(ArrayList<Client> clients) {
         this.clients = clients;
     }
 
+    /**
+     * 
+     * 
+     * @return
+     */
     public ArrayList<ChargingStation> getChargingStations() {
         return chargingStations;
     }
 
+    /**
+     * 
+     * 
+     * @param chargingStations
+     */
     public void setChargingStations(ArrayList<ChargingStation> chargingStations) {
         this.chargingStations = chargingStations;
     }
 
+    /**
+     * 
+     * 
+     * @return
+     */
     public ArrayList<ChargingSession> getChargingSessions() {
         return chargingSessions;
     }
 
+    /**
+     * 
+     * 
+     * @param chargingSessions
+     */
     public void setChargingSessions(ArrayList<ChargingSession> chargingSessions) {
         this.chargingSessions = chargingSessions;
     }
 
+    /**
+     * 
+     * 
+     * @return
+     */
     public int getTotalCars() {
         return vehicles.size();
     }
 
+    /**
+     * 
+     * 
+     * @return
+     */
     public int getTotalClients() {
         return clients.size();
     }
 
+    /**
+     * 
+     * 
+     * @return
+     */
     public int getTotalChargingStations() {
         return chargingStations.size();
     }
 
+    /**
+     * 
+     * 
+     * @return
+     */
     public int getTotalChargingSessions() {
         return chargingSessions.size();
     }
 
+    /**
+     * Adiciona o valor parametrizado para a lista "vehicles"
+     * 
+     * @param newVehicle o valor parametrizado
+     */
     public void addVehicle(Vehicle newVehicle) {
         vehicles.add(newVehicle);
     }
 
+    /**
+     * 
+     * 
+     * @param newClient
+     */
     public void addClient(Client newClient) {
         clients.add(newClient);
     }
 
+    /**
+     * 
+     * 
+     * @param newChargingStation
+     */
     public void addChargingStation(ChargingStation newChargingStation) {
         chargingStations.add(newChargingStation);
     }
 
+    /**
+     * 
+     * 
+     * @param newChargingSession
+     */
     public void addChargingSession(ChargingSession newChargingSession) {
         chargingSessions.add(newChargingSession);
     }
 
+    /**
+     * Devolve o veiculo com a posição parametrizada da lista "vehicles"
+     * 
+     * @param pos posição do elemento
+     * @return o veiculo especifico
+     */
     public Vehicle getVehicle(int pos) {
         return vehicles.get(pos);
     }
 
+    /**
+     * Devolve o cliente com a posição parametrizada da lista "clients"
+     * 
+     * @param pos posição do elemento
+     * @return o cliente especifico
+     */
     public Client getClient(int pos) {
         return clients.get(pos);
     }
 
+    /**
+     * Devolve a estação de carregamento com a posição parametrizada da lista "chargingStations"
+     * 
+     * @param pos posição do elemento
+     * @return a estação de carregamento especifica
+     */
     public ChargingStation getChargingStation(int pos) {
         return chargingStations.get(pos);
     }
 
+    /**
+     * Devolve a sessão de carregamento com a posição parametrizada da lista "chargingSessions"
+     * 
+     * @param pos posição do elemento
+     * @return a sessão de carregamento especifica
+     */
     public ChargingSession getChargingSession(int pos) {
         return chargingSessions.get(pos);
     }
 
+    /**
+     * Pesquisa o veiculo a partir da matricula inserida
+     * 
+     * @param license_plate matricula inserida
+     * @return o elemento na lista "vehicles". Caso não exista devolve -1
+     */
     public int searchVehicle(String license_plate) {
         for (int i = 0; i < vehicles.size(); i++) {
             if (vehicles.get(i).getLicensePlate().equals(license_plate)) {
@@ -134,6 +239,12 @@ public class Base implements Serializable {
         return -1;
     }
 
+    /**
+     * Pesquisa o cliente a partir do nif
+     * 
+     * @param nif nif inserido
+     * @return o elemento na lista "clients". Caso não exista devolve -1
+     */
     public int searchClient(int nif) {
         for (int i = 0; i < clients.size(); i++) {
             if (clients.get(i).getNIF() == nif) {
@@ -143,6 +254,12 @@ public class Base implements Serializable {
         return -1;
     }
 
+    /**
+     * 
+     * 
+     * @param station_code
+     * @return
+     */
     public int searchChargingStation(int station_code) {
         for (int i = 0; i < chargingStations.size(); i++) {
             if (chargingStations.get(i).getStationCode() == station_code) {
@@ -152,6 +269,12 @@ public class Base implements Serializable {
         return -1;
     }
 
+    /**
+     * 
+     * 
+     * @param session_code
+     * @return
+     */
     public int searchChargingSession(int session_code) {
         for (int i = 0; i < chargingSessions.size(); i++) {
             if (chargingSessions.get(i).getSessionCode() == session_code) {
@@ -161,6 +284,15 @@ public class Base implements Serializable {
         return -1;
     }
 
+    /**
+     * Verifica se o carro pode ser carregado na estação de carregamento
+     * 
+     * @param chargingStation estação de carregamento inserida
+     * @param vehicle veiculo que pretendemos carregar
+     * @param start_time data de inico do carregamento
+     * @param finish_time data de fim do carregamento
+     * @return 1 se num certo periodo de tempo o veiculo está a carregar numa das estações. 2 se a estação tiver atingido o seu limite de capacidade num certo limite temporal. 0 pode carregar
+     */
     public int canCharge(ChargingStation chargingStation, Vehicle vehicle, LocalDateTime start_time,
             LocalDateTime finish_time) {
         int simultaneous_ev_charging_counter = 0;
@@ -180,6 +312,11 @@ public class Base implements Serializable {
         return 0;
     }
 
+    /**
+     * Verifica quais as 3 estações mais rentaveis 
+     * 
+     * @return o codigo das 3 estações mais rentaveis e o respetivo valor faturado de cada uma 
+     */
     public double[] searchStationRevenue() {
         double[] to_return = { 0.0, 0.0, 0.0, 0, 0, 0 };
 
@@ -206,6 +343,11 @@ public class Base implements Serializable {
         return to_return;
     }
 
+    /**
+     * Verifica quais as sessões de carregamento que são superiores ao numero inserido
+     * 
+     * @param n numero inserido
+     */
     public void searchSessionCostSuperiorToN(double n) {
         for (int i = 0; i < chargingSessions.size(); i++) {
             if (chargingSessions.get(i).getSessionCost() > n) {
@@ -216,6 +358,12 @@ public class Base implements Serializable {
         }
     }
 
+    /**
+     * Verifica quantas sessões de carregamento o utilizador fez
+     * 
+     * @param nif nif inserido
+     * @return numero de sessões de carregamento efetuadas
+     */
     public int getTotalChargingSessionsByUser(int nif) {
         Client client;
         int pos;
@@ -231,6 +379,12 @@ public class Base implements Serializable {
         return total;
     }
 
+    /**
+     * Devolve a media da energia consumida num posto de carregamento, media de energia consumida por veiculos hibridos e eletricos
+     * 
+     * @param station_code codigo da estação inserida
+     * @return a media da energia consumida num posto de carregamento, media de energia consumida por veiculos hibridos e eletricos
+     */
     public double[] getAverageEnergyConsumedByStation(int station_code) {
         ChargingStation chargingStation;
         int pos;
@@ -257,6 +411,11 @@ public class Base implements Serializable {
         return average;
     }
 
+    /**
+     * Verifica as sessões que teem o pagamento pendente para um certo utilizador
+     * 
+     * @param nif nif inserido
+     */
     public void getUnpaidSessionsByClient(int nif) {
         Client client;
         int pos = searchClient(nif);
@@ -275,6 +434,11 @@ public class Base implements Serializable {
         }
     }
 
+    /**
+     * Apresenta o historico de sessões numa estação
+     * 
+     * @param station_code codigo da estação inserida
+     */
     public void getSessionHistoryByStation(int station_code) {
         ChargingStation chargingStation;
         int pos = searchChargingStation(station_code);
@@ -293,6 +457,12 @@ public class Base implements Serializable {
         }
     }   
 
+    /**
+     * Escreve para um ficheiro apenas 
+     * 
+     * @param objectToWrite a lista dada
+     * @param filename nome do ficheiro
+     */
     public static void writeArrayListToFile(ArrayList<?> objectToWrite, String filename) {
         try {
             ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(filename));
@@ -304,6 +474,13 @@ public class Base implements Serializable {
         }
     }
 
+    /**
+     * Lê um ficheiro apenas 
+     * 
+     * @param <T> parametro generico da lista
+     * @param filename nome do ficheiro a ler
+     * @return elementos lidos para a lista 
+     */
     @SuppressWarnings("unchecked")
     public static <T> ArrayList<T> readArrayListFromFile(String filename) {
         ArrayList<T> objectList = new ArrayList<>();
@@ -318,6 +495,14 @@ public class Base implements Serializable {
         return objectList;
     }
 
+    /**
+     * Função que guarda as classes em ficheiros
+     * 
+     * @param vehiclesFile ficheiro de veiculos
+     * @param clientsFile ficheiro de clientes
+     * @param stationsFile ficheiro de estações 
+     * @param sessionsFile ficheiro de sessões 
+     */
     public void writeToFile(String vehiclesFile, String clientsFile, String stationsFile, String sessionsFile) {
         writeArrayListToFile(getVehicles(), vehiclesFile);
         writeArrayListToFile(getClients(), clientsFile);
@@ -325,6 +510,14 @@ public class Base implements Serializable {
         writeArrayListToFile(getChargingSessions(), sessionsFile);
     }
 
+    /**
+     * Função que lê os ficheiros e guarda em classes
+     * 
+     * @param vehiclesFile ficheiro de veiculos
+     * @param clientsFile ficheiro de clientes
+     * @param stationsFile ficheiro de estações 
+     * @param sessionsFile ficheiro de sessões 
+     */
     public void readFromFile(String vehiclesFile, String clientsFile, String stationsFile, String sessionsFile) {
         setVehicles(readArrayListFromFile(vehiclesFile));
         setClients(readArrayListFromFile(clientsFile));

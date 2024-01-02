@@ -37,7 +37,7 @@ public class Vehicle implements Serializable {
      * @param date_of_register Data de registo do veículo
      * @param horsepower Potencia do veículo
      * @param range Número de kilometros que uma carga completa conssegue fazer
-     * @param engine_displacement Cilindrada do mor do veículo
+     * @param engine_displacement Cilindrada do motor do veículo
      * @param chargingSpeed Velocidade de carregamento do veículo
      * @param battery_capacity Capacidade da bateria do veículo em kWh
      */
@@ -51,7 +51,6 @@ public class Vehicle implements Serializable {
             int horsepower,
             int range,
             int engine_displacement,
-            int battery,
             double chargingSpeed,
             double battery_capacity) {
         this.client = client;
@@ -72,102 +71,249 @@ public class Vehicle implements Serializable {
         return chargingStation;
     }
 
+    /**
+     * Define a estação de carregamento associada ao veículo
+     * 
+     * @param chargingStation A nova estação de carregamento a ser definida
+     */
     public void setChargingStation(ChargingStation chargingStation) {
         this.chargingStation = chargingStation;
     }
 
+    /**
+     * Devolve o cliente associado ao veículo
+     * 
+     * @return O cliente ao qual pertence o veículo
+     */
     public Client getClient() {
         return client;
     }
 
+    /**
+     * Define o cliente associado ao veículo
+     * 
+     * @param client A nova estação de carregamento a ser definida
+     */
     public void setClient(Client client) {
         this.client = client;
     }
 
+
+    /**
+     * Devolve a marca do veículo
+     * 
+     * @return A marca do veículo
+     */
     public String getBrand() {
         return brand;
     }
 
+
+    /**
+     * Define a marca do veículo
+     * 
+     * @param brand A nova marca para o veículo
+     */
     public void setBrand(String brand) {
         this.brand = brand;
     }
 
+
+    /**
+     * Devolve o modelo do veículo
+     * 
+     * @return O modelo do veículo
+     */
     public String getModel() {
         return model;
     }
 
+
+    /**
+     * Define o modelo do veículo
+     * 
+     * @param model O novo modelo para o veículo
+     */
     public void setModel(String model) {
         this.model = model;
     }
 
+
+     /**
+     * Devolve a matricula do veículo
+     * 
+     * @return A matricula do veículo
+     */
     public String getLicensePlate() {
         return license_plate;
     }
 
+
+    /**
+     * Define a matricula do veículo
+     * 
+     * @param license_plate A nova matricula para o veículo
+     */
     public void setLicensePlate(String license_plate) {
         this.license_plate = license_plate;
     }
 
+
+    /**
+     * Devolve a cilindrada do motor do veículo
+     * 
+     * @return A cilindrada do motor do veículo
+     */
     public int getEngineDsplacement() {
         return engine_displacement;
     }
 
+
+    /**
+     * Define a cilindrada do motor do veículo
+     * 
+     * @param engine_displacement A nova cilindrada do motor para o veículo
+     */
     public void setEngineDisplacement(int engine_displacement) {
         this.engine_displacement = engine_displacement;
     }
 
+
+    /**
+     * Devolve a data de registo do veículo
+     * 
+     * @return A data de registo do veículo
+     */
     public Date getDateOfRegister() {
         return date_of_register;
     }
 
+
+    /**
+     * Define a data de registo do veículo
+     * 
+     * @param date_of_register A nova data de registo para o veículo
+     */
     public void setDateOfRegisterg(Date date_of_register) {
         this.date_of_register = date_of_register;
     }
 
+
+    /**
+     * Devolve a potencia do veículo
+     * 
+     * @return A potencia do veículo
+     */
     public int getHorsepower() {
         return horsepower;
     }
 
+
+    /**
+     * Define a potencia do veículo
+     * 
+     * @param horsepower A nova potencia para o veículo
+     */
     public void setHorsepower(int horsepower) {
         this.horsepower = horsepower;
     }
 
+
+    /**
+     * Devolve a capacidade da bateria do veículo
+     * 
+     * @return A capacidade da bateria do veículo
+     */
     public double getBatteryCapacity() {
         return battery_capacity;
     }
 
+
+    /**
+     * Define a capacidade da bateria do veículo
+     * 
+     * @param battery_capacity A nova capacidade da bateria para o veículo
+     */
     public void setBatteryCapacity(int battery_capacity) {
         this.battery_capacity = battery_capacity;
     }
 
+
+    /**
+     * Devolve o numero de kilometros que a carga do veículo conssegue fazer
+     * 
+     * @return O numero de kilometros que a carga do veículo conssegue fazer
+     */
     public int getRange() {
         return range;
     }
 
+
+    /**
+     * Define o numero de kilometros que a carga do veículo conssegue fazer
+     * 
+     * @param range O novo numero de kilometros que a carga do veículo conssegue fazer
+     */
     public void setRange(int range) {
         this.range = range;
     }
 
+
+    /**
+     * Devolve a velocidade de carregamento do veículo
+     * 
+     * @return A velocidade de carregamento do veículo
+     */
     public double getChargingSpeed() {
         return chargingSpeed;
     }
 
+
+    /**
+     * Define a velocidade de carregamento do veículo
+     * 
+     * @param chargingSpeed A nova velocidade de carregamento do veículo
+     */
     public void setChargingSpeed(double chargingSpeed) {
         this.chargingSpeed = chargingSpeed;
     }
 
+
+    /**
+     * Devolve se o veículo é eletrico ou hibrido 
+     * 
+     * @return Se o veículo é eletrico ou hibrido 
+     */
     public String isEletricHybrid() {
         return electric_hybrid;
     }
 
+
+    /**
+     * Define se o veículo é eletrico ou hibrido
+     * 
+     * @param electric_hybrid O novo tipo de veículo
+     */
     public void setEletricHybrid(String electric_hybrid) {
         this.electric_hybrid = electric_hybrid;
     }
 
+
+    /**
+     * Devolve o tipo de combustivel do veículo
+     * 
+     * @return O tipo de combustivel do veículo
+     */
     public String isFuelType() {
         return fuel_type;
     }
 
+
+    /**
+     * Define o tipo de combustivel do veículo
+     * 
+     * @param fuel_type O novo tipo de combustivel do veículo
+     */
     public void setFuelType(String fuel_type) {
         this.fuel_type = fuel_type;
     }
