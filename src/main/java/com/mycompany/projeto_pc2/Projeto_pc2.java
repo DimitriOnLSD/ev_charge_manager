@@ -25,6 +25,8 @@ import util.Consola;
  */
 
 /**
+ * Classe principal ao projeto ou estão os menus, as bases de dados
+ * e outras funções essenciais
  *
  * @authors Paulo Sousa | João Domingos
  */
@@ -35,6 +37,8 @@ public class Projeto_pc2 {
     public static Scanner sc = new Scanner(System.in);
 
     /**
+     * 
+     * 
      * @param args
      * @throws ParseException
      */
@@ -189,7 +193,9 @@ public class Projeto_pc2 {
     }
 
     /**
-     * @return
+     * Devolve o primeiro menu onde é selecionada uma das opções relavitas aos ficheiros
+     * 
+     * @return o primeiro menu
      */
     public static int firstRunMenu() {
         System.out.println("[1] Carregar dados dos ficheiros");
@@ -201,7 +207,9 @@ public class Projeto_pc2 {
     }
 
     /**
-     * @return
+     * Devolve o ultimo menu onde é selecionada uma das opções sobre se pertende ou não guardar os dados 
+     * 
+     * @return o ultimo menu
      */
     public static int lastRunMenu() {
         System.out.println("[1] Guardar dados e sair");
@@ -212,7 +220,9 @@ public class Projeto_pc2 {
     }
 
     /**
-     * @return
+     * Devolve o menu principal com todas as opções relativas a veiculos, clientes, postos de carregamento, sessões de carregamento e estatisticas
+     * 
+     * @return o menu principal
      */
     public static int primaryMenu() {
         System.out.println("[1] Veiculos registados");
@@ -228,7 +238,9 @@ public class Projeto_pc2 {
     }
 
     /**
-     * @return
+     * Devolve o menu veiculos
+     * 
+     * @return o menu veiculos
      */
     public static int vehicleMenu() {
         System.out.println("[1] Procurar veiculo");
@@ -240,7 +252,9 @@ public class Projeto_pc2 {
     }
 
     /**
-     * @return
+     * Devolve o menu clientes 
+     * 
+     * @return o menu clientes 
      */
     public static int clientMenu() {
         System.out.println("[1] Procurar cliente");
@@ -253,7 +267,9 @@ public class Projeto_pc2 {
     }
 
     /**
-     * @return
+     * Devolve o menu dos postos de carregamento
+     * 
+     * @return o menu dos postos de carregamento
      */
     public static int chargingStationMenu() {
         System.out.println("[1] Consultar posto de carregamento");
@@ -265,7 +281,9 @@ public class Projeto_pc2 {
     }
 
     /**
-     * @return
+     * Devolve o menu das sessões de carregamento
+     * 
+     * @return o menu das sessões de carregamento
      */
     public static int chargingSessionMenu() {
         System.out.println("[1] Consultar sessao de carregamento");
@@ -278,7 +296,9 @@ public class Projeto_pc2 {
     }
 
     /**
-     * @return
+     * Devolve o menu estatisticas
+     * 
+     * @return o menu estatisticas
      */
     public static int statisticsMenu() {
         System.out.println("[1] Lista dos 3 postos de carregamento com maior valor faturado");
@@ -294,7 +314,9 @@ public class Projeto_pc2 {
     }
 
     /**
-     * @param base
+     * Adiciona elemento na lista de veiculos
+     * 
+     * @param base Recebe a classe Base de forma a aceder ás funções e listas
      */
     public static void addVehicle(Base base) {
         Client client = null;
@@ -411,7 +433,9 @@ public class Projeto_pc2 {
     }
 
     /**
-     * @param base
+     *  Adiciona elemento na lista de clientes
+     * 
+     * @param base Recebe a classe Base de forma a aceder ás funções e listas
      */
     public static void addClient(Base base) {
         String name;
@@ -454,7 +478,9 @@ public class Projeto_pc2 {
     }
 
     /**
-     * @param base
+     * Adiciona elemento na lista de estações de carregamento
+     * 
+     * @param base Recebe a classe Base de forma a aceder ás funções e listas
      */
     public static void addChargingStation(Base base) {
         String address;
@@ -637,7 +663,9 @@ public class Projeto_pc2 {
     }
 
     /**
-     * @param base
+     * Adiciona elemento na lista de pagamentos
+     * 
+     * @param base Recebe a classe Base de forma a aceder ás funções e listas
      */
     public static void addPayment(Base base) {
         ChargingSession chargingSession = null;
@@ -687,7 +715,9 @@ public class Projeto_pc2 {
     }
 
     /**
-     * @param base
+     * Pesquisa elemento na lista de veiculos
+     * 
+     * @param base Recebe a classe Base de forma a aceder ás funções e listas
      */
     public static void searchVehicle(Base base) {
         Vehicle vehicle;
@@ -713,7 +743,9 @@ public class Projeto_pc2 {
     }
 
     /**
-     * @param base
+     * Pesquisa elemento na lista de clientes
+     * 
+     * @param base Recebe a classe Base de forma a aceder ás funções e listas
      */
     public static void searchClient(Base base) {
         Client client;
@@ -735,7 +767,9 @@ public class Projeto_pc2 {
     }
 
     /**
-     * @param base
+     * Pesquisa elemento na lista de estações de carregamento
+     * 
+     * @param base Recebe a classe Base de forma a aceder ás funções e listas
      */
     public static void searchChargingStation(Base base) {
         ChargingStation chargingStation;
@@ -757,7 +791,9 @@ public class Projeto_pc2 {
     }
 
     /**
-     * @param base
+     * Pesquisa elemento na lista de sessões de carregamento
+     * 
+     * @param base Recebe a classe Base de forma a aceder ás funções e listas
      */
     public static void searchChargingSession(Base base) {
         ChargingSession chargingSession;
@@ -779,7 +815,9 @@ public class Projeto_pc2 {
     }
 
     /**
-     * @param base
+     * Altera elemento na lista de clientes
+     * 
+     * @param base Recebe a classe Base de forma a aceder ás funções e listas
      */
     public static void changeClientData(Base base) {
         Client client;
@@ -833,7 +871,7 @@ public class Projeto_pc2 {
     /**
      * Adiciona elementos a lista (debuging & testing)
      * 
-     * @param base
+     * @param base Recebe a classe Base de forma a aceder ás funções e listas
      * @throws ParseException
      */
     public static void populateList(Base base) throws ParseException {

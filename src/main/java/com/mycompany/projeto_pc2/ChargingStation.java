@@ -5,7 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
+ * Classe que representa a estação de carregamento com propriedades de identificacao,
+ * de niveis de consumo e os ganhos da mesma
+ * 
  * @authors Paulo Sousa | João Domingos
  */
 public class ChargingStation implements Serializable {
@@ -48,196 +50,252 @@ public class ChargingStation implements Serializable {
     }
 
     /**
-     * @return
+     * Devolve o codigo da estação de carregamento
+     * 
+     * @return o codigo da estação de carregamento
      */
     public int getStationCode() {
         return station_code;
     }
 
     /**
-     * @param station_code
+     * Define o codigo da estação de carregamento
+     * 
+     * @param station_code o novo codigo da estação de carregamento
      */
     public void setStationCode(int station_code) {
         this.station_code = station_code;
     }
 
     /**
-     * @return
+     * Devolve a morada da estação de carregamento
+     * 
+     * @return a morada da estação de carregamento
      */
     public String getAddress() {
         return address;
     }
 
     /**
-     * @param address
+     * Define a morada da estação de carregamento
+     * 
+     * @param address a  nova morada da estação de carregamento
      */
     public void setAddress(String address) {
         this.address = address;
     }
 
     /**
-     * @return
+     * Devolve o tipo de estação de carregamento (hibrido ou eletrico)
+     * 
+     * @return o tipo de estação de carregamento (hibrido ou eletrico)
      */
     public String getStationType() {
         return station_type;
     }
 
     /**
-     * @param station_type
+     * Define o tipo de estação de carregamento (hibrido ou eletrico)
+     * 
+     * @param station_type o novo tipo de estação de carregamento (hibrido ou eletrico)
      */
     public void setStationType(String station_type) {
         this.station_type = station_type;
     }
 
     /**
-     * @return
+     * Devolve o tempo de carregamento de um veiculo numa estação de carregamento
+     * 
+     * @return o tempo de carregamento de um veiculo numa estação de carregamento
      */
     public double getChargingTime() {
         return charging_time;
     }
 
     /**
-     * @param charging_time
+     * Define o tempo de carregamento de um veiculo numa estação de carregamento
+     *
+     * @param charging_time o novo tempo de carregamento de um veiculo numa estação de carregamento
      */
     public void setChargingTime(double charging_time) {
         this.charging_time = charging_time;
     }
 
     /**
-     * @return
+     * Devolve o custo de carregamento para um veiculo na estação de carregamento 
+     * 
+     * @return o custo de carregamento para um veiculo na estação de carregamento 
      */
     public double getChargingCost() {
         return charging_cost;
     }
 
     /**
-     * @param charging_cost
+     * Define o custo de carregamento para um veiculo na estação de carregamento 
+     * 
+     * @param charging_costo o novo custo de carregamento para um veiculo na estação de carregamento 
      */
     public void setChargingCost(double charging_cost) {
         this.charging_cost = charging_cost;
     }
 
     /**
-     * @return
+     * Devolve se existem varios veiculos a carregar ao mesmo tempo 
+     * 
+     * @return a existencia de varios veiculos a carregar ao mesmo tempo 
      */
     public int getSimultaneousEVCharging() {
         return simultaneous_ev_charging;
     }
 
     /**
-     * @param simultaneous_ev_charging
+     * Define se existem varios veiculos a carregar ao mesmo tempo
+     * 
+     * @param simultaneous_ev_charging a existencia de varios veiculos a carregar ao mesmo tempo 
      */
     public void setSimultaneousEVCharging(int simultaneous_ev_charging) {
         this.simultaneous_ev_charging = simultaneous_ev_charging;
     }
 
     /**
-     * @return
+     * Devolve o total de energia consumida 
+     * 
+     * @return o total de energia consumida 
      */
     public double getTotalEnergyConsumed() {
         return total_energy_consumed;
     }
 
     /**
-     * @param total_energy_consumed
+     * Define o total de energia consumida
+     * 
+     * @param total_energy_consumed o novo total de energia consumida
      */
     public void setTotalEnergyConsumed(double total_energy_consumed) {
         this.total_energy_consumed = total_energy_consumed;
     }
 
     /**
-     * @param adder
+     * Adiciona o total de energia consumida 
+     * 
+     * @param adder adiciona o total de energia consumida
      */
     public void addTotalEnergyConsumed(double adder) {
         this.total_energy_consumed += adder;
     }
 
     /**
-     * @return
+     * Devolve o valor total faturado numa estação de carregamento
+     * 
+     * @return o valor total faturado numa estação de carregamento
      */
     public double getTotalRevenue() {
         return total_revenue;
     }
 
     /**
-     * @param total_revenue
+     * Define o valor total faturado numa estação de carregamento
+     * 
+     * @param total_revenue o novo valor total faturado numa estação de carregamento
      */
     public void setTotalRevenue(double total_revenue) {
         this.total_revenue = total_revenue;
     }
 
     /**
-     * @param adder
+     * Adiciona o valor total faturado numa estação de carregamento
+     * 
+     * @param adder Adiciona o valor total faturado numa estação de carregamento
      */
     public void addTotalRevenue(double adder) {
         this.total_revenue += adder;
     }
 
     /**
-     * @return
+     * Devolve a energia consumida por veiculos eletricos
+     * 
+     * @return a energia consumida por veiculos eletricos
      */
     public double getEnergyConsumedByEv() {
         return energy_consumed_by_ev;
     }
 
     /**
-     * @param energy_consumed_by_ev
+     * Define a energia consumida por veiculos eletricos
+     * 
+     * @param energy_consumed_by_ev a nova energia consumida por veiculos eletricos
      */
     public void setEnergyConsumedByEv(double energy_consumed_by_ev) {
         this.energy_consumed_by_ev = energy_consumed_by_ev;
     }
 
     /**
-     * @param adder
+     * Adiciona a energia consumida por veiculos eletricos
+     * 
+     * @param adder Adiciona a energia consumida por veiculos eletricos
      */
     public void addEnergyConsumedByEv(double adder) {
         this.energy_consumed_by_ev += adder;
     }
 
     /**
-     * @return
+     * Devolve a energia consumida por veiculos hibridos
+     * 
+     * @return a energia consumida por veiculos hibridos
      */
     public double getEnergyConsumedByHybrid() {
         return energy_consumed_by_hybrid;
     }
 
     /**
-     * @param energy_consumed_by_hybrid
+     * Define a energia consumida por veiculos hibridos
+     * 
+     * @param energy_consumed_by_hybrid a nova energia consumida por veiculos hibridos
      */
     public void setEnergyConsumedByHybrid(double energy_consumed_by_hybrid) {
         this.energy_consumed_by_hybrid = energy_consumed_by_hybrid;
     }
 
     /**
-     * @param adder
+     * Adiciona a energia consumida por veiculos hibridos
+     * 
+     * @param adder Adiciona a energia consumida por veiculos hibridos
      */
     public void adequadaEnergyConsumedByHybrid(double adder) {
         this.energy_consumed_by_hybrid += adder;
     }
 
     /**
-     * @return
+     * Devolve o veiculo que está na estação de carregamento
+     * 
+     * @return o veiculo que está na estação de carregamento
      */
     public Vehicle getVehicle() {
         return vehicle;
     }
 
     /**
-     * @param vehicle
+     * Define o veiculo que está na estação de carregamento
+     * 
+     * @param vehicle o novo veiculo que está na estação de carregamento
      */
     public void setVehicle(Vehicle vehicle) {
         this.vehicle = vehicle;
     }
 
     /**
-     * @return
+     * Devolve a sessão de carregamento da estação 
+     * 
+     * @return a sessão de carregamento da estação 
      */
     public List<ChargingSession> getChargingSessions() {
         return chargingSessions;
     }
 
     /**
-     * @param session
+     * Adiciona uma sessão de carregamento para a estação
+     * 
+     * @param session Adiciona uma sessão de carregamento para a estação
      */
     public void addChargingSession(ChargingSession session) {
         chargingSessions.add(session);

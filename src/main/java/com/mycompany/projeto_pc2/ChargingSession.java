@@ -61,154 +61,198 @@ public class ChargingSession implements Serializable {
     }
 
     /**
-     * @return
+     * Devolve o veiculo 
+     * 
+     * @return o veiculo
      */
     public Vehicle getVehicle() {
         return vehicle;
     }
 
     /**
-     * @param vehicle
+     * Define o veiculo 
+     * 
+     * @param vehicle o novo veiculo
      */
     public void setVehicle(Vehicle vehicle) {
         this.vehicle = vehicle;
     }
 
     /**
-     * @return
+     * Devolve o cliente
+     * 
+     * @return o cliente
      */
     public Client getClient() {
         return client;
     }
 
     /**
-     * @param client
+     * Define o cliente
+     * 
+     * @param client o novo cliente
      */
     public void setClient(Client client) {
         this.client = client;
     }
 
     /**
-     * @return
+     * Devolve o codigo da sessão de carregamento
+     * 
+     * @return o codigo da sessão de carregamento
      */
     public int getSessionCode() {
         return session_code;
     }
 
     /**
-     * @param session_code
+     * Define o codigo da sessão de carregamento
+     * 
+     * @param session_code o novo codigo da sessão de carregamento
      */
     public void setSessionCode(int session_code) {
         this.session_code = session_code;
     }
 
     /**
-     * @return
+     * Devolve o tempo de inicio da sessão de carregamento
+     * 
+     * @return o tempo de inicio da sessão de carregamento
      */
     public LocalDateTime getStartTime() {
         return start_time;
     }
 
     /**
-     * @param start_time
+     * Define o tempo de inicio da sessão de carregamento
+     * 
+     * @param start_time o novo tempo de inicio da sessão de carregamento
      */
     public void setStartTime(LocalDateTime start_time) {
         this.start_time = start_time;
     }
 
     /**
-     * @return
+     * Devolve o tempo de fim da sessão de carregamento
+     * 
+     * @return o tempo de fim da sessão de carregamento
      */
     public LocalDateTime getFinishTime() {
         return finish_time;
     }
 
     /**
-     * @param finish_time
+     * Define o tempo de fim da sessão de carregamento
+     * 
+     * @param finish_time o novo tempo de fim da sessão de carregamento
      */
     public void setFinishTime(LocalDateTime finish_time) {
         this.finish_time = finish_time;
     }
 
     /**
-     * @return
+     * Devolve a energia consumida na sessão de carregamento 
+     * 
+     * @return a energia consumida na sessão de carregamento 
      */
     public double getEnergyConsumed() {
         return energy_consumed;
     }
 
     /**
-     * @param energy_consumed
+     * Define a energia consumida na sessão de carregamento 
+     * 
+     * @param energy_consumed a nova energia consumida na sessão de carregamento 
      */
     public void setEnergyConsumed(double energy_consumed) {
         this.energy_consumed = energy_consumed;
     }
 
     /**
-     * @return
+     * Devolve o custo da sessão de carregamento
+     * 
+     * @return o custo da sessão de carregamento
      */
     public double getSessionCost() {
         return session_cost;
     }
 
     /**
-     * @param session_cost
+     * Define o custo da sessão de carregamento
+     * 
+     * @param session_cost o novo custo da sessão de carregamento
      */
     public void setSessionCost(double session_cost) {
         this.session_cost = session_cost;
     }
 
     /**
-     * @return
+     * Devolve o estado do pagamento 
+     * 
+     * @return o estado do pagamento
      */
     public String getSettlementStatus() {
         return settlement_status;
     }
 
     /**
-     * @param settlement_status
+     * Define o estado do pagamento
+     * 
+     * @param settlement_status o novo estado do pagamento
      */
     public void setSettlementStatus(String settlement_status) {
         this.settlement_status = settlement_status;
     }
 
     /**
-     * @return
+     * Devolve o tipo de pagamento
+     * 
+     * @return o tipo de pagamento
      */
     public int getTypeOfPayment() {
         return type_of_payment;
     }
 
     /**
-     * @param type_of_payment
+     * Define o tipo de pagamento
+     * 
+     * @param type_of_payment o novo tipo de pagamento
      */
     public void setTypeOfPayment(int type_of_payment) {
         this.type_of_payment = type_of_payment;
     }
 
     /**
-     * @return
+     * Devolve o tempo de quando a transação foi feita
+     * 
+     * @return o tempo de quando a transação foi feita
      */
     public LocalDateTime getTimeOftransaction() {
         return time_transaction;
     }
 
     /**
-     * @param time_transaction
+     * Define o tempo de quando a transação foi feita
+     * 
+     * @param time_transaction o novo tempo de quando a transação foi feita
      */
     public void setTimeOftransaction(LocalDateTime time_transaction) {
         this.time_transaction = time_transaction;
     }
 
     /**
-     * @return
+     * Devolve se a sessão está paga
+     * 
+     * @return se a sessão está paga
      */
     public boolean getIsPaid() {
         return is_paid;
     }
 
     /**
-     * @param is_paid
+     * Define se a sessão está paga
+     * 
+     * @param is_paid Define se a sessão está paga
      */
     public void setIsPaid(boolean is_paid) {
         this.is_paid = is_paid;

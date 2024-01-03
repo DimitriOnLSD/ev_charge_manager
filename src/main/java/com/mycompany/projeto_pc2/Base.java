@@ -59,90 +59,90 @@ public class Base implements Serializable {
     }
 
     /**
+     * Devolve o numero de elementos da lista "clients"
      * 
-     * 
-     * @return
+     * @return O numero de elementos da lista "clients"
      */
     public ArrayList<Client> getClients() {
         return clients;
     }
 
     /**
+     * Define a lista parametrizada para a lista "clients"
      * 
-     * 
-     * @param clients
+     * @param clients A lista "clients"
      */
     public void setClients(ArrayList<Client> clients) {
         this.clients = clients;
     }
 
     /**
+     * Devolve o numero de elementos da lista "chargingStations"
      * 
-     * 
-     * @return
+     * @return O numero de elementos da lista "chargingStations"
      */
     public ArrayList<ChargingStation> getChargingStations() {
         return chargingStations;
     }
 
     /**
+     * Define a lista parametrizada para a lista "chargingStations"
      * 
-     * 
-     * @param chargingStations
+     * @param chargingStations A lista "chargingStations"
      */
     public void setChargingStations(ArrayList<ChargingStation> chargingStations) {
         this.chargingStations = chargingStations;
     }
 
     /**
+     * Devolve o numero de elementos da lista "chargingSessions"
      * 
-     * 
-     * @return
+     * @return O numero de elementos da lista "chargingSessions"
      */
     public ArrayList<ChargingSession> getChargingSessions() {
         return chargingSessions;
     }
 
     /**
+     * Define a lista parametrizada para a lista "chargingSessions"
      * 
-     * 
-     * @param chargingSessions
+     * @param chargingSessions A lista "chargingSessions"
      */
     public void setChargingSessions(ArrayList<ChargingSession> chargingSessions) {
         this.chargingSessions = chargingSessions;
     }
 
     /**
+     * Devolve o numero total de carros 
      * 
-     * 
-     * @return
+     * @return o numero total de carros 
      */
     public int getTotalCars() {
         return vehicles.size();
     }
 
     /**
+     * Devolve o numero total de clientes  
      * 
-     * 
-     * @return
+     * @return o numero total de clientes
      */
     public int getTotalClients() {
         return clients.size();
     }
 
     /**
+     * Devolve o numero total de estações de carregamento
      * 
-     * 
-     * @return
+     * @return o numero total de estações de carregamento
      */
     public int getTotalChargingStations() {
         return chargingStations.size();
     }
 
     /**
+     * Devolve o numero total de sessões de carregamento 
      * 
-     * 
-     * @return
+     * @return o numero total de sessões de carregamento 
      */
     public int getTotalChargingSessions() {
         return chargingSessions.size();
@@ -158,7 +158,7 @@ public class Base implements Serializable {
     }
 
     /**
-     * 
+     * Adiciona o valor parametrizado para a lista "clients"
      * 
      * @param newClient
      */
@@ -167,7 +167,7 @@ public class Base implements Serializable {
     }
 
     /**
-     * 
+     * Adiciona o valor parametrizado para a lista "chargingStations"
      * 
      * @param newChargingStation
      */
@@ -176,7 +176,7 @@ public class Base implements Serializable {
     }
 
     /**
-     * 
+     * Adiciona o valor parametrizado para a lista "chargingSessions"
      * 
      * @param newChargingSession
      */
@@ -255,10 +255,10 @@ public class Base implements Serializable {
     }
 
     /**
+     * Pesquisa a estação de carregamento a partir do seu codigo 
      * 
-     * 
-     * @param station_code
-     * @return
+     * @param station_code codigo da estação
+     * @return o elemento na lista "chargingStations". Caso não exista devolve -1
      */
     public int searchChargingStation(int station_code) {
         for (int i = 0; i < chargingStations.size(); i++) {
@@ -270,10 +270,10 @@ public class Base implements Serializable {
     }
 
     /**
+     * Pesquisa a sessão de carregamento a partir do seu codigo 
      * 
-     * 
-     * @param session_code
-     * @return
+     * @param session_code codigo da sessão
+     * @return o elemento na lista "chargingSessions". Caso não exista devolve -1
      */
     public int searchChargingSession(int session_code) {
         for (int i = 0; i < chargingSessions.size(); i++) {
