@@ -21,12 +21,11 @@ public class Base implements Serializable {
     private ArrayList<ChargingStation> chargingStations;
     private ArrayList<ChargingSession> chargingSessions;
 
-
     /**
      * Constroi a base com os atributos dados
      * 
-     * @param vehicles lista de veículos
-     * @param clients lista dos clientes
+     * @param vehicles         lista de veículos
+     * @param clients          lista dos clientes
      * @param chargingStations lista estações de carregamento
      * @param chargingSessions lista de sessões de carregamento
      */
@@ -37,8 +36,6 @@ public class Base implements Serializable {
         chargingSessions = new ArrayList<>();
     }
 
-
-
     /**
      * Devolve o numero de elementos da lista "vehicles"
      * 
@@ -47,7 +44,6 @@ public class Base implements Serializable {
     public ArrayList<Vehicle> getVehicles() {
         return vehicles;
     }
-
 
     /**
      * Define a lista parametrizada para a lista "vehicles"
@@ -113,16 +109,16 @@ public class Base implements Serializable {
     }
 
     /**
-     * Devolve o numero total de carros 
+     * Devolve o numero total de carros
      * 
-     * @return o numero total de carros 
+     * @return o numero total de carros
      */
     public int getTotalCars() {
         return vehicles.size();
     }
 
     /**
-     * Devolve o numero total de clientes  
+     * Devolve o numero total de clientes
      * 
      * @return o numero total de clientes
      */
@@ -140,9 +136,9 @@ public class Base implements Serializable {
     }
 
     /**
-     * Devolve o numero total de sessões de carregamento 
+     * Devolve o numero total de sessões de carregamento
      * 
-     * @return o numero total de sessões de carregamento 
+     * @return o numero total de sessões de carregamento
      */
     public int getTotalChargingSessions() {
         return chargingSessions.size();
@@ -205,7 +201,8 @@ public class Base implements Serializable {
     }
 
     /**
-     * Devolve a estação de carregamento com a posição parametrizada da lista "chargingStations"
+     * Devolve a estação de carregamento com a posição parametrizada da lista
+     * "chargingStations"
      * 
      * @param pos posição do elemento
      * @return a estação de carregamento especifica
@@ -215,7 +212,8 @@ public class Base implements Serializable {
     }
 
     /**
-     * Devolve a sessão de carregamento com a posição parametrizada da lista "chargingSessions"
+     * Devolve a sessão de carregamento com a posição parametrizada da lista
+     * "chargingSessions"
      * 
      * @param pos posição do elemento
      * @return a sessão de carregamento especifica
@@ -255,7 +253,7 @@ public class Base implements Serializable {
     }
 
     /**
-     * Pesquisa a estação de carregamento a partir do seu codigo 
+     * Pesquisa a estação de carregamento a partir do seu codigo
      * 
      * @param station_code codigo da estação
      * @return o elemento na lista "chargingStations". Caso não exista devolve -1
@@ -270,7 +268,7 @@ public class Base implements Serializable {
     }
 
     /**
-     * Pesquisa a sessão de carregamento a partir do seu codigo 
+     * Pesquisa a sessão de carregamento a partir do seu codigo
      * 
      * @param session_code codigo da sessão
      * @return o elemento na lista "chargingSessions". Caso não exista devolve -1
@@ -288,10 +286,12 @@ public class Base implements Serializable {
      * Verifica se o carro pode ser carregado na estação de carregamento
      * 
      * @param chargingStation estação de carregamento inserida
-     * @param vehicle veiculo que pretendemos carregar
-     * @param start_time data de inico do carregamento
-     * @param finish_time data de fim do carregamento
-     * @return 1 se num certo periodo de tempo o veiculo está a carregar numa das estações. 2 se a estação tiver atingido o seu limite de capacidade num certo limite temporal. 0 pode carregar
+     * @param vehicle         veiculo que pretendemos carregar
+     * @param start_time      data de inico do carregamento
+     * @param finish_time     data de fim do carregamento
+     * @return 1 se num certo periodo de tempo o veiculo está a carregar numa das
+     *         estações. 2 se a estação tiver atingido o seu limite de capacidade
+     *         num certo limite temporal. 0 pode carregar
      */
     public int canCharge(ChargingStation chargingStation, Vehicle vehicle, LocalDateTime start_time,
             LocalDateTime finish_time) {
@@ -313,9 +313,10 @@ public class Base implements Serializable {
     }
 
     /**
-     * Verifica quais as 3 estações mais rentaveis 
+     * Verifica quais as 3 estações mais rentaveis
      * 
-     * @return o codigo das 3 estações mais rentaveis e o respetivo valor faturado de cada uma 
+     * @return o codigo das 3 estações mais rentaveis e o respetivo valor faturado
+     *         de cada uma
      */
     public double[] searchStationRevenue() {
         double[] to_return = { 0.0, 0.0, 0.0, 0, 0, 0 };
@@ -344,17 +345,23 @@ public class Base implements Serializable {
     }
 
     /**
-     * Verifica quais as sessões de carregamento que são superiores ao numero inserido
+     * Verifica quais as sessões de carregamento que são superiores ao numero
+     * inserido
      * 
      * @param n numero inserido
      */
     public void searchSessionCostSuperiorToN(double n) {
+        boolean found = false;
         for (int i = 0; i < chargingSessions.size(); i++) {
             if (chargingSessions.get(i).getSessionCost() > n) {
+                found = true;
                 System.out.print("Codigo da sessao: " + chargingSessions.get(i).getSessionCode());
                 String cost = String.format("%.2f", chargingSessions.get(i).getSessionCost());
                 System.out.println(" # Custo: " + cost + " euros");
             }
+        }
+        if (!found) {
+            System.out.println("Nao foram encontradas sessoes cujo valor supera " + n + " euros.");
         }
     }
 
@@ -380,10 +387,12 @@ public class Base implements Serializable {
     }
 
     /**
-     * Devolve a media da energia consumida num posto de carregamento, media de energia consumida por veiculos hibridos e eletricos
+     * Devolve a media da energia consumida num posto de carregamento, media de
+     * energia consumida por veiculos hibridos e eletricos
      * 
      * @param station_code codigo da estação inserida
-     * @return a media da energia consumida num posto de carregamento, media de energia consumida por veiculos hibridos e eletricos
+     * @return a media da energia consumida num posto de carregamento, media de
+     *         energia consumida por veiculos hibridos e eletricos
      */
     public double[] getAverageEnergyConsumedByStation(int station_code) {
         ChargingStation chargingStation;
@@ -406,8 +415,9 @@ public class Base implements Serializable {
                 average[2] = total_sessions > 0 ? energy_consumed_by_ev / total_sessions : 0.0;
             } else {
                 System.err.println("\nEsta estacao de carregamento nao tem sessoes registadas!\n");
+                average[0] = -1;
             }
-        }   
+        }
         return average;
     }
 
@@ -418,19 +428,28 @@ public class Base implements Serializable {
      */
     public void getUnpaidSessionsByClient(int nif) {
         Client client;
+        boolean nice = true;
         int pos = searchClient(nif);
         if (pos == -1) {
             System.err.println("Cliente nao existe!");
         } else {
             client = getClient(pos);
-            List<ChargingSession> clientSessions = client.getChargingSessions();
-            for (ChargingSession session : clientSessions) {
-                if (!session.getIsPaid()) {
-                    String cost = String.format("%.2f", session.getSessionCost());
-                    System.out.println("Codigo da sessao: " + session.getSessionCode() + " # Custo: " + cost + " euros");
+            if (client.getChargingSessions().size() == 0) {
+                System.err.println("Este cliente ainda nao efetuou nenhuma sessao.");
+            } else {
+                List<ChargingSession> clientSessions = client.getChargingSessions();
+                for (ChargingSession session : clientSessions) {
+                    if (!session.getIsPaid()) {
+                        nice = false;
+                        String cost = String.format("%.2f", session.getSessionCost());
+                        System.out.print("Codigo da sessao: " + session.getSessionCode());
+                        System.out.println(" # Custo: " + cost + " euros");
+                    }
+                }
+                if (nice) {
+                    System.out.println("Todas as sessoes deste cliente encontram-se pagas.");
                 }
             }
-            System.out.println();
         }
     }
 
@@ -446,22 +465,25 @@ public class Base implements Serializable {
             System.err.println("Estacao de carregamento nao existe!");
         } else {
             chargingStation = getChargingStation(pos);
-            List<ChargingSession> sessionHistory = chargingStation.getChargingSessions();
-            for (ChargingSession session : sessionHistory) {
-                if (session.getSessionCode() > 0) {
-                    System.out.print("Codigo da sessao: " + session.getSessionCode());
-                    System.out.println(" # Realizada por (NIF): " + session.getClient().getNIF());
+            if (chargingStation.getChargingSessions().size() == 0) {
+                System.err.println("Ainda nao foram realizadas sessoes neste posto.");
+            } else {
+                List<ChargingSession> sessionHistory = chargingStation.getChargingSessions();
+                for (ChargingSession session : sessionHistory) {
+                    if (session.getSessionCode() > 0) {
+                        System.out.print("Codigo da sessao: " + session.getSessionCode());
+                        System.out.println(" # Realizada por (NIF): " + session.getClient().getNIF());
+                    }
                 }
             }
-            System.out.println();
         }
-    }   
+    }
 
     /**
-     * Escreve para um ficheiro apenas 
+     * Escreve para um ficheiro apenas
      * 
      * @param objectToWrite a lista dada
-     * @param filename nome do ficheiro
+     * @param filename      nome do ficheiro
      */
     public static void writeArrayListToFile(ArrayList<?> objectToWrite, String filename) {
         try {
@@ -475,11 +497,11 @@ public class Base implements Serializable {
     }
 
     /**
-     * Lê um ficheiro apenas 
+     * Lê um ficheiro apenas
      * 
-     * @param <T> parametro generico da lista
+     * @param <T>      parametro generico da lista
      * @param filename nome do ficheiro a ler
-     * @return elementos lidos para a lista 
+     * @return elementos lidos para a lista
      */
     @SuppressWarnings("unchecked")
     public static <T> ArrayList<T> readArrayListFromFile(String filename) {
@@ -499,9 +521,9 @@ public class Base implements Serializable {
      * Função que guarda as classes em ficheiros
      * 
      * @param vehiclesFile ficheiro de veiculos
-     * @param clientsFile ficheiro de clientes
-     * @param stationsFile ficheiro de estações 
-     * @param sessionsFile ficheiro de sessões 
+     * @param clientsFile  ficheiro de clientes
+     * @param stationsFile ficheiro de estações
+     * @param sessionsFile ficheiro de sessões
      */
     public void writeToFile(String vehiclesFile, String clientsFile, String stationsFile, String sessionsFile) {
         writeArrayListToFile(getVehicles(), vehiclesFile);
@@ -514,9 +536,9 @@ public class Base implements Serializable {
      * Função que lê os ficheiros e guarda em classes
      * 
      * @param vehiclesFile ficheiro de veiculos
-     * @param clientsFile ficheiro de clientes
-     * @param stationsFile ficheiro de estações 
-     * @param sessionsFile ficheiro de sessões 
+     * @param clientsFile  ficheiro de clientes
+     * @param stationsFile ficheiro de estações
+     * @param sessionsFile ficheiro de sessões
      */
     public void readFromFile(String vehiclesFile, String clientsFile, String stationsFile, String sessionsFile) {
         setVehicles(readArrayListFromFile(vehiclesFile));

@@ -14,19 +14,8 @@ import java.util.regex.Pattern;
 
 import util.Consola;
 
-/*
- * Bugs: 
- * 
- */
-
-/*
- * To do list:
- * Comentar o codigo (existe exemplo no addChargingSession() e Client.java)
- */
-
 /**
- * Classe principal ao projeto ou estão os menus, as bases de dados
- * e outras funções essenciais
+ * Classe principal do projeto que contem os menus e as funções pedidas
  *
  * @authors Paulo Sousa | João Domingos
  */
@@ -37,7 +26,7 @@ public class Projeto_pc2 {
     public static Scanner sc = new Scanner(System.in);
 
     /**
-     * 
+     * Função que executa o código
      * 
      * @param args
      * @throws ParseException
@@ -46,7 +35,7 @@ public class Projeto_pc2 {
         clearConsole();
 
         String vehiclesFile = "vehicles.dat";
-        String clientsFile = "clients.dat";
+        String clientsFile  = "clients.dat";
         String stationsFile = "stations.dat";
         String sessionsFile = "sessions.dat";
         int primary_option, secondary_option = 0;
@@ -136,16 +125,21 @@ public class Projeto_pc2 {
 
                     switch (secondary_option) {
                         case 1:
-                            double[] revenue = base.searchStationRevenue();
+                            if (base.getTotalChargingStations() > 0) {
+                                double[] revenue = base.searchStationRevenue();
 
-                            for (int i = 3; i < 6; i++) {
-                                if (revenue[i] != 0) {
-                                    int station_code = (int) revenue[i];
-                                    String format_revenue = String.format("%.2f", revenue[i - 3]);
-                                    System.out.println((i - 2) + ". Valor faturado: " + format_revenue + " euros # Codigo da estacao: " + station_code);
+                                for (int i = 3; i < 6; i++) {
+                                    if (revenue[i] != 0) {
+                                        int station_code = (int) revenue[i];
+                                        String format_revenue = String.format("%.2f", revenue[i - 3]);
+                                        System.out.print((i - 2) + ". Valor faturado: " + format_revenue);
+                                        System.out.println(" euros # Codigo da estacao: " + station_code);
+                                    }
                                 }
+                                System.out.println();
+                            } else {
+                                System.err.println("\nNao existem estacoes de carregamento registadas!\n");
                             }
-                            System.out.println();
                             break;
                         case 2:
                             if (base.getTotalChargingSessions() > 0) {
@@ -157,26 +151,50 @@ public class Projeto_pc2 {
                             }
                             break;
                         case 3:
-                            System.out.println("Total de sessoes realizadas: " + base.getTotalChargingSessionsByUser(Consola.lerInt("Insira NIF: ", 0, 999999999)));
+                            if (base.getTotalClients() > 0) {
+                                int nif = Consola.lerInt("Insira NIF: ", 0, 999999999);
+                                int total = base.getTotalChargingSessionsByUser(nif);
+                                System.out.println("Total de sessoes realizadas: " + total);
+                                System.out.println();
+                            } else {
+                                System.err.println("\nNao existem clientes registados!\n");
+                            }
                             break;
                         case 4:
-                            double[] average = base.getAverageEnergyConsumedByStation(Consola.lerInt("Insira cod. da estacao: ", 0, 99999));
+                            if (base.getTotalChargingStations() > 0) {
+                                int station = Consola.lerInt("Insira cod. da estacao: ", 0, 99999);
+                                double[] average = base.getAverageEnergyConsumedByStation(station);
 
-                            if (average[0] != -1) {
-                                String[] labels = { ": ", "(em Hibridos): ", "(em Eletricos): " };
+                                if (average[0] != -1) {
+                                    String[] labels = { ": ", "(em Hibridos): ", "(em Eletricos): " };
 
-                                for (int i = 0; i < 3; i++) {
-                                    String format_average = String.format("%.2f", average[i]);
-                                    System.out.println("Media de energia consumida " + labels[i] + format_average + " kW/h");
+                                    for (int i = 0; i < 3; i++) {
+                                        String format_average = String.format("%.2f", average[i]);
+                                        System.out.println("Media de energia consumida " + labels[i] + format_average + " kW/h");
+                                    }
+                                    System.out.println();
                                 }
-                                System.out.println();
+                            } else {
+                                System.err.println("\nNao existem estacoes de carregamento registadas!\n");
                             }
                             break;
                         case 5:
-                            base.getUnpaidSessionsByClient(Consola.lerInt("NIF: ", 0, 999999999));
+                            if (base.getTotalClients() > 0) {
+                                int nif = Consola.lerInt("NIF: ", 0, 999999999);
+                                base.getUnpaidSessionsByClient(nif);
+                                System.out.println();
+                            } else {
+                                System.err.println("\nNao existem clientes registados!\n");
+                            }
                             break;
                         case 6:
-                            base.getSessionHistoryByStation(Consola.lerInt("Cod. da estacao: ", 0, 999999999));
+                            if (base.getTotalChargingStations() > 0) {
+                                int station = Consola.lerInt("Cod. da estacao: ", 0, 999999999);
+                                base.getSessionHistoryByStation(station);
+                                System.out.println();
+                            } else {
+                                System.err.println("\nNao existem estacoes de carregamento registadas!\n");
+                            }
                             break;
                     }
                     break;
@@ -193,9 +211,10 @@ public class Projeto_pc2 {
     }
 
     /**
-     * Devolve o primeiro menu onde é selecionada uma das opções relavitas aos ficheiros
+     * Apresenta o menu de opção de populamento das classes. Devolve a escolha do
+     * utilizador
      * 
-     * @return o primeiro menu
+     * @return a escolha do utilizador
      */
     public static int firstRunMenu() {
         System.out.println("[1] Carregar dados dos ficheiros");
@@ -207,7 +226,8 @@ public class Projeto_pc2 {
     }
 
     /**
-     * Devolve o ultimo menu onde é selecionada uma das opções sobre se pertende ou não guardar os dados 
+     * Apresenta o menu de opção de salvamento dos dados das classes. Devolve a
+     * escolha do utilizador
      * 
      * @return o ultimo menu
      */
@@ -220,9 +240,9 @@ public class Projeto_pc2 {
     }
 
     /**
-     * Devolve o menu principal com todas as opções relativas a veiculos, clientes, postos de carregamento, sessões de carregamento e estatisticas
+     * Apresenta o menu principal. Devolve a opção do utilizador
      * 
-     * @return o menu principal
+     * @return a opção do utilizador
      */
     public static int primaryMenu() {
         System.out.println("[1] Veiculos registados");
@@ -238,9 +258,9 @@ public class Projeto_pc2 {
     }
 
     /**
-     * Devolve o menu veiculos
+     * Apresenta o menu dos veículos. Devolve a opção do utilizador
      * 
-     * @return o menu veiculos
+     * @return a opção do utilizador
      */
     public static int vehicleMenu() {
         System.out.println("[1] Procurar veiculo");
@@ -252,9 +272,9 @@ public class Projeto_pc2 {
     }
 
     /**
-     * Devolve o menu clientes 
+     * Apresenta o menu dos clientes. Devolve a opção do utilizador
      * 
-     * @return o menu clientes 
+     * @return a opção do utilizador
      */
     public static int clientMenu() {
         System.out.println("[1] Procurar cliente");
@@ -267,9 +287,9 @@ public class Projeto_pc2 {
     }
 
     /**
-     * Devolve o menu dos postos de carregamento
+     * Apresenta o menu dos postos de carregamento. Devolve a opção do utilizador
      * 
-     * @return o menu dos postos de carregamento
+     * @return a opção do utilizador
      */
     public static int chargingStationMenu() {
         System.out.println("[1] Consultar posto de carregamento");
@@ -281,9 +301,9 @@ public class Projeto_pc2 {
     }
 
     /**
-     * Devolve o menu das sessões de carregamento
+     * Apresenta o menu das sessões de carregamento. Devolve a opção do utilizador
      * 
-     * @return o menu das sessões de carregamento
+     * @return a opção do utilizador
      */
     public static int chargingSessionMenu() {
         System.out.println("[1] Consultar sessao de carregamento");
@@ -296,9 +316,9 @@ public class Projeto_pc2 {
     }
 
     /**
-     * Devolve o menu estatisticas
+     * Apresenta o menu das estatisticas. Devolve a opção do utilizador
      * 
-     * @return o menu estatisticas
+     * @return a opção do utilizador
      */
     public static int statisticsMenu() {
         System.out.println("[1] Lista dos 3 postos de carregamento com maior valor faturado");
@@ -314,14 +334,19 @@ public class Projeto_pc2 {
     }
 
     /**
-     * Adiciona elemento na lista de veiculos
+     * Função que adiciona um novo elemento, neste caso um veículo, na lista dos
+     * veículos, onde requisita a informação ao utilizador. Também regista o veículo
+     * a um cliente existente
      * 
      * @param base Recebe a classe Base de forma a aceder ás funções e listas
      */
     public static void addVehicle(Base base) {
         Client client = null;
-        String[] labels = { "0", "O", "voltar", "0 para voltar", "NAO", "NAO QUERO", "QUERO VOLTAR POR FAVOR", "epah, enganei-me", "Nao tenho carro", "O meu carro e importado", "matricula?", "O meu carro nao tem matricula, mas é azul", "matricula de mota tambem serve?", "oh manel, como e pra ir ao feiceboque?"};
-        String[] fuel_types = {"Gasolina", "gasolina", "Gasoleo", "gasoleo", "gasóleo", "oleo fula", "óleo fula"};
+        String[] labels = { "0", "O", "voltar", "0 para voltar", "NAO", "NAO QUERO", "QUERO VOLTAR POR FAVOR",
+                "epah, enganei-me", "Nao tenho carro", "O meu carro e importado", "matricula?",
+                "O meu carro nao tem matricula, mas é azul", "matricula de mota tambem serve?",
+                "oh manel, como e pra ir ao feiceboque?" };
+        String[] fuel_types = { "Gasolina", "gasolina", "Gasoleo", "gasoleo", "gasóleo", "oleo fula", "óleo fula" };
         String brand;
         String model;
         String license_plate;
@@ -382,8 +407,8 @@ public class Projeto_pc2 {
             }
         } while (error);
 
-        brand = Consola.lerString("Marca: ");
-        model = Consola.lerString("Modelo: ");
+        brand      = Consola.lerString("Marca: ");
+        model      = Consola.lerString("Modelo: ");
         horsepower = Consola.lerInt("Potencia [cv]: ", 1, 99999);
 
         do {
@@ -414,8 +439,8 @@ public class Projeto_pc2 {
             engine_displacement = Consola.lerInt("Cilindrada [cm^3]: ", 1, 99999);
         }
         battery_capacity = Consola.lerDouble("Capacidade da bateria [kW]: ", 1, 99999);
-        range = Consola.lerInt("Autonomia [km]: ", 1, 99999);
-        chargingSpeed = Consola.lerInt("Velocidade de carregamento [kW/h]: ", 1, 99999);
+        range            = Consola.lerInt("Autonomia [km]: ", 1, 99999);
+        chargingSpeed    = Consola.lerInt("Velocidade de carregamento [kW/h]: ", 1, 99999);
 
         do {
             try {
@@ -427,13 +452,15 @@ public class Projeto_pc2 {
             }
         } while (error);
 
-        Vehicle newVehicle = new Vehicle(client, brand, model, license_plate, electric_hybrid, fuel_type, date_of_register, horsepower, range, chargingSpeed, engine_displacement, battery_capacity);
+        Vehicle newVehicle = new Vehicle(client, brand, model, license_plate, electric_hybrid, fuel_type,
+                date_of_register, horsepower, range, chargingSpeed, engine_displacement, battery_capacity);
         base.addVehicle(newVehicle);
         client.addVehicle(newVehicle);
     }
 
     /**
-     *  Adiciona elemento na lista de clientes
+     * Função que adiciona um novo elemento, neste caso um cliente, na lista dos
+     * clientes, onde requisita a informação ao utilizador
      * 
      * @param base Recebe a classe Base de forma a aceder ás funções e listas
      */
@@ -458,10 +485,10 @@ public class Projeto_pc2 {
             }
         } while (pos != -1);
 
-        name = Consola.lerString("Nome: ");
+        name    = Consola.lerString("Nome: ");
         address = Consola.lerString("Morada: ");
         contact = Consola.lerInt("Contacto: ", 0, 999999999);
-        email = Consola.lerString("E-mail: ");
+        email   = Consola.lerString("E-mail: ");
 
         do {
             try {
@@ -478,7 +505,8 @@ public class Projeto_pc2 {
     }
 
     /**
-     * Adiciona elemento na lista de estações de carregamento
+     * Função que adiciona um novo elemento, neste caso um posto de carregamento, na
+     * lista dos postos de carregamento, onde requisita a informação ao utilizador
      * 
      * @param base Recebe a classe Base de forma a aceder ás funções e listas
      */
@@ -511,17 +539,20 @@ public class Projeto_pc2 {
                 System.err.println("Este tipo de estacao nao existe! Tente novamente...");
         } while (check_station_type);
 
-        address = Consola.lerString("Morada: ");
-        charging_cost = Consola.lerDouble("Custo de carregamento: ", 0, 999999999);
-        charging_time = Consola.lerDouble("Tempo de carregamento: ", 0, 168);
+        address                  = Consola.lerString("Morada: ");
+        charging_cost            = Consola.lerDouble("Custo de carregamento: ", 0, 999999999);
+        charging_time            = Consola.lerDouble("Tempo de carregamento: ", 0, 168);
         simultaneous_ev_charging = Consola.lerInt("Carregamento em simultaneo: ", 0, 50);
 
-        ChargingStation newChargingStation = new ChargingStation(station_code, simultaneous_ev_charging, address, station_type, charging_time, charging_cost);
+        ChargingStation newChargingStation = new ChargingStation(station_code, simultaneous_ev_charging, address,
+                station_type, charging_time, charging_cost);
         base.addChargingStation(newChargingStation);
     }
 
     /**
-     * Adiciona elemento na lista de sessoes de carregamento
+     * Função que adiciona um novo elemento, neste caso uma sessão de carregamento,
+     * na lista dos clientes, onde requisita a informação ao utilizador.
+     * Adicionamos a sessão de carregamento ao cliente e ao posto
      * 
      * @param base Recebe a classe Base de forma a aceder ás funções e listas
      */
@@ -609,11 +640,13 @@ public class Projeto_pc2 {
             }
         } while (error);
 
-        time_charging = Duration.between(start_time, finish_time); // time_charging vai guardar o tempo que o veiculo esteve a carregar
+        time_charging = Duration.between(start_time, finish_time); // time_charging vai guardar o tempo que o veiculo
+                                                                   // esteve a carregar
         hours = (double) time_charging.toMinutes() / 60; // e aqui converte para horas em tipo double
 
         // Aqui vamos ver que tipo de estacao selecionamos. Se o nosso carro possuir um
-        // charge power de 75, e escolher uma estacao PCR, ele carrega um maximo de 50 kW/h
+        // charge power de 75, e escolher uma estacao PCR, ele carrega um maximo de 50
+        // kW/h
         switch (chargingStation.getStationType()) {
             case "PCN":
                 max_charge = 22;
@@ -654,16 +687,20 @@ public class Projeto_pc2 {
 
         // Aqui definimos os atributos para o construtor da classe, e tambem criamos
         // elementos de listas
-        ChargingSession newChargingSession = new ChargingSession(chargingStation, vehicle, client, session_code, start_time, finish_time, settlement_status, energy_consumed, session_cost, is_paid);
-        vehicle.setChargingStation(chargingStation);
+        ChargingSession newChargingSession = new ChargingSession(chargingStation, vehicle, client, session_code,
+                start_time, finish_time, settlement_status, energy_consumed, session_cost, is_paid);
+        vehicle.setChargingStation(chargingStation); // Seria usada para saber qual posto o veículo está a usar em tempo
+                                                     // real
         client.addChargingSession(newChargingSession);
         chargingStation.addChargingSession(newChargingSession);
-        chargingStation.setVehicle(vehicle);
+        chargingStation.setVehicle(vehicle); // Seria usada para saber qual veículo o posto está a carregar em tempo
+                                             // real
         base.addChargingSession(newChargingSession);
     }
 
     /**
-     * Adiciona elemento na lista de pagamentos
+     * Função que regista um pagamento efetuado para uma sessão de carregamento
+     * existente.
      * 
      * @param base Recebe a classe Base de forma a aceder ás funções e listas
      */
@@ -715,7 +752,7 @@ public class Projeto_pc2 {
     }
 
     /**
-     * Pesquisa elemento na lista de veiculos
+     * Pesquisa um veículo na lista de veiculos
      * 
      * @param base Recebe a classe Base de forma a aceder ás funções e listas
      */
@@ -725,7 +762,9 @@ public class Projeto_pc2 {
         int pos;
 
         license_plate = Consola.lerString("Matricula [0 para voltar]: ");
-        String[] labels = { "0", "O", "voltar", "0 para voltar", "NAO", "NAO QUERO", "QUERO VOLTAR POR FAVOR", "epah, enganei-me", "Ainda nao fui ver a matricula do carro", "Quero ver o carro do costa", "Quantas eguas tem o partido socialista?"};
+        String[] labels = { "0", "O", "voltar", "0 para voltar", "NAO", "NAO QUERO", "QUERO VOLTAR POR FAVOR",
+                "epah, enganei-me", "Ainda nao fui ver a matricula do carro", "Quero ver o carro do costa",
+                "Quantas eguas tem o partido socialista?" };
         int array_size = labels.length;
         for (int i = 0; i < array_size; i++) {
             if (license_plate.equals(labels[i])) {
@@ -743,7 +782,7 @@ public class Projeto_pc2 {
     }
 
     /**
-     * Pesquisa elemento na lista de clientes
+     * Pesquisa um cliente na lista de clientes
      * 
      * @param base Recebe a classe Base de forma a aceder ás funções e listas
      */
@@ -767,7 +806,7 @@ public class Projeto_pc2 {
     }
 
     /**
-     * Pesquisa elemento na lista de estações de carregamento
+     * Pesquisa um posto de carregamento na lista de postos de carregamento
      * 
      * @param base Recebe a classe Base de forma a aceder ás funções e listas
      */
@@ -791,7 +830,7 @@ public class Projeto_pc2 {
     }
 
     /**
-     * Pesquisa elemento na lista de sessões de carregamento
+     * Pesquisa uma sessão de carregamento na lista de sessões de carregamento
      * 
      * @param base Recebe a classe Base de forma a aceder ás funções e listas
      */
@@ -815,7 +854,7 @@ public class Projeto_pc2 {
     }
 
     /**
-     * Altera elemento na lista de clientes
+     * Altera os dados de um cliente existente na lista
      * 
      * @param base Recebe a classe Base de forma a aceder ás funções e listas
      */
@@ -844,10 +883,10 @@ public class Projeto_pc2 {
             System.out.println(client.toString());
 
             System.out.println("\n-Novos dados-\n");
-            name = Consola.lerString("Nome: ");
+            name    = Consola.lerString("Nome: ");
             address = Consola.lerString("Morada: ");
             contact = Consola.lerInt("Contacto: ", 0, 999999999);
-            email = Consola.lerString("E-mail: ");
+            email   = Consola.lerString("E-mail: ");
 
             boolean error = false;
             do {
@@ -869,7 +908,7 @@ public class Projeto_pc2 {
     }
 
     /**
-     * Adiciona elementos a lista (debuging & testing)
+     * Adiciona elementos às classes (debugging & testing)
      * 
      * @param base Recebe a classe Base de forma a aceder ás funções e listas
      * @throws ParseException
@@ -1089,7 +1128,8 @@ public class Projeto_pc2 {
     }
 
     /**
-     * Limpa a consola
+     * Limpa a consola (Pode não funcionar no NetBeans, mas funciona no Visual
+     * Studio Code). Tipo: UTF-8
      * 
      */
     public static void clearConsole() {
@@ -1098,7 +1138,8 @@ public class Projeto_pc2 {
     }
 
     /**
-     * Scan a consola (espera um enter)
+     * Função serve para "parar" o código ao esperar um unser input, que seria o
+     * enter. Serve para visualizar melhor o funcionamento do programa
      * 
      */
     public static void holdConsole() {
@@ -1109,7 +1150,7 @@ public class Projeto_pc2 {
     /**
      * Gera um codigo aleatorio para a sessão
      * 
-     * @return codigo aleatorio para a sessão
+     * @return o codigo aleatorio
      */
     public static int generateRandomSessionCode() {
         Random random = new Random();

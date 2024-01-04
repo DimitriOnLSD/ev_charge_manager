@@ -24,11 +24,11 @@ public class Client implements Serializable {
     /**
      * Constroi o cliente com os atributos dados
      * 
-     * @param name Nome do cliente
-     * @param address Morada do cliente
-     * @param email E-mail do cliente
-     * @param nIF Numero de Identificação fiscal do cliente
-     * @param contact Contacto telefónico do cliente
+     * @param name       Nome do cliente
+     * @param address    Morada do cliente
+     * @param email      E-mail do cliente
+     * @param nIF        Numero de Identificação fiscal do cliente
+     * @param contact    Contacto telefónico do cliente
      * @param birth_date Data de nascimento do cliente
      */
     public Client(String name,
@@ -156,7 +156,8 @@ public class Client implements Serializable {
     }
 
     /**
-     * Devolve a lista de sessões de carregamento do cliente. É usada para saber quais estão pagas e quantas foram realizadas
+     * Devolve a lista de sessões de carregamento do cliente. É usada para saber
+     * quais estão pagas e quantas foram realizadas
      * 
      * @return A lista de sessôes de carregamento do cliente
      */
@@ -165,9 +166,10 @@ public class Client implements Serializable {
     }
 
     /**
-     * Adiciona uma sessão de carregamento na lista como elemento. É chamada quando é registada uma sessão
+     * Adiciona uma sessão de carregamento na lista como elemento. É chamada quando
+     * é registada uma sessão
      * 
-     * @param session Define uma nova sessão de carregamento na lista 
+     * @param session Define uma nova sessão de carregamento na lista
      */
     public void addChargingSession(ChargingSession session) {
         chargingSessions.add(session);
@@ -185,7 +187,7 @@ public class Client implements Serializable {
     /**
      * Adiciona o veículo ao cliente no momento de regsitar um veículo
      * 
-     * @param vehicle um novo veículo é definido ao cliente 
+     * @param vehicle um novo veículo é definido ao cliente
      */
     public void addVehicle(Vehicle vehicle) {
         vehicles.add(vehicle);
@@ -202,7 +204,10 @@ public class Client implements Serializable {
         if (vehicles.size() > 0) {
             str.append("\nVeiculos deste cliente:\n");
             for (int i = 0; i < vehicles.size(); i++) {
-                str.append(vehicles.get(i).getBrand() + " " + vehicles.get(i).getModel() + " (" + vehicles.get(i).getLicensePlate() + ")\n");
+                str.append(vehicles.get(i).getBrand());
+                str.append(" ");
+                str.append(vehicles.get(i).getModel());
+                str.append(" (" + vehicles.get(i).getLicensePlate() + ")\n");
             }
         } else {
             str.append("Este cliente nao possui veículos registados em seu nome.\n");

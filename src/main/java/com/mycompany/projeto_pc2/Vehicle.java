@@ -24,22 +24,20 @@ public class Vehicle implements Serializable {
     private double chargingSpeed;
     private double battery_capacity;
 
-
-
     /**
      * Constroi o veículo com os atributos dados
      * 
-     * @param brand Marca do veículo
-     * @param model Modelo do veículo
-     * @param license_plate Matricula do veículo
-     * @param electric_hybrid Veículo eletrico ou hibrido
-     * @param fuel_type Tipo de combustivel do veículo
-     * @param date_of_register Data de registo do veículo
-     * @param horsepower Potencia do veículo
-     * @param range Número de kilometros que uma carga completa conssegue fazer
+     * @param brand               Marca do veículo
+     * @param model               Modelo do veículo
+     * @param license_plate       Matricula do veículo
+     * @param electric_hybrid     Veículo eletrico ou hibrido
+     * @param fuel_type           Tipo de combustivel do veículo
+     * @param date_of_register    Data de registo do veículo
+     * @param horsepower          Potencia do veículo
+     * @param range               Autonomia do veiculo
      * @param engine_displacement Cilindrada do motor do veículo
-     * @param chargingSpeed Velocidade de carregamento do veículo
-     * @param battery_capacity Capacidade da bateria do veículo em kWh
+     * @param chargingSpeed       Velocidade de carregamento do veículo
+     * @param battery_capacity    Capacidade da bateria do veículo em kWh
      */
     public Vehicle(Client client,
             String brand,
@@ -67,6 +65,12 @@ public class Vehicle implements Serializable {
         this.battery_capacity = battery_capacity;
     }
 
+    /**
+     * Devolve a estação de carregamento que o veiculo estiver a usar num periodo
+     * temporal
+     * 
+     * @return A estação de carregamento
+     */
     public ChargingStation getChargingStation() {
         return chargingStation;
     }
@@ -81,7 +85,7 @@ public class Vehicle implements Serializable {
     }
 
     /**
-     * Devolve o cliente associado ao veículo
+     * Devolve o cliente a que o veiculo se encontra registado
      * 
      * @return O cliente ao qual pertence o veículo
      */
@@ -90,14 +94,13 @@ public class Vehicle implements Serializable {
     }
 
     /**
-     * Define o cliente associado ao veículo
+     * Define o cliente a que o veiculo se encontra registado
      * 
-     * @param client A nova estação de carregamento a ser definida
+     * @param client O cliente a qual o veículo vai pertencer
      */
     public void setClient(Client client) {
         this.client = client;
     }
-
 
     /**
      * Devolve a marca do veículo
@@ -108,7 +111,6 @@ public class Vehicle implements Serializable {
         return brand;
     }
 
-
     /**
      * Define a marca do veículo
      * 
@@ -117,7 +119,6 @@ public class Vehicle implements Serializable {
     public void setBrand(String brand) {
         this.brand = brand;
     }
-
 
     /**
      * Devolve o modelo do veículo
@@ -128,7 +129,6 @@ public class Vehicle implements Serializable {
         return model;
     }
 
-
     /**
      * Define o modelo do veículo
      * 
@@ -138,8 +138,7 @@ public class Vehicle implements Serializable {
         this.model = model;
     }
 
-
-     /**
+    /**
      * Devolve a matricula do veículo
      * 
      * @return A matricula do veículo
@@ -147,7 +146,6 @@ public class Vehicle implements Serializable {
     public String getLicensePlate() {
         return license_plate;
     }
-
 
     /**
      * Define a matricula do veículo
@@ -158,7 +156,6 @@ public class Vehicle implements Serializable {
         this.license_plate = license_plate;
     }
 
-
     /**
      * Devolve a cilindrada do motor do veículo
      * 
@@ -167,7 +164,6 @@ public class Vehicle implements Serializable {
     public int getEngineDsplacement() {
         return engine_displacement;
     }
-
 
     /**
      * Define a cilindrada do motor do veículo
@@ -178,7 +174,6 @@ public class Vehicle implements Serializable {
         this.engine_displacement = engine_displacement;
     }
 
-
     /**
      * Devolve a data de registo do veículo
      * 
@@ -187,7 +182,6 @@ public class Vehicle implements Serializable {
     public Date getDateOfRegister() {
         return date_of_register;
     }
-
 
     /**
      * Define a data de registo do veículo
@@ -198,7 +192,6 @@ public class Vehicle implements Serializable {
         this.date_of_register = date_of_register;
     }
 
-
     /**
      * Devolve a potencia do veículo
      * 
@@ -207,7 +200,6 @@ public class Vehicle implements Serializable {
     public int getHorsepower() {
         return horsepower;
     }
-
 
     /**
      * Define a potencia do veículo
@@ -218,7 +210,6 @@ public class Vehicle implements Serializable {
         this.horsepower = horsepower;
     }
 
-
     /**
      * Devolve a capacidade da bateria do veículo
      * 
@@ -227,7 +218,6 @@ public class Vehicle implements Serializable {
     public double getBatteryCapacity() {
         return battery_capacity;
     }
-
 
     /**
      * Define a capacidade da bateria do veículo
@@ -238,26 +228,23 @@ public class Vehicle implements Serializable {
         this.battery_capacity = battery_capacity;
     }
 
-
     /**
-     * Devolve o numero de kilometros que a carga do veículo conssegue fazer
+     * Devolve a autonomia do veiculo
      * 
-     * @return O numero de kilometros que a carga do veículo conssegue fazer
+     * @return A autonomia do veiculo
      */
     public int getRange() {
         return range;
     }
 
-
     /**
-     * Define o numero de kilometros que a carga do veículo conssegue fazer
+     * Define a autonomia do veiculo
      * 
-     * @param range O novo numero de kilometros que a carga do veículo conssegue fazer
+     * @param range A nova autonomia do veiculo
      */
     public void setRange(int range) {
         this.range = range;
     }
-
 
     /**
      * Devolve a velocidade de carregamento do veículo
@@ -268,7 +255,6 @@ public class Vehicle implements Serializable {
         return chargingSpeed;
     }
 
-
     /**
      * Define a velocidade de carregamento do veículo
      * 
@@ -278,16 +264,14 @@ public class Vehicle implements Serializable {
         this.chargingSpeed = chargingSpeed;
     }
 
-
     /**
-     * Devolve se o veículo é eletrico ou hibrido 
+     * Devolve se o veículo é eletrico ou hibrido
      * 
-     * @return Se o veículo é eletrico ou hibrido 
+     * @return Se o veículo é eletrico ou hibrido
      */
     public String isEletricHybrid() {
         return electric_hybrid;
     }
-
 
     /**
      * Define se o veículo é eletrico ou hibrido
@@ -298,7 +282,6 @@ public class Vehicle implements Serializable {
         this.electric_hybrid = electric_hybrid;
     }
 
-
     /**
      * Devolve o tipo de combustivel do veículo
      * 
@@ -307,7 +290,6 @@ public class Vehicle implements Serializable {
     public String isFuelType() {
         return fuel_type;
     }
-
 
     /**
      * Define o tipo de combustivel do veículo

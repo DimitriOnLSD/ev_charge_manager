@@ -22,21 +22,19 @@ public class ChargingSession implements Serializable {
     private LocalDateTime start_time;
     private LocalDateTime finish_time;
     private LocalDateTime time_transaction;
-    
 
-
-     /**
+    /**
      * Constroi a sessão de carregamento com os atributos dados
      * 
-     * @param vehicle 
-     * @param client 
-     * @param session_code código da sessão de carregamento
-     * @param start_time data de inicio da sessão de carregamento
-     * @param finish_time data de fim da sessão de carregamento
+     * @param vehicle           veículo carregado na sessão
+     * @param client            cliente que registou a sessão
+     * @param session_code      código da sessão de carregamento
+     * @param start_time        data de inicio da sessão de carregamento
+     * @param finish_time       data de fim da sessão de carregamento
      * @param settlement_status Estado do pagamento da sessão de carregamento
-     * @param energy_consumed Energia consumida
-     * @param session_cost Custo da sessão de carregamento
-     * @param is_paid a sessão de carregamento foi paga
+     * @param energy_consumed   Energia consumida
+     * @param session_cost      Custo da sessão de carregamento
+     * @param is_paid           a sessão de carregamento foi paga
      */
     public ChargingSession(ChargingStation chargingStation,
             Vehicle vehicle,
@@ -61,7 +59,7 @@ public class ChargingSession implements Serializable {
     }
 
     /**
-     * Devolve o veiculo 
+     * Devolve o veiculo carregado na sessão
      * 
      * @return o veiculo
      */
@@ -70,7 +68,7 @@ public class ChargingSession implements Serializable {
     }
 
     /**
-     * Define o veiculo 
+     * Define o veiculo carregado na sessão
      * 
      * @param vehicle o novo veiculo
      */
@@ -79,7 +77,7 @@ public class ChargingSession implements Serializable {
     }
 
     /**
-     * Devolve o cliente
+     * Devolve o cliente que registou a sessão
      * 
      * @return o cliente
      */
@@ -88,7 +86,7 @@ public class ChargingSession implements Serializable {
     }
 
     /**
-     * Define o cliente
+     * Define o cliente que registou a sessão
      * 
      * @param client o novo cliente
      */
@@ -151,18 +149,18 @@ public class ChargingSession implements Serializable {
     }
 
     /**
-     * Devolve a energia consumida na sessão de carregamento 
+     * Devolve a energia consumida na sessão de carregamento
      * 
-     * @return a energia consumida na sessão de carregamento 
+     * @return a energia consumida
      */
     public double getEnergyConsumed() {
         return energy_consumed;
     }
 
     /**
-     * Define a energia consumida na sessão de carregamento 
+     * Define a energia consumida na sessão de carregamento
      * 
-     * @param energy_consumed a nova energia consumida na sessão de carregamento 
+     * @param energy_consumed a nova energia consumida
      */
     public void setEnergyConsumed(double energy_consumed) {
         this.energy_consumed = energy_consumed;
@@ -187,7 +185,7 @@ public class ChargingSession implements Serializable {
     }
 
     /**
-     * Devolve o estado do pagamento 
+     * Devolve o estado do pagamento
      * 
      * @return o estado do pagamento
      */
@@ -259,11 +257,12 @@ public class ChargingSession implements Serializable {
     }
 
     /**
-     * Verifica o periodo temporal entre todos os tempos de inicio e fim de carregamento 
+     * Verifica o periodo temporal entre todos os tempos de inicio e fim de
+     * carregamento
      * 
-     * @param newStartTime tempo de inicio de carregamento
+     * @param newStartTime  tempo de inicio de carregamento
      * @param newFinishTime tempo de fim de carregamento
-     * @return caso exista overlap devolve "true"
+     * @return caso exista overlap, devolve "true"
      */
     public boolean isOverlapping(LocalDateTime newStartTime, LocalDateTime newFinishTime) {
         return (newStartTime.isBefore(finish_time) || newStartTime.isEqual(finish_time)) &&
