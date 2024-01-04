@@ -1,5 +1,7 @@
 # Electric Vehicle Charge Manager
 ```diff
++ pronto a enviar
+
 + Inserir e consultar (através de matrícula) os veículos registados
 + Inserir, consultar (através de NIF) e alterar dados dos clientes registados
 + Inserir, consultar (através de código) os postos de carregamento
@@ -13,5 +15,5 @@
 + Histórico de sessões de carregamento (por posto de carregamento)
 
 + Guardar dados num ficheiro
-- Comentar o resto do código
++ Comentar o código
 ```
