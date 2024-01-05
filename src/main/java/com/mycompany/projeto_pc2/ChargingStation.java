@@ -8,7 +8,7 @@ import java.util.List;
  * Classe que representa a estação de carregamento com propriedades de
  * identificacao, de niveis de consumo e os ganhos da mesma
  * 
- * @authors Paulo Sousa | João Domingos
+ * @author Paulo Sousa | João Domingos
  */
 public class ChargingStation implements Serializable {
     Vehicle vehicle;

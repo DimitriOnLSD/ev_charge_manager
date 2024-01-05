@@ -9,7 +9,7 @@ import java.util.List;
  * Classe que representa o cliente com propriedades basicas de identificacao,
  * posse de veiculos registados ao mesmo e sessoes realizadas por este
  *
- * @authors Paulo Sousa | João Domingos
+ * @author Paulo Sousa | João Domingos
  */
 public class Client implements Serializable {
     private String name;

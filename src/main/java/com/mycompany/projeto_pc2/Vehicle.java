@@ -7,7 +7,7 @@ import java.util.Date;
  * Classe que representa o veículo com propriedades basicas de identificacao e
  * caracteristicas do mesmo
  *
- * @authors Paulo Sousa | João Domingos
+ * @author Paulo Sousa | João Domingos
  */
 public class Vehicle implements Serializable {
     ChargingStation chargingStation;

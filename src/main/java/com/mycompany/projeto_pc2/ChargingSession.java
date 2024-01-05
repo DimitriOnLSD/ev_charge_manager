@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
  * Classe que representa as sessões de carregamento com as suas principais e
  * custos associados para os clientes
  *
- * @authors Paulo Sousa | João Domingos
+ * @author Paulo Sousa | João Domingos
  */
 public class ChargingSession implements Serializable {
     ChargingStation chargingStation;

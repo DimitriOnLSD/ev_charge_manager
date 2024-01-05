@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * Classe que gere o comportamento das listas e das classes
  *
- * @authors Paulo Sousa | João Domingos
+ * @author Paulo Sousa | João Domingos
  */
 public class Base implements Serializable {
     private ArrayList<Vehicle> vehicles;
@@ -24,10 +24,6 @@ public class Base implements Serializable {
     /**
      * Constroi a base com os atributos dados
      * 
-     * @param vehicles         lista de veículos
-     * @param clients          lista dos clientes
-     * @param chargingStations lista estações de carregamento
-     * @param chargingSessions lista de sessões de carregamento
      */
     public Base() {
         vehicles = new ArrayList<>();

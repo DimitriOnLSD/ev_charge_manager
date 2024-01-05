@@ -17,7 +17,7 @@ import util.Consola;
 /**
  * Classe principal do projeto que contem os menus e as funções pedidas
  *
- * @authors Paulo Sousa | João Domingos
+ * @author Paulo Sousa | João Domingos
  */
 public class Projeto_pc2 {
 
