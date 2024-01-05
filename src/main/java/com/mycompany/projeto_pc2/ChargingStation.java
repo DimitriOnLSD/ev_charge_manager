@@ -132,7 +132,7 @@ public class ChargingStation implements Serializable {
     /**
      * Define o custo de carregamento para um veiculo na estação de carregamento
      * 
-     * @param charging_costo o novo custo de carregamento
+     * @param charging_cost o novo custo de carregamento
      */
     public void setChargingCost(double charging_cost) {
         this.charging_cost = charging_cost;

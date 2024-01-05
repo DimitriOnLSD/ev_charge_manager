@@ -59,7 +59,7 @@ public class Client implements Serializable {
     /**
      * Define o nome do cliente
      * 
-     * @param nome O novo nome a ser atribuído ao cliente.
+     * @param name O novo nome a ser atribuído ao cliente.
      */
     public void setName(String name) {
         this.name = name;

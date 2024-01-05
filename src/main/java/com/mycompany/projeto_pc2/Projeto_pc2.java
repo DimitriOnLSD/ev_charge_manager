@@ -908,7 +908,7 @@ public class Projeto_pc2 {
     }
 
     /**
-     * Adiciona elementos às classes (debugging & testing)
+     * Adiciona elementos às classes (debugging e testing)
      * 
      * @param base Recebe a classe Base de forma a aceder ás funções e listas
      * @throws ParseException
